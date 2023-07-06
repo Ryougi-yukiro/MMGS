@@ -80,8 +80,57 @@ h2
 rg=G_Var/(G_Var+L)
 rg
 ```
+### Step.2 data analysis 
+```R
+env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
+#envs similarity, plot by ggplot2 like heatmap
+LbyE_corrplot(LbyE=LbyE,cor_type="phetamp",color=c("blue","white","red"))
 
+#Get lines mean and Q25, Q75 within each envs
+etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")
+etl_plotter(data=etl,mean=env_trait) # you could design your plotter use more paras
 
+#Get Best Days window and Env Paras
+Paras <- c('DL', 'GDD', 'PTT', 'PTR', 'PTS');
+#p dap_x dap_y searching_daps according to your data
+pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=80,
+                           p=1, dap_x=80,dap_y=80,LOO=0,Paras=Paras)
+#Result Visualization
+Exhaustive_plotter(data=pop_cor,dap_x=80, dap_y=80,p=1)
+
+#Get Envs mean within env paras
+envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
+```
+
+### Step.3 CV
+Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP, LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
+```R
+#Check pheno
+pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
+#CV 
+out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
+             para=envMeanPara, Para_Name="PTT", depend="norm",
+             model="rrBLUP", fold=2, reshuffle=5, methods="RM.G")
+#result
+#> mean(out[[3]])
+#[1] 0.8728506
+#> apply(out[[2]],2,mean)
+#     PR12      IA14      PR11      IA13     PR14S      KS11      KS12 
+#0.5418663 0.3868576 0.5381628 0.4759335 0.4871427 0.6219213 0.6380658
+#head(out[[1]])
+#       obs      pre     col para
+#1 1595.988 1588.782 #FF0000 PR12
+#2 1512.918 1576.437 #FF0000 PR12
+```
+
+#Others function
+```R
+result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
+MSE<-result[[1]]
+ltm<-result[[2]]
+mse_plotter(MSE)
+```
 
 ## Vignettes
 If your package includes vignettes, mention them here and provide instructions on how to access and utilize them.
