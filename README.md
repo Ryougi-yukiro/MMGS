@@ -140,7 +140,7 @@ If you encounter any issues or have suggestions for improvements, please open an
 
 
 ## License
-Include information about the license under which your package is released.
+GPL-3
 
 
 ## Reference
