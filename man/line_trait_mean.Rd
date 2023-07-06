@@ -4,7 +4,7 @@
 \alias{line_trait_mean}
 \title{line_trait_mean}
 \usage{
-line_trait_mean(LbyE, mean, row)
+line_trait_mean(data, LbyE, mean, trait, row)
 }
 \arguments{
 \item{LbyE}{LbyE input}
@@ -21,4 +21,5 @@ line_trait_mean
 }
 \examples{
 line_trait_mean(LbyE=LbyE,mean=env_trait,row=2)
+
 }

@@ -17,13 +17,13 @@ LbyE_calculate<-function(data,trait,env,line){
   lines <- unique(as.vector(data[[line]]));
   LbyE <- data.frame(line_code = lines);
   t<-match(trait, colnames(data))
-
+  t2<-match(line, colnames(data))
   for (e_l in 1:length(envs)) {
     e <- envs[e_l];
     e_l_trait <- subset(data, data[[env]] == e);
     nonNAs <- length(which(!is.na(e_l_trait[,t])))
     colnames(e_l_trait)[t] <- e;
-    LbyE <- merge(LbyE, e_l_trait[,c(3,t)], all.x = T)
+    LbyE <- merge(LbyE, e_l_trait[,c(t2,t)], all.x = T)
     #LbyE <- merge(LbyE, e_trait[,c(1,match(env, colnames(e_trait)))], all.x = T)
   }
   return(LbyE)

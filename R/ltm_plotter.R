@@ -16,7 +16,7 @@
 ltm_plotter <- function(data,mean,env_cols =NULL,shape=NULL,
                         size=NULL,linewidth=NULL,area_color=NULL,area_alpha=NULL){
   if(is.null(env_cols)){
-    env_cols <- rainbow_hcl(length(unique(as.vector(mean[,1]))), c = 80, l = 60,
+    env_cols <- colorspace::rainbow_hcl(length(unique(as.vector(mean[,1]))), c = 80, l = 60,
                             start = 0, end = 300, fixup = TRUE, alpha = 0.75);
   }
   if(is.null(shape)){
@@ -34,24 +34,16 @@ ltm_plotter <- function(data,mean,env_cols =NULL,shape=NULL,
   if(is.null(area_alpha)){
     area_alpha= 0.5
   }
-  env_cols2<-factor(env_cols,levels = env_cols,labels = as.vector(mean[,1]))
-  ggplot()+
-    geom_line(data=data, aes(x = meanY , y = trait, group = line,
-                             color = "gray80"),alpha=0.3,show.legend = FALSE)+
-    geom_point(data=data, aes(x = meanY , y = trait, group = line,
-                              color = "gray80"),alpha=0.1,show.legend = FALSE)+
-    theme_bw()+labs(x = "mean", y = "trait")+
-    geom_point(data = mean, aes(x = mean, y = mean,color = env_cols),
-               size = size, shape = shape, show.legend = T)+
-    geom_line(data = mean, aes(x = mean, y = mean, group = 1),
-              color= "red",linewidth=linewidth,linetype='dashed', show.legend = FALSE)+
-    geom_line(data = mean, aes(x = mean, y = q25, group = 1),
-              color= "transparent",linewidth=1, show.legend = FALSE)+
-    geom_line(data = mean, aes(x = mean, y = q75, group = 1),
-              color= "transparent",linewidth=1, show.legend = FALSE)+
-    geom_ribbon(data=mean,aes(x =mean, ymin = q25, ymax = q75,group = 1),
-                fill = area_color,alpha=area_alpha)+
-    theme(plot.title = element_text(size=12,hjust=0.5))+
-    scale_color_manual(values = "gray80")
+  ggplot(Reg %>% left_join(ltm)) +
+    # geom_line(aes(env_order, Yobs, group = g), color = "#80808023", show.legend = F) +
+    geom_line(aes(meanY, Yobs, g = g), color = "#80808023", show.legend = F) +
+    geom_point(aes(meanY, Yobs, group = g), color = "#80808023", show.legend = F) +
+    geom_point(aes(meanY, Yobs, group = g, color = env_code),size = 0.5, shape = 1) +
+    geom_smooth(aes(meanY, Yobs), color = 'grey', size = 0.5, method = 'lm', se = F, linetype = 'dashed') +
+    geom_ribbon(aes(meanY, ymin = q1, ymax = q3), fill = "#EE82EE37") +
+    geom_point(aes(meanY, meanY)) +
+    theme_main +
+    xlab('Population mean') +
+    ylab('FTgdd')
 }
 

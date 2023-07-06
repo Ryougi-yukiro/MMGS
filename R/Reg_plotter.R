@@ -26,4 +26,6 @@ Reg_plotter<-function(Reg=Reg,size=NULL,method=NULL,color=NULL,alpha=NULL){
   ggplot(Reg, aes(x = meanY, y = Trait, group = line)) +
     geom_smooth(method = method, se = FALSE,color=color[1],alpha=alpha[1]) +
     geom_point(color=color[2],size=size,alpha=alpha[2])+labs(x = "mean", y = "Trait") +theme_bw()
+
+
 }

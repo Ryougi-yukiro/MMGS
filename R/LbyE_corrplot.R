@@ -20,7 +20,7 @@ LbyE_corrplot <- function(LbyE,cor_type=NULL,color=NULL)
   }
 
   if(cor_type == "pie"){
-    corrgram(as.matrix(LbyE[,-1]), order=TRUE, lower.panel=panel.shade,
+    corrgram::corrgram(as.matrix(LbyE[,-1]), order=TRUE, lower.panel=panel.shade,
              pch = 19, upper.panel=panel.pie,
              col.regions = colorRampPalette(c(color[1], color[2],high = color[3])));
   }else if(cor_type == "heatmap"){

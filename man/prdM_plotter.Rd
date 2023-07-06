@@ -15,7 +15,9 @@ prdM_plotter(
   method = NULL,
   linewidth = NULL,
   linetype = NULL,
-  linecolor = NULL
+  linecolor = NULL,
+  x_break = NULL,
+  y_break = NULL
 )
 }
 \arguments{
@@ -40,6 +42,10 @@ prdM_plotter(
 \item{linetype}{line type}
 
 \item{linecolor}{line color}
+
+\item{x_break}{adjust x label text}
+
+\item{y_break}{adjust y label text}
 }
 \value{
 combined prdM plot

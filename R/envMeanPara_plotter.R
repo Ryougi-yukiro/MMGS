@@ -1,32 +1,64 @@
-envMeanPara_plotter<-function(input,paras,method=NULL,linecolor=NULL,linewidth=NULL,
-                              linetype=NULL,size=NULL,shape=NULL){
-  input<-input[,c(1:5,match(paras, colnames(input)))]
-  colnames(input)[ncol(input)]<-"Para"
+#' envMeanPara_plotter
+#'
+#' @param envMeanPara  envMeanPara
+#' @param size point size
+#' @param shape point shape
+#' @param method regression method
+#' @param linewidth regression line width
+#' @param alpha point alpha
+#' @param linetype regression line type
+#' @param linecolor regression line color
+#'
+#' @return
+#' @export
+#'
+#' @examples envMeanPara_plotter(envMeanPara)
+envMeanPara_plotter<-function(envMeanPara,size=NULL,shape=NULL,method=NULL,
+                              linewidth=NULL,alpha=NULL,linetype=NULL,linecolor=NULL){
+  if(is.null(size)){
+    size= 4
+  }
+  if(is.null(shape)){
+    shape= 20
+  }
   if(is.null(method)){
     method= "lm"
-  }
-  if(is.null(linecolor)){
-    linecolor= "black"
   }
   if(is.null(linewidth)){
     linewidth= 1
   }
+  if(is.null(alpha)){
+    alpha= 1
+  }
   if(is.null(linetype)){
     linetype= "dashed"
   }
-  if(is.null(size)){
-    size= 5
+  if(is.null(linecolor)){
+    linecolor= "black"
   }
-  if(is.null(shape)){
-    shape= 18
+  ps <- list()
+  for (i in Paras){
+    x<-(max(envMeanPara[[i]])+min(envMeanPara[[i]]))/2;
+    y<-max(envMeanPara[,1]);
+    r2<-summary(lm(formula = envMeanPara[[i]] ~ mean, data = envMeanPara))$r.squared
+    p<-ggplot()+geom_point(data=envMeanPara,aes(x=.data[[i]],y=mean,color=env_code),
+                            size=size,shape=shape,alpha=alpha)+
+      geom_smooth(data=envMeanPara,aes(x=.data[[i]],y=mean),se=F,linewidth=linewidth,method=method,
+                  linetype=linetype,color=linecolor,formula = y ~ x)+
+      theme_bw()+
+      annotate('text',x=x,y=y,
+              label = (paste("R2 =", round(r2, 2))),
+              size=3,vjust = 0.5,hjust = 0.5)
+
+    ps[[i]] <- p
   }
-  model <- lm(mean ~ Para, data = input)
-  l <- list(r2 = format(summary(model)$r.squared, digits = 4))
-  x1<-mean(input$Para);y1=min(input$mean);
-  ggplot() +
-    geom_point(data=input, aes(x = Para, y = mean ,color=env_code),size = size, shape = shape) +
-    geom_smooth(data=input, aes(x = Para, y = mean ),method =method,
-                se = FALSE, color=linecolor,linetype="dashed",linewidth=linewidth,formula = y ~ x)+
-    theme_bw()+labs(x= paras, y= "mean")+
-    geom_text(aes(x = x1, y = y1, label = (paste("R2",as.character(as.expression(l)),sep=' = '))))
+  d <- character(length(ps))
+
+
+  for (i in 1:length(ps)) {d[i] <- paste0("ps[[", i,"]]")}
+
+  a<-paste(d, collapse = ", ")
+  code <- paste("lemon::grid_arrange_shared_legend(", paste(a, collapse = ", "), ", nrow = 2, ncol = 3, position = 'right')")
+  eval(parse(text = code))
+
 }

@@ -12,7 +12,8 @@
 #' @return pop cor matrix
 #' @export
 #'
-#' @examples pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122, p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)
+#' @examples pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
+#'                                      p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)
 Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
                             p=NULL, dap_x=NULL,dap_y=NULL,LOO=NULL,Paras){
   if(is.null(searching_daps)){

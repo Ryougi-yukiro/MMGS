@@ -2,7 +2,7 @@
 % Please edit documentation in R/Exhaustive_plotter.R
 \name{Exhaustive_plotter}
 \alias{Exhaustive_plotter}
-\title{envMeanPara_plotter}
+\title{Exhaustive_plotter}
 \usage{
 Exhaustive_plotter(data, dap_x, dap_y, p)
 }
@@ -19,7 +19,7 @@ Exhaustive_plotter(data, dap_x, dap_y, p)
 combined pop_cor plot
 }
 \description{
-envMeanPara_plotter
+Exhaustive_plotter
 }
 \examples{
 Exhaustive_plotter(input=pop_cor,paras="PTS")

@@ -16,7 +16,7 @@
 etl_plotter <- function(data,mean,env_cols =NULL,shape=NULL,
                         size=NULL,linewidth=NULL,area_color=NULL,area_alpha=NULL){
   if(is.null(env_cols)){
-    env_cols <- rainbow_hcl(length(unique(as.vector(data[,1]))), c = 80, l = 60,
+    env_cols <- colorspace::rainbow_hcl(length(unique(as.vector(data[,1]))), c = 80, l = 60,
                             start = 0, end = 300, fixup = TRUE, alpha = 0.75);
   }
   if(is.null(shape)){
