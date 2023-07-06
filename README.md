@@ -135,13 +135,33 @@ mse_plotter(MSE)
 ## Vignettes
 If your package includes vignettes, mention them here and provide instructions on how to access and utilize them.
 
-## Issues
-If you encounter any issues or have suggestions for improvements, please open an issue on the GitHub repository.
+## Command line interface
+* env_trait_calculate
+* envMeanPara
+* envMeanPara_plotter
+* etl_calculate
+* etl_plotter
+* Exhaustive_plotter
+* Exhaustive_search
+* GE_CV
+* h2_rrBLUP
+* LbyE_calculate
+* LbyE_corrplot
+* line_trait_mean
+* LOOCV
+* ltm_plotter
+* Mean_trait_plot
+* mse_plotter
+* prdM_plotter
+* Reg
+* Reg_plotter
+* Slope_Intercept
 
+## Implementation notes
+ggGSE is a collection of tools for cross-environmental genome-wide selection prediction that integrates most genome-wide prediction models, both parametric and non-parametric. You can input your own collected data against sample data and get the results you want directly through the built-in functions of the toolkit, which requires no additional statistical knowledge or coding skills and is somewhat user-friendly because it saves users from having to search for various tools and apply them to cross-environmental prediction.
 
 ## License
 GPL-3
-
 
 ## Reference
 [Li X, Guo T, Wang J, et al. An integrated framework reinstating the environmental dimension for GWAS and genomic selection in crops[J]. Molecular Plant](https://www.sciencedirect.com/science/article/pii/S167420522100085X)
