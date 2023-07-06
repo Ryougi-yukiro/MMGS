@@ -124,7 +124,7 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #2 1512.918 1576.437 #FF0000 PR12
 ```
 
-#Others function
+### Others function
 ```R
 result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
 MSE<-result[[1]]
@@ -148,7 +148,6 @@ Include information about the license under which your package is released.
 
 [Jarquín D, Crossa J, Lacaze X, et al. A reaction norm model for genomic selection using high-dimensional genomic and environmental data[J]. Theoretical and applied genetics, 2014, 127: 595-607.](https://link.springer.com/article/10.1007/s00122-013-2243-1)
 
-#Cited
-We do this with the help of ggGSE (Zhu MJ), which is built from the JRGA framework (Li X), under norm reaction principle (Jarquín D)
+
 
 
