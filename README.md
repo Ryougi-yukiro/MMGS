@@ -143,11 +143,12 @@ If you encounter any issues or have suggestions for improvements, please open an
 Include information about the license under which your package is released.
 
 
-## Citation
+## Reference
 [Li X, Guo T, Wang J, et al. An integrated framework reinstating the environmental dimension for GWAS and genomic selection in crops[J]. Molecular Plant](https://www.sciencedirect.com/science/article/pii/S167420522100085X)
 
 [Jarquín D, Crossa J, Lacaze X, et al. A reaction norm model for genomic selection using high-dimensional genomic and environmental data[J]. Theoretical and applied genetics, 2014, 127: 595-607.](https://link.springer.com/article/10.1007/s00122-013-2243-1)
 
-
+#Cited
+We do this with the help of ggGSE (Zhu MJ), which is built from the JRGA framework (Li X), under norm reaction principle (Jarquín D)
 
 
