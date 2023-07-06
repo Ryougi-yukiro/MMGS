@@ -1,14 +1,26 @@
 # ggGSE
-A  devlopment R packages used for predicting traits from different envs
 
+
+Date: July 6, 2018
+Title: BWGS - BreedWheat Genomic Selection pipeline
+Version: 1.12
+Date: 2018-07-06
+Author:
+  - Gilles CHARMET
+  - Louis Gautier TRAN
+Description: Package for Breed Wheat Genomic Selection pipeline
+
+
+The R package BWGS is developed by .
 
 ## Description
 
-A brief description of your R package, highlighting its purpose and main functionalities.
+A  devlopment R packages used for GS within diff envs
 
 ## Installation
 
 You can install the package from CRAN using the following command:
+From Github:
 ```R
 devtools::install_github("Ryougi-yukiro/ggGSE")
 ```
@@ -124,16 +136,30 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #2 1512.918 1576.437 #FF0000 PR12
 ```
 
-### Others function
+### Others function Example
 ```R
 result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
 MSE<-result[[1]]
 ltm<-result[[2]]
 mse_plotter(MSE)
+
+Reg<-Reg(LbyE=LbyE,env_trait=env_trait)
+Reg_plotter(Reg=Reg)
+Mean_trait_plot(Reg,MSE)
+
+Slope_Intercept<-Slope_Intercept(data=filtered_trait,input=env_trait, env_paras=PTT_PTR,
+                  Para_Name="PTS",line="line_code",trait="PH",filter=5,
+                  maxR_dap1=22, maxR_dap2=35,rounds=4)
+
+prdM <- LOOCV(maxR_dap1=22,maxR_dap2=35,data=filtered_trait,input=env_trait,env_paras=PTT_PTR,
+              Para_Name="PTS",trait="PH",line="line_code",p=1,filter=4)
+
+prdM_plotter(prdM=prdM,data=envMeanPara,trait="PH",Para_Name="PTS");
+envMeanPara_plotter(envMeanPara)
 ```
 
-## Vignettes
-If your package includes vignettes, mention them here and provide instructions on how to access and utilize them.
+## Documentation
+See full documentation from original repository
 
 ## Command line interface
 * env_trait_calculate
