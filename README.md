@@ -17,7 +17,7 @@ devtools::install_github("Ryougi-yukiro/ggGSE")
 Provide examples of how to use your package. Include code snippets and brief explanations to demonstrate the key features and functionalities.
 You can also provide links to additional resources or documentation.
 
-#Step.1 Load packages and data
+### Step.1 Load packages and data
 ```R
 #Load the required packages
 library("ggGSE")
@@ -29,7 +29,7 @@ env_info<-read.table(file="Env_meta_table.txt",header=T)
 PTT_PTR <- read.table(file="7Envs_envParas_DAP122.txt", header = T , sep = "\t")
 geno <- read.table(file="Genotype.txt", header = T , sep = "\t")
 ```
-# Step.2 estimate h2 within different Envs
+### Step.2 estimate h2 within different Envs
 ```R
 h2<-h2_rrBLUP(trait=trait,geno=geno,envs="env_code")
 #if you need estiamte H2 plz use asreml or VCA package
