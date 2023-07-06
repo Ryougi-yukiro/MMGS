@@ -1,16 +1,4 @@
 # ggGSE
-
-
-Date: July 6, 2018
-Title: BWGS - BreedWheat Genomic Selection pipeline
-Version: 1.12
-Date: 2018-07-06
-Author:
-  - Gilles CHARMET
-  - Louis Gautier TRAN
-Description: Package for Breed Wheat Genomic Selection pipeline
-
-
 The R package BWGS is developed by .
 
 ## Description
