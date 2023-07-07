@@ -1,9 +1,9 @@
 # ggGSE
-The R package ggGSE is developed by .
+The R package ggGSE is developed by . You can use this packages for Genomic selection across different envs
 
 ## Description
 
-A  devlopment R packages used for GS within diff envs
+A  devlopment R packages used for GS within diff envs.
 
 ## Installation
 
