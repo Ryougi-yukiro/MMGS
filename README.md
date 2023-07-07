@@ -1,5 +1,5 @@
 # ggGSE
-The R package BWGS is developed by .
+The R package ggGSE is developed by .
 
 ## Description
 
