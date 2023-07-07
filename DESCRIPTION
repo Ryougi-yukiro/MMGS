@@ -23,6 +23,7 @@ Imports:
     rrBLUP,
     colorspace,
     lemon,
-    glmnet
+    glmnet,
+    lightgbm
 Depends: 
     ggplot2
