@@ -17,7 +17,8 @@ GE_CV(
   methods = NULL,
   ms1 = NULL,
   ms2 = NULL,
-  ENalpha = NULL
+  ENalpha = NULL,
+  GBM_params = NULL
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ GE_CV(
 \item{ms1}{remove the line for which the number of missing environment > ms1}
 
 \item{ms2}{remove the line for which the number of missing environment > ms2}
+
+\item{GBM_params}{give GBM hyper params to get more accuracy result}
 
 \item{alpha}{used for EN model}
 }
