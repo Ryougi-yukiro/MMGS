@@ -13,10 +13,11 @@
 #' @param fold Number of folds like rrblup
 #' @param reshuffle Repeat the calculation for how many cycles
 #' @param methods RM.G RM.GE RM.E
-#' @param model use different model such rrBLUP lasso RR EN
+#' @param model use different model such rrBLUP LASSO RR EN
 #' @param ms1 remove the line for which the number of missing environment > ms1
 #' @param alpha used for EN model
 #' @param ms2 remove the line for which the number of missing environment > ms2
+#' @param GBM_params give GBM hyper params to get more accuracy result
 #'
 #' @return prediction result
 #' @export
@@ -25,7 +26,7 @@
 #'                        depend="maker",fold=2,reshuffle=5,methods="RM.G",
 #'                        ms1=ms1,ms2=ms2)
 GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
-                  model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL){
+                  model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL){
   if(is.null(depend)){
     depend="norm"
   }
@@ -145,7 +146,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             G.pred=Marker[id.V,]
             y_pred=as.matrix(G.pred) %*% e
             GEBV.slope=c(y_pred[,1])+c(ans$beta);
-          }else if(model == "lasso"){
+          }else if(model == "LASSO"){
             y0=intercept;
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
                                       family="gaussian",alpha=1)
@@ -154,8 +155,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             e=as.matrix(coef@x[-1])
             G.pred=Marker[id.V,]
             selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_lasso <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_lasso) %*% e
+            G.pred_LASSO <- G.pred[, selected_features]
+            y_pred=as.matrix(G.pred_LASSO) %*% e
             GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
             y0=slope;
@@ -166,8 +167,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             e=as.matrix(coef@x[-1])
             G.pred=Marker[id.V,]
             selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_lasso <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_lasso) %*% e
+            G.pred_LASSO <- G.pred[, selected_features]
+            y_pred=as.matrix(G.pred_LASSO) %*% e
             GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
           }else if(model == "RR"){
             y0=intercept;
@@ -362,6 +363,32 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             file.remove( list.files(pattern = "\\.dat$"))
             #return(list(GEBV.inter,GEBV.slope))
           }
+          if(model == "GBM"){
+            if(is.null(GBM_params)){
+            params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
+                           learning_rate = 0.1,num_iterations=100,num_leaves=10,max_depth=-1,
+                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.1,
+                           cat_smooth=10)
+            }
+            #print(params)
+            y0=intercept;
+            dtrain <- lightgbm::lgb.Dataset(genotype[id.T,-1], label = y0[id.T])
+            dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
+            valids <- list(test = dtest)
+            model.inter <- lightgbm::lgb.train(params = params,data = dtrain
+                                               ,valids = valids,nrounds = 100L,verbose = -1)
+            GEBV.inter <- predict(model.inter, Marker[id.V,])
+
+            y0=slope;
+            dtrain <- lightgbm::lgb.Dataset(genotype[id.T,-1], label = y0[id.T])
+            dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
+            valids <- list(test = dtest)
+            model.slope <- lightgbm::lgb.train(params = params,data = dtrain,
+                                               valids = valids,nrounds = 100L,verbose = -1)
+            GEBV.slope <- predict(model.slope, Marker[id.V,])
+            #rm(ls(model.slope,model.slope))
+            #return(model.inter)
+          }
           yhat.para=matrix(999,length(id.V),n.para);
           yobs.para=matrix(999,length(id.V),n.para);
 
@@ -448,7 +475,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             GEBV.slope=c(y_pred[,1])+c(ans$beta);
 
             }
-            else if (model == "lasso"){
+            else if (model == "LASSO"){
               y0=intercept;
               cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
                                         family="gaussian",alpha=1)
@@ -457,8 +484,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               e=as.matrix(coef@x[-1])
               G.pred=Marker[id.V,]
               selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-              G.pred_lasso <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_lasso) %*% e
+              G.pred_LASSO <- G.pred[, selected_features]
+              y_pred=as.matrix(G.pred_LASSO) %*% e
               GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
               y0=slope;
@@ -469,8 +496,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               e=as.matrix(coef@x[-1])
               G.pred=Marker[id.V,]
               selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-              G.pred_lasso <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_lasso) %*% e
+              G.pred_LASSO <- G.pred[, selected_features]
+              y_pred=as.matrix(G.pred_LASSO) %*% e
               GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
             }
             else if (model == "RR"){
@@ -482,8 +509,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               e=as.matrix(coef@x[-1])
               G.pred=Marker[id.V,]
               selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-              G.pred_lasso <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_lasso) %*% e
+              G.pred_LASSO <- G.pred[, selected_features]
+              y_pred=as.matrix(G.pred_LASSO) %*% e
               GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
               y0=slope;
@@ -494,8 +521,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               e=as.matrix(coef@x[-1])
               G.pred=Marker[id.V,]
               selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-              G.pred_lasso <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_lasso) %*% e
+              G.pred_LASSO <- G.pred[, selected_features]
+              y_pred=as.matrix(G.pred_LASSO) %*% e
               GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
             }
             else if (model == "EN"){
@@ -533,21 +560,6 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               model.slope<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
                                       kernel="radial",cost=10,gamma=0.001)
               GEBV.slope<-predict(model.slope,Marker[id.V,])
-            } else if(model == "lightGBM"){
-              params <- list(objective = "regression",metric = "l2",min_data = 1L,
-                             learning_rate = 1.0)
-              y0=intercept;
-              dtrain <- lightgbm::lgb.Dataset(genotype[id.T,-1], label = y0[id.T])
-              dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
-              valids <- list(test = dtest)
-              model <- lightgbm::lgb.train(params = params,data = dtrain,valids = valids,nrounds = 5L)
-              GEBV.inter <- predict(model, genotype[id.V,-1])
-
-              y0=intercept;
-              dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
-              valids <- list(test = dtest)
-              model <- lightgbm::lgb.train(params = params,data = dtrain,valids = valids,nrounds = 5L)
-              GEBV.slope <- predict(model, genotype[id.V,-1])
             }
             else if (model == "RF"){
               y0=intercept;
@@ -673,7 +685,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
             effect[,k]=fit$u
             intercept[,k]=fit$beta}
-            else if(model == "lasso"){
+            else if(model == "LASSO"){
               cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
                                         family="gaussian",alpha=1)
               lambda_min <- cv.fit$lambda.min
@@ -767,7 +779,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
               fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
               effect[,k]=fit$u
               intercept[,k]=fit$beta}
-            else if(model == "lasso"){
+            else if(model == "LASSO"){
               cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
                                         family="gaussian",alpha=1)
               lambda_min <- cv.fit$lambda.min
