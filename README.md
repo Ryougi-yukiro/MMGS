@@ -124,7 +124,7 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #2 1512.918 1576.437 #FF0000 PR12
 ```
 
-###For Deep Learning Model LightGBM
+### For Deep Learning Model LightGBM
 
 For deep learning models, different choices of hyperparameters can greatly affect the results of model predictions.
 Therefore, for samples with different population sizes you need to find different hyperparameters to determine the fitted results.
