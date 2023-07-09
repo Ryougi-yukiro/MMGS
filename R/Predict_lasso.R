@@ -26,7 +26,8 @@
 #'                        depend="maker",fold=2,reshuffle=5,methods="RM.G",
 #'                        ms1=ms1,ms2=ms2)
 GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
-                  model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL){
+                  model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL,
+                nIter=NULL,burnIn=NULL,thin=NULL,SVM_cost=NULL,gamma=NULL,GBM_rounds=NULL){
   if(is.null(depend)){
     depend="norm"
   }
@@ -48,6 +49,13 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
   if(is.null(ms1)){
     ms1= nrow(pheno)*0.5;
   }
+  if(is.null(nIter)){nIter=5000}
+  if(is.null(burnIn)){burnIn=1000}
+  if(is.null(thin)){thin=3}
+  if(is.null(SVM_cost)){SVM_cost=10}
+  if(is.null(gamma)){gamma=0.001}
+  if(is.null(GBM_rounds)){GBM_rounds=100L}
+
   enp=which(colnames(para) == Para_Name);
   para.name=colnames(pheno)[-1];
   #m=pheno[,-1];
@@ -232,61 +240,65 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             y0=intercept;
             #return(list(genotype[id.T,-1], y0[id.T]))
             model.inter<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
-                                    kernel="radial",cost=10,gamma=0.001)
+                                    kernel="radial",cost=SVM_cost,gamma=gamma)
             #return(list(model.inter,Marker[id.V,]))
             GEBV.inter<-predict(model.inter,Marker[id.V,])
 
             y0=slope;
             model.slope<-e1071::svm(genotype[id.T,-1], y=y0[id.T]*10000, method="nu-regression",
-                                    kernel="radial",cost=10,gamma=0.001)
+                                    kernel="radial",cost=SVM_cost,gamma=gamma,max_iter=10)
             GEBV.slope<-predict(model.slope,Marker[id.V,])/10000
           }
           else if(model == "BA" | model == "BC" | model == "BL" | model == "BRR"
                   | model == "BB" ){
             y0=intercept;
             GENO = genotype[,-1]
+            y0[id.V]<-NA
+            yNa<-y0
             saveAt = stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
             S0=NULL;weights=NULL;R2=0.5;
             if(model =="BA"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesA'))}
             else if (model =="BB"){
-              nIter=5000;burnIn=1000;thin=10;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesB'))}
             else if (model =="BC"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesC'))}
             else if (model =="BL"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BL'))}
             else if (model =="BRR"){
-              nIter=8000;burnIn=2000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BRR'))}
-            model.inter=BGLR::BGLR(y=y0,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
+            model.inter=BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
                        saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
             GEBV.inter<-model.inter$yHat[id.V]
             removeSaveAt(saveAt)
 
             y0=slope;
             GENO = genotype[,-1]
+            y0[id.V]<-NA
+            yNa<-y0
             saveAt = stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
             S0=NULL;weights=NULL;R2=0.5;
             if(model =="BA"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesA'))}
             else if (model =="BB"){
-              nIter=5000;burnIn=1000;thin=10;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesB'))}
             else if (model =="BC"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BayesC'))}
             else if (model =="BL"){
-              nIter=5000;burnIn=1000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BL'))}
             else if (model =="BRR"){
-              nIter=8000;burnIn=2000;thin=3;
+              nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BRR'))}
-            model.slope=BGLR::BGLR(y=y0,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
+            model.slope=BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
                        saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
             GEBV.slope<-model.slope$yHat[id.V]
             removeSaveAt(saveAt)
@@ -294,7 +306,6 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
           else if(model =="GBLUP"){
             y0=intercept;
             A<-rrBLUP::A.mat(geno[id.V,-1])
-
             dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
@@ -303,7 +314,6 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
 
             y0=slope;
             A<-rrBLUP::A.mat(geno[id.V,-1])
-
             dataF=data.frame(genoID=rownames(geno[id.V,-1]),slope=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="slope", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
@@ -313,6 +323,8 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
           else if(model =="RKHS" | model =="MKRKHS"){
             y0=intercept;
             GENO = genotype[,-1]
+            y0[id.V]<-NA
+            yNa<-y0
 
             X = GENO
             p = ncol(X)
@@ -324,19 +336,21 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             saveAt=stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
             if(model =="RKHS"){
             ETA= list(list(K=K, model='RKHS'))
-            MODEL <- BGLR::BGLR(y=y0,ETA=ETA,nIter=5000, burnIn=1000, saveAt = saveAt,verbose=F)}
+            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)}
             else if(model =="MKRKHS"){
               h <- sqrt(c(0.2,0.5,0.8))
               #3# Kernel Averaging using BGLR
               ETA <- list(list(K=exp(-h[1]*D),model='RKHS'),
                           list(K=exp(-h[2]*D),model='RKHS'),
                           list(K=exp(-h[3]*D),model='RKHS'))
-              MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=8000, burnIn=2000, saveAt = saveAt,verbose=F)
+              MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
             }
             GEBV.inter<-MODEL$yHat[id.V]
 
             y0=slope;
             GENO = genotype[,-1]
+            y0[id.V]<-NA
+            yNa<-y0
 
             X = GENO
             p = ncol(X)
@@ -349,7 +363,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
 
             if(model =="RKHS"){
             ETA= list(list(K=K, model='RKHS'))
-            MODEL <- BGLR::BGLR(y=y0,ETA=ETA,nIter=5000, burnIn=1000, saveAt = saveAt,verbose=F)
+            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
           }
           else if(model =="MKRKHS"){
             h <- sqrt(c(0.2,0.5,0.8))
@@ -357,18 +371,17 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             ETA <- list(list(K=exp(-h[1]*D),model='RKHS'),
                         list(K=exp(-h[2]*D),model='RKHS'),
                         list(K=exp(-h[3]*D),model='RKHS'))
-            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=8000, burnIn=2000, saveAt = saveAt,verbose=F)
+            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
           }
             GEBV.slope<-MODEL$yHat[id.V]
-            file.remove( list.files(pattern = "\\.dat$"))
             #return(list(GEBV.inter,GEBV.slope))
           }
           if(model == "GBM"){
             if(is.null(GBM_params)){
             params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
-                           learning_rate = 0.1,num_iterations=100,num_leaves=10,max_depth=-1,
-                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.1,
-                           cat_smooth=10)
+                           learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
+                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
+                           cat_smooth=5)
             }
             #print(params)
             y0=intercept;
@@ -376,7 +389,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
             valids <- list(test = dtest)
             model.inter <- lightgbm::lgb.train(params = params,data = dtrain
-                                               ,valids = valids,nrounds = 100L,verbose = -1)
+                                               ,valids = valids,nrounds = GBM_rounds,verbose = -1)
             GEBV.inter <- predict(model.inter, Marker[id.V,])
 
             y0=slope;
@@ -384,7 +397,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, genotype[id.V,-1], label = y0[id.V])
             valids <- list(test = dtest)
             model.slope <- lightgbm::lgb.train(params = params,data = dtrain,
-                                               valids = valids,nrounds = 100L,verbose = -1)
+                                               valids = valids,nrounds = GBM_rounds,verbose = -1)
             GEBV.slope <- predict(model.slope, Marker[id.V,])
             #rm(ls(model.slope,model.slope))
             #return(model.inter)
