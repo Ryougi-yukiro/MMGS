@@ -124,6 +124,14 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #2 1512.918 1576.437 #FF0000 PR12
 ```
 
+###For Deep Learning Model LightGBM
+
+For deep learning models, different choices of hyperparameters can greatly affect the results of model predictions.
+Therefore, for samples with different population sizes you need to find different hyperparameters to determine the fitted results.
+
+Although we write the LightGBM model into the R package with a pre-set hyperparameter, this is only a not-so-bad parameter from different datasets and does not represent the best prediction result of the model, so when using this model, make sure to customize your hyperparameter to ensure the best prediction result
+
+
 ### Others function Example
 ```R
 result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
