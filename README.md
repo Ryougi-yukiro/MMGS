@@ -131,6 +131,14 @@ Therefore, for samples with different population sizes you need to find differen
 
 Although we write the LightGBM model into the R package with a pre-set hyperparameter, this is only a not-so-bad parameter from different datasets and does not represent the best prediction result of the model, so when using this model, make sure to customize your hyperparameter to ensure the best prediction result
 
+Below is our pre-set list of hyperparameters, please refer to the official LightGBM documentation for the meaning of the parameters.
+
+```R
+            params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
+                           learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
+                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
+                           cat_smooth=5)
+```
 
 ### Others function Example
 ```R
