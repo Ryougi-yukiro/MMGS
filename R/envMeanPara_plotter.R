@@ -9,7 +9,7 @@
 #' @param linetype regression line type
 #' @param linecolor regression line color
 #'
-#' @return
+#' @return A envparamean plotter
 #' @export
 #'
 #' @examples envMeanPara_plotter(envMeanPara)

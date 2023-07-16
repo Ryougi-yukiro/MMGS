@@ -7,7 +7,7 @@
 #' @param linewidth linewidth
 #' @param linetype linetype
 #'
-#' @return
+#' @return A MSE plot. x is Popmean ,y is MES. plot by ggplot2
 #' @export
 #'
 #' @examples Mean_trait_plot(Reg,MSE)

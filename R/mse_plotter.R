@@ -5,7 +5,7 @@
 #' @param text_size text size
 #' @param point_shape point shape
 #'
-#' @return
+#' @return A ltm ploter
 #' @export
 #'
 #' @examples mse_plotter(ltm)

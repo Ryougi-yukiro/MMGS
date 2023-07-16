@@ -810,7 +810,7 @@ GE_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NU
             }
             else if(model == "EN"){
               cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
-                                        family="gaussian",alpha=ENalpha)
+                                        family="gaussian",alpha=apply)
               lambda_min <- cv.fit$lambda.min
               coef<-coef(cv.fit)
               effect[,k]=coef@x[-1]
