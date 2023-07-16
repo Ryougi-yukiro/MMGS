@@ -26,6 +26,9 @@ Mean_trait_plot(
 
 \item{linetype}{linetype}
 }
+\value{
+A MSE plot. x is Popmean ,y is MES. plot by ggplot2
+}
 \description{
 Mean_trait_plot
 }

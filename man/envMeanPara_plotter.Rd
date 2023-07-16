@@ -32,6 +32,9 @@ envMeanPara_plotter(
 
 \item{linecolor}{regression line color}
 }
+\value{
+A envparamean plotter
+}
 \description{
 envMeanPara_plotter
 }

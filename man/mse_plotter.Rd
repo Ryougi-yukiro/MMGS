@@ -15,6 +15,9 @@ mse_plotter(data, point_size = NULL, text_size = NULL, point_shape = NULL)
 
 \item{point_shape}{point shape}
 }
+\value{
+A ltm ploter
+}
 \description{
 mse_plotter
 }

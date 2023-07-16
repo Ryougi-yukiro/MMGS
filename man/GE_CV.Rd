@@ -18,7 +18,13 @@ GE_CV(
   ms1 = NULL,
   ms2 = NULL,
   ENalpha = NULL,
-  GBM_params = NULL
+  GBM_params = NULL,
+  nIter = NULL,
+  burnIn = NULL,
+  thin = NULL,
+  SVM_cost = NULL,
+  gamma = NULL,
+  GBM_rounds = NULL
 )
 }
 \arguments{
@@ -38,7 +44,7 @@ GE_CV(
 
 \item{reshuffle}{Repeat the calculation for how many cycles}
 
-\item{model}{use different model such rrBLUP lasso RR EN}
+\item{model}{use different model such rrBLUP LASSO RR EN}
 
 \item{methods}{RM.G RM.GE RM.E}
 
