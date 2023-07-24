@@ -141,7 +141,7 @@ Below is our pre-set list of hyperparameters, please refer to the official Light
 ```
 
 learning rate: The default setting is 0.1, and it is usually set between 0.05 and 0.1. Choosing a smaller learning rate can stable and better model performance.
-objective: Regression presents our job is regression job
+objective: Regression presents our job is regression job.
 
 ### Others function Example
 ```R
