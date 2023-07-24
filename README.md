@@ -3,7 +3,11 @@ The R package ggGSE is developed by . You can use this packages for Genomic sele
 
 ## Description
 
-A  devlopment R packages used for GS within diff envs.
+A  devlopment R packages used for GS within diff envs. 
+CV based on norm reaction  have been modified in our R packages.
+Almost of Genomic prediction has been accommodated.
+Others like Deep_GS, due to its indv docker, we chose to drop the introduction of this model in order to ensure the generalizability and user-friendliness of this R package;
+For DNNGP, One, because the core code is compiled and his CNN network model is not available, and two, because his input file is a PCA file.
 
 ## Installation
 
