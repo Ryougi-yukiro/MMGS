@@ -104,7 +104,7 @@ envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_da
 ```
 
 ### Step.3 CV
-Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP, LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
+Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP,GLUP,LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
 ```R
 #Check pheno
 pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
