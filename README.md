@@ -140,6 +140,9 @@ Below is our pre-set list of hyperparameters, please refer to the official Light
                            cat_smooth=5)
 ```
 
+learning rate: The default setting is 0.1, and it is usually set between 0.05 and 0.1. Choosing a smaller learning rate can stable and better model performance.
+objective: Regression presents our job is regression job
+
 ### Others function Example
 ```R
 result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
