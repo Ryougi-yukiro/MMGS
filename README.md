@@ -103,6 +103,10 @@ pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=80,
 #Result Visualization
 Exhaustive_plotter(data=pop_cor,dap_x=80, dap_y=80,p=1)
 
+
+dap1<-pop_cor[,2][which(pop_cor[,14]==max(abs(pop_cor[,14])))]
+dap2<-pop_cor[,3][which(pop_cor[,14]==max(abs(pop_cor[,14])))]
+
 #Get Envs mean within env paras
 envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
 ```
