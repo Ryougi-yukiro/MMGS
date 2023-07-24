@@ -149,11 +149,17 @@ Below is our pre-set list of hyperparameters, please refer to the official Light
 ```
 
 learning rate: The default setting is 0.1, and it is usually set between 0.05 and 0.1. Choosing a smaller learning rate can stable and better model performance.
+
 objective: Regression presents our job is regression job.
+
 num_iterations: boosting的选代次数。默认设置为100。一般根据数据集和特征数据选择
+
 num_leaves：一棵树上的叶子节点个数。默认设置为31，和max depth配合来空值树的形状一般设置为(0,2^max depth - 1]的一个数值，是一个需要重点调节的参数，对模型性能影响很大。
+
 max depth:树模型的最大深度。防止过拟合的最重要的参数，一般限制为3~5之间。是需要调整的核心参数，对模型性能和泛化能力有决定性作用
+
 cat_l1:此参数服务于L1正则化，一般我们取0-1000的范围去进行调参。如果优化出来这个参数数值过大，则说明有一些不必要的特征可以剔除，可以先做特征筛选后再进行调参，然后调节出来模型效果好的时候reg alpha是个相对小的数值，那我们对这个模型的信心会大很多
+
 cat_l2:类似cat_l1,服务于L2正则化
 
 
