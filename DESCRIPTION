@@ -1,5 +1,5 @@
-Package: ggGSE
-Title: Used for Crossed env traits predict
+Package:  MMGS
+Title: Multi methods for Genomic Selection pipeline across Different Envs
 Version: 0.9
 Authors@R: 
     person(given="First", 
@@ -18,12 +18,13 @@ Imports:
     e1071,
     randomForest,
     corrgram,
-    dplyr,
     RColorBrewer,
     rrBLUP,
     colorspace,
     lemon,
     glmnet,
-    lightgbm
+    lightgbm,
+    tidyr
 Depends: 
+    dplyr,
     ggplot2

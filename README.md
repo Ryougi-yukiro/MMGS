@@ -1,20 +1,16 @@
-# ggGSE
-The R package ggGSE is developed by . You can use this packages for Genomic selection across different envs
+# MMGS
+A R package MMGS is developed by Mingjia Zhu. You can use this packages for Genomic selection across different envs whithin different model, such as rrBLUP, bayesian, LightGBM and so on.
 
 ## Description
 
-A  devlopment R packages used for GS within diff envs. 
-CV based on norm reaction  have been modified in our R packages.
-Almost of Genomic prediction has been accommodated.
-Others like Deep_GS, due to its indv docker, we chose to drop the introduction of this model in order to ensure the generalizability and user-friendliness of this R package;
-For DNNGP, One, because the core code is compiled and his CNN network model is not available, and two, because his input file is a PCA file.
+A  devlopment R packages used for GS within diff envs.
 
 ## Installation
 
 You can install the package from CRAN using the following command:
 From Github:
 ```R
-devtools::install_github("Ryougi-yukiro/ggGSE")
+devtools::install_github("Ryougi-yukiro/MMGS")
 ```
 
 ## Usage
@@ -24,7 +20,7 @@ You can also provide links to additional resources or documentation.
 ### Step.1 Load packages and data
 ```R
 #Load the required packages
-library("ggGSE")
+library("MMGS")
 library("dplyr")# used for data reshape and melt
 
 #Load the input data
@@ -103,16 +99,12 @@ pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=80,
 #Result Visualization
 Exhaustive_plotter(data=pop_cor,dap_x=80, dap_y=80,p=1)
 
-
-dap1<-pop_cor[,2][which(pop_cor[,14]==max(abs(pop_cor[,14])))]
-dap2<-pop_cor[,3][which(pop_cor[,14]==max(abs(pop_cor[,14])))]
-
 #Get Envs mean within env paras
 envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
 ```
 
 ### Step.3 CV
-Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP,GLUP,LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
+Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP, LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
 ```R
 #Check pheno
 pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
@@ -131,37 +123,6 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #1 1595.988 1588.782 #FF0000 PR12
 #2 1512.918 1576.437 #FF0000 PR12
 ```
-
-### For Machine Learning Model LightGBM
-
-For deep learning models, different choices of hyperparameters can greatly affect the results of model predictions.
-Therefore, for samples with different population sizes you need to find different hyperparameters to determine the fitted results.
-
-Although we write the LightGBM model into the R package with a pre-set hyperparameter, this is only a not-so-bad parameter from different datasets and does not represent the best prediction result of the model, so when using this model, make sure to customize your hyperparameter to ensure the best prediction result
-
-Below is our pre-set list of hyperparameters, please refer to the official LightGBM documentation for the meaning of the parameters.
-
-```R
-            params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
-                           learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
-                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
-                           cat_smooth=5)
-```
-
-learning rate: The default setting is 0.1, and it is usually set between 0.05 and 0.1. Choosing a smaller learning rate can stable and better model performance.
-
-objective: Regression presents our job is regression job.
-
-num_iterations: boosting的选代次数。默认设置为100。一般根据数据集和特征数据选择
-
-num_leaves：一棵树上的叶子节点个数。默认设置为31，和max depth配合来空值树的形状一般设置为(0,2^max depth - 1]的一个数值，是一个需要重点调节的参数，对模型性能影响很大。
-
-max depth:树模型的最大深度。防止过拟合的最重要的参数，一般限制为3~5之间。是需要调整的核心参数，对模型性能和泛化能力有决定性作用
-
-cat_l1:此参数服务于L1正则化，一般我们取0-1000的范围去进行调参。如果优化出来这个参数数值过大，则说明有一些不必要的特征可以剔除，可以先做特征筛选后再进行调参，然后调节出来模型效果好的时候reg alpha是个相对小的数值，那我们对这个模型的信心会大很多
-
-cat_l2:类似cat_l1,服务于L2正则化
-
 
 ### Others function Example
 ```R
