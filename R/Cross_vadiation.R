@@ -1,8 +1,4 @@
 #' Cross Vadidation and Genomic Prediction Cross environments
-#' @description
-#' The GP_CV function carries out cross-validation using genotypic and phenotypic data from a reference population,
-#' with result for Genomic Prediction for different environments,  genomic breeding value estimation for each env and
-#' cross R2 for all envs.
 #'
 #' @param geno Matrix (n x m) of genotypes for the training population: n lines with m markers.
 #'             Genotypes should be coded -1, 0, 1. Missing data are not allowed.
@@ -67,12 +63,12 @@
 #'         The most relevant environmental silvers to the subject's phenotype,
 #'         obtained after stepwise correlation calculations, are referred to for more details:
 #'
+#' @export
 #'
-#'
-#' @examples out<-GE_CV(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
+#' @examples out<-MMGP(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
 #'                        depend="maker",fold=2,reshuffle=5,methods="RM.G",
 #'                        ms1=ms1,ms2=ms2)
-GP_CV<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
+MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
                   model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL,
                 nIter=NULL,burnIn=NULL,thin=NULL,SVM_cost=NULL,gamma=NULL,GBM_rounds=NULL){
   if(is.null(depend)){
