@@ -12,7 +12,11 @@ From Github:
 ```R
 devtools::install_github("Ryougi-yukiro/MMGS")
 ```
-
+From Release:
+You can install this packages by the release
+```R
+install.packages(“libs/xxxx.zip”,repo=NULL,type=”source”)
+```
 ## Usage
 Provide examples of how to use your package. Include code snippets and brief explanations to demonstrate the key features and functionalities.
 You can also provide links to additional resources or documentation.
