@@ -3,7 +3,7 @@ A R package MMGS is developed by Mingjia Zhu. You can use this packages for Geno
 
 ## Description
 
-A  devlopment R packages used for GS within diff envs.
+Used for multi-environment cross-validation. Users can use different classical Genomic Selection models to perform their own analyses according to the Norm reaction principle or the GxE principle. 
 
 ## Installation
 
