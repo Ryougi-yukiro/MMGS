@@ -45,7 +45,7 @@ Slope_Intercept dataframe
 Slope_Intercept
 }
 \examples{
-Slope_Intercept<-Slope_Intercept(data=trait,input=env_trait, env_paras=PTT_PTR,
+\dontrun{Slope_Intercept<-Slope_Intercept(data=trait,input=env_trait, env_paras=PTT_PTR,
                                  Para_Name="PTT",line="line_code",trait="FTgdd",filter=5,
-                                 maxR_dap1=18, maxR_dap2=43,rounds=4)
+                                 maxR_dap1=18, maxR_dap2=43,rounds=4)}
 }

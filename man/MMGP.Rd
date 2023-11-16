@@ -90,6 +90,8 @@ and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html}
 
 \item{ms2}{remove the line for which the number of missing environment > ms2}
 
+\item{ENalpha}{used for EN predict model,the value range from 0 to 1.}
+
 \item{GBM_params}{a list of parameters. See The "Dataset Parameters"{https://lightgbm.readthedocs.io/en/latest/Parameters.html#dataset-parameters} section of the documentation}
 
 \item{nIter}{Number of iterations for the Bayesian model.}
@@ -103,8 +105,6 @@ and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html}
 \item{gamma}{parameter needed for all kernels except linear (default: 0.001)}
 
 \item{GBM_rounds}{number of training rounds Based on LightGBM model}
-
-\item{alpha}{used for EN predict model,the value range from 0 to 1.}
 }
 \value{
 The class GP_CV returns a list containing:
@@ -115,7 +115,9 @@ obtained after stepwise correlation calculations, are referred to for more detai
 Cross Vadidation and Genomic Prediction Cross environments
 }
 \examples{
+\dontrun{
 out<-MMGP(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
                        depend="maker",fold=2,reshuffle=5,methods="RM.G",
                        ms1=ms1,ms2=ms2)
+}
 }

@@ -54,5 +54,5 @@ combined prdM plot
 prdM_plotter
 }
 \examples{
-prdM_plotter(prdM=prdM,data=envMeanPara,trait="FTgdd",Para_Name="PTT");
+\dontrun{prdM_plotter(prdM=prdM,data=envMeanPara,trait="FTgdd",Para_Name="PTT")}
 }

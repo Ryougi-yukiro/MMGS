@@ -22,5 +22,5 @@ Lines values within Envs.
 calculate Lines in all envs
 }
 \examples{
-LbyE<-LbyE_calculate(data=data,trait="FTgdd",env="env_code",line="line_code")
+\dontrun{LbyE<-LbyE_calculate(data=data,trait="FTgdd",env="env_code",line="line_code")}
 }

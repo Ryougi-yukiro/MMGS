@@ -11,7 +11,7 @@ h2_rrBLUP(trait, geno, envs)
 
 \item{geno}{geno_type_txt,0,1,2type}
 
-\item{envs}{}
+\item{envs}{envs you want to calculate}
 }
 \value{
 h2 in different envs
@@ -20,5 +20,5 @@ h2 in different envs
 Title h2_rrBLUP caculate
 }
 \examples{
-h2<-h2_rrBLUP(trait=trait,geno=geno,envs="env_code")
+\dontrun{h2<-h2_rrBLUP(trait=trait,geno=geno,envs="env_code")}
 }

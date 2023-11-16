@@ -22,5 +22,5 @@ Trait mean values within different envs. if q25_75=T, also contains q25 and q75 
 Calculate traits mean in all envs
 }
 \examples{
-env_trait<-env_trait(data=trait,trait="FTgdd",env="env_code")
+\dontrun{env_trait<-env_trait(data=trait,trait="FTgdd",env="env_code")}
 }

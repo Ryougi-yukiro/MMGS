@@ -22,5 +22,5 @@ A ltm ploter
 mse_plotter
 }
 \examples{
-mse_plotter(ltm)
+\dontrun{mse_plotter(ltm)}
 }

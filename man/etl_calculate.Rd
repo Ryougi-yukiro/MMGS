@@ -24,5 +24,5 @@ your trait values within one env and one line
 calculate your trait values within one env and one line
 }
 \examples{
-etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")
+\dontrun{etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")}
 }

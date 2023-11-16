@@ -7,11 +7,15 @@
 line_trait_mean(data, LbyE, mean, trait, row)
 }
 \arguments{
+\item{data}{data input}
+
 \item{LbyE}{LbyE input}
 
 \item{mean}{env_trait input}
 
-\item{row}{mean rows in env_trait}
+\item{trait}{mean rows in env_trait}
+
+\item{row}{at least rows}
 }
 \value{
 line_trait_mean
@@ -20,6 +24,6 @@ line_trait_mean
 line_trait_mean
 }
 \examples{
-line_trait_mean(LbyE=LbyE,mean=env_trait,row=2)
+\dontrun{line_trait_mean(LbyE=LbyE,mean=env_trait,row=2)}
 
 }

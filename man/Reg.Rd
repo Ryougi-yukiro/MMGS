@@ -20,5 +20,5 @@ Regression calculate result
 Regression
 }
 \examples{
-Reg(LbyE=LbyE,env_trait=env_trait)
+\dontrun{Reg(LbyE=LbyE,env_trait=env_trait)}
 }

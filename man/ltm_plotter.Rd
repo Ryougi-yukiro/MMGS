@@ -39,5 +39,5 @@ A plot of population mean nad trait
 ltm_plotter
 }
 \examples{
-ltm_plotter(data=line_trait_mean,mean=env_trait)
+\dontrun{ltm_plotter(data=line_trait_mean,mean=env_trait)}
 }

@@ -39,6 +39,6 @@ pop cor matrix
 Exhaustive_search
 }
 \examples{
-pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
-                                     p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)
+\dontrun{pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
+                                     p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)}
 }

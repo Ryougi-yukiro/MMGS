@@ -39,5 +39,5 @@ A plot of etl ,fill area start env-trait q25 to q75, red line is env-trait mean
 etl_plotter
 }
 \examples{
-etl_plotter(data=etl,mean=env_trait)
+\dontrun{etl_plotter(data=etl,mean=env_trait)}
 }

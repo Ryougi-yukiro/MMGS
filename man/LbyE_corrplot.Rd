@@ -20,5 +20,5 @@ A correalation plot between lines and envs
 Plot Lines and envs correlation
 }
 \examples{
-LbyE_corrplot(LbyE=LbyE,cor_type="heatmap",color=c("blue","white","red"))
+\dontrun{LbyE_corrplot(LbyE=LbyE,cor_type="heatmap",color=c("blue","white","red"))}
 }

@@ -10,16 +10,33 @@ Cross_forecast(
   env_info,
   predict_env,
   reshuffle,
-  depend = "Marker",
-  predict.method = "GBLUP"
+  depend,
+  predict.method
 )
 }
 \arguments{
-\item{predict.method}{}
+\item{geno}{geno martrix}
+
+\item{pheno_train}{pheno data frame used for training}
+
+\item{env_info}{env info}
+
+\item{predict_env}{env need predict}
+
+\item{reshuffle}{times for duplication}
+
+\item{depend}{use which depend}
+
+\item{predict.method}{use which predict model, you can see this in MMGP}
 }
 \value{
 predict value
 }
 \description{
 Cross_forecast
+}
+\examples{
+\dontrun{
+Cross_forecast(geno,pheno_train,env_info,predict_env,reshuffle,depend,predict.method)
+}
 }

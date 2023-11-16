@@ -24,5 +24,6 @@ A dat frame of envMeanPara
 envMeanPara
 }
 \examples{
-envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
+\dontrun{envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR,
+maxR_dap1=18,maxR_dap2=43, Paras=Paras)}
 }

@@ -33,5 +33,5 @@ A MSE plot. x is Popmean ,y is MES. plot by ggplot2
 Mean_trait_plot
 }
 \examples{
-Mean_trait_plot(Reg,MSE)
+\dontrun{Mean_trait_plot(Reg,MSE)}
 }

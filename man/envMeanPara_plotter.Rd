@@ -39,5 +39,5 @@ A envparamean plotter
 envMeanPara_plotter
 }
 \examples{
-envMeanPara_plotter(envMeanPara)
+\dontrun{envMeanPara_plotter(envMeanPara)}
 }

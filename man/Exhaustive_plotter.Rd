@@ -22,5 +22,5 @@ combined pop_cor plot
 Exhaustive_plotter
 }
 \examples{
-Exhaustive_plotter(input=pop_cor,paras="PTS")
+\dontrun{Exhaustive_plotter(input=pop_cor,paras="PTS")}
 }

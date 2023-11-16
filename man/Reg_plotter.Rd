@@ -24,5 +24,5 @@ A regression plot between mean and trait
 Title
 }
 \examples{
-Reg_plotter(Reg=Reg)
+\dontrun{Reg_plotter(Reg=Reg)}
 }

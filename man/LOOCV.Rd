@@ -45,6 +45,6 @@ LOOCV data frame
 LOOCV
 }
 \examples{
-LOOCV(maxR_dap1=18,maxR_dap2=43,data=trait,input=env_trait,env_paras=PTT_PTR,
-               Para_Name="PTT",trait="FTgdd",line="line_code",p=1,filter=4)
+\dontrun{LOOCV(maxR_dap1=18,maxR_dap2=43,data=trait,input=env_trait,env_paras=PTT_PTR,
+               Para_Name="PTT",trait="FTgdd",line="line_code",p=1,filter=4)}
 }
