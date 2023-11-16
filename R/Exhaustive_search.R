@@ -12,12 +12,11 @@
 #' @return pop cor matrix
 #' @export
 #'
-<<<<<<< HEAD
 #' @examples \dontrun{pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
 #'                                      p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)}
 Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
                             p=NULL, dap_x=NULL,dap_y=NULL,LOO=NULL,Paras){
-=======
+
 #' @examples pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
 #'                                      p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)
 Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
@@ -25,8 +24,7 @@ Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
   if(is.null(searching_daps)){
     searching_daps= 122
   }
->>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
-  if(is.null(p)){
+ if(is.null(p)){
     p= 1
   }
   if(is.null(dap_x)){
@@ -51,7 +49,7 @@ Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
       for (e_i in 1:nrow(data)) {
         e <- data$env_code[e_i];
         env_para <- subset(env_paras, env_paras$env_code == e);
-<<<<<<< HEAD
+
         env_mean <- colMeans(env_para[days, (1:nParas) + 4]);
         env_facts_matrix[e_i,] <- env_mean;
 
@@ -59,21 +57,19 @@ Exhaustive_search<-function(data, env_paras, searching_daps=NULL,
       n <- n + 1;
       Ymean_envPara <- cbind(env_facts_matrix, data$mean);
       #print(Ymean_envPara)
-=======
+
         env_mean <- colMeans(env_para[days, (1:nParas) + 4]); ### DL, GDD, DTR, PTT, PTR, PTD, PTD2, PTS
         env_facts_matrix[e_i,] <- env_mean;
       }
       n <- n + 1;
       Ymean_envPara <- cbind(env_facts_matrix, data$mean);
->>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
+
       rs <- c();
       if (LOO == 0) {
         for (k in 1:nParas) {
           rs[k] <- round(cor(Ymean_envPara[,nParas + 1], Ymean_envPara[,k]), digits = 4)
-<<<<<<< HEAD
 
-=======
->>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
+
         }
       } else {
         loo_rs_matrix <- matrix(nrow = nrow(Ymean_envPara)+ 0, ncol = nParas);
