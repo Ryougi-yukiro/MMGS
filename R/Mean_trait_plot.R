@@ -10,7 +10,9 @@
 #' @return A MSE plot. x is Popmean ,y is MES. plot by ggplot2
 #' @export
 #'
-#' @examples Mean_trait_plot(Reg,MSE)
+#' @importFrom dplyr %>% left_join
+#' @importFrom ggplot2 geom_line geom_ribbon
+#' @examples \dontrun{Mean_trait_plot(Reg,MSE)}
 Mean_trait_plot<-function(Reg,MSE,point_size=NULL,
                           point_shape=NULL,linewidth=NULL,linetype=NULL){
   if(is.null(point_size)){

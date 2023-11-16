@@ -8,8 +8,9 @@
 #'
 #' @return A regression plot between mean and trait
 #' @export
+#' @importFrom ggplot2 aes geom_smooth geom_point scale_fill_gradient2 labs theme_bw
 #'
-#' @examples Reg_plotter(Reg=Reg)
+#' @examples \dontrun{Reg_plotter(Reg=Reg)}
 Reg_plotter<-function(Reg=Reg,size=NULL,method=NULL,color=NULL,alpha=NULL){
   if(is.null(size)){
     size= 1

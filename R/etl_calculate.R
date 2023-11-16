@@ -11,7 +11,7 @@
 #' @return your trait values within one env and one line
 #' @export
 #'
-#' @examples etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")
+#' @examples \dontrun{etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")}
 
 etl_calculate <- function(data,trait,env,line,bycol){
   env_trait <- env_trait[env_trait[[env]]%in% colnames(LbyE),]

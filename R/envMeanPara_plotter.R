@@ -12,7 +12,7 @@
 #' @return A envparamean plotter
 #' @export
 #'
-#' @examples envMeanPara_plotter(envMeanPara)
+#' @examples \dontrun{envMeanPara_plotter(envMeanPara)}
 envMeanPara_plotter<-function(envMeanPara,size=NULL,shape=NULL,method=NULL,
                               linewidth=NULL,alpha=NULL,linetype=NULL,linecolor=NULL){
   if(is.null(size)){

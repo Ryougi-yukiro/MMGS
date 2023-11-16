@@ -8,7 +8,7 @@
 #' @return combined pop_cor plot
 #' @export
 #'
-#' @examples Exhaustive_plotter(input=pop_cor,paras="PTS")
+#' @examples \dontrun{Exhaustive_plotter(input=pop_cor,paras="PTS")}
 Exhaustive_plotter<-function(data,dap_x, dap_y,p){
 pop_cors<-as.data.frame(data)
 ps<-list()

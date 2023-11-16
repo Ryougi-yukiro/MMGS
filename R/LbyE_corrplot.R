@@ -8,8 +8,9 @@
 #'
 #' @return A correalation plot between lines and envs
 #' @export
-#'
-#' @examples LbyE_corrplot(LbyE=LbyE,cor_type="heatmap",color=c("blue","white","red"))
+#' @importFrom corrgram panel.shade panel.pie
+#' @importFrom ggplot2 aes geom_tile geom_text scale_fill_gradient2 theme_minimal xlab ylab ggplot
+#' @examples \dontrun{LbyE_corrplot(LbyE=LbyE,cor_type="heatmap",color=c("blue","white","red"))}
 LbyE_corrplot <- function(LbyE,cor_type=NULL,color=NULL)
 {
   if(is.null(cor_type)){
@@ -22,9 +23,9 @@ LbyE_corrplot <- function(LbyE,cor_type=NULL,color=NULL)
   if(cor_type == "pie"){
     corrgram::corrgram(as.matrix(LbyE[,-1]), order=TRUE, lower.panel=panel.shade,
              pch = 19, upper.panel=panel.pie,
-             col.regions = colorRampPalette(c(color[1], color[2],high = color[3])));
+             col.regions = grDevices::colorRampPalette(c(color[1], color[2],high = color[3])));
   }else if(cor_type == "heatmap"){
-    corr_data <- reshape2::melt(cor(as.matrix(LbyE[,-1])))
+    corr_data <- reshape2::melt(stats::cor(as.matrix(LbyE[,-1])))
     p<-ggplot(corr_data, aes(x = Var2, y = Var1, fill = value)) +
       geom_tile() +
       geom_text(aes(label = round(value, 2)), color = "white") +

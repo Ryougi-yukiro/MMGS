@@ -9,7 +9,8 @@
 #' @return A dat frame of envMeanPara
 #' @export
 #'
-#' @examples envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
+#' @examples \dontrun{envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR,
+#' maxR_dap1=18,maxR_dap2=43, Paras=Paras)}
 envMeanPara <- function( data, env_paras, maxR_dap1=NULL, maxR_dap2=NULL,Paras){
   if(is.null(maxR_dap2)){
     maxR_dap1= 18

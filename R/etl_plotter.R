@@ -12,7 +12,7 @@
 #' @return A plot of etl ,fill area start env-trait q25 to q75, red line is env-trait mean
 #' @export
 #'
-#' @examples etl_plotter(data=etl,mean=env_trait)
+#' @examples \dontrun{etl_plotter(data=etl,mean=env_trait)}
 etl_plotter <- function(data,mean,env_cols =NULL,shape=NULL,
                         size=NULL,linewidth=NULL,area_color=NULL,area_alpha=NULL){
   if(is.null(env_cols)){

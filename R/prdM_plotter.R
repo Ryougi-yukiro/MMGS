@@ -18,7 +18,7 @@
 #' @return combined prdM plot
 #' @export
 #'
-#' @examples prdM_plotter(prdM=prdM,data=envMeanPara,trait="FTgdd",Para_Name="PTT");
+#' @examples \dontrun{prdM_plotter(prdM=prdM,data=envMeanPara,trait="FTgdd",Para_Name="PTT")}
   prdM_plotter<-function(prdM,data,trait,Para_Name,size=NULL,shape=NULL,alpha=NULL,method=NULL,
                          linewidth=NULL,linetype=NULL,linecolor=NULL,x_break=NULL,y_break=NULL){
     if(is.null(size)){

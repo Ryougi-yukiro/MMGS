@@ -50,7 +50,7 @@
 #'              and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html
 #' @param ms1 remove the line for which the number of missing environment > ms1
 #' @param ms2 remove the line for which the number of missing environment > ms2
-#' @param alpha used for EN predict model,the value range from 0 to 1.
+#' @param ENalpha used for EN predict model,the value range from 0 to 1.
 #' @param nIter Number of iterations for the Bayesian model.
 #' @param burnIn Number of burn-in for the Bayesian model.
 #' @param thin Number of thins for the Bayesian model.
@@ -64,10 +64,16 @@
 #'         obtained after stepwise correlation calculations, are referred to for more details:
 #'
 #' @export
-#'
-#' @examples out<-MMGP(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
+#' @importFrom stats cor lm dist
+#' @importFrom dplyr %>% mutate group_by row_number
+#' @importFrom grDevices heat.colors
+
+#' @examples
+#' \dontrun{
+#' out<-MMGP(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
 #'                        depend="maker",fold=2,reshuffle=5,methods="RM.G",
 #'                        ms1=ms1,ms2=ms2)
+#' }
 MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
                   model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL,
                 nIter=NULL,burnIn=NULL,thin=NULL,SVM_cost=NULL,gamma=NULL,GBM_rounds=NULL){
@@ -101,13 +107,6 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
 
   enp=which(colnames(para) == Para_Name);
   para.name=colnames(pheno)[-1];
-  #m=pheno[,-1];
-  #m=as.numeric(as.character(unlist(m)));
-  #m <- matrix(data=m, ncol=dim(pheno)[2]-1, nrow=dim(pheno)[1]);
-  #colnames(m)=colnames(pheno)[-1];
-  #pheno_=data.frame(line_code=pheno$line_code,m);
-  #colnames(pheno_)=c("line_code",para.name);
-  #pheno=pheno_;
 
   para=para[para$env_code%in%para.name,];
   env=env[env$env_code%in%para.name,];
@@ -281,12 +280,12 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             y0=intercept;
             model.inter<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
                                     kernel="radial",cost=SVM_cost,gamma=gamma)
-            GEBV.inter<-predict(model.inter,Marker[id.V,])
+            GEBV.inter<-stats::predict(model.inter,Marker[id.V,])
 
             y0=slope;
             model.slope<-e1071::svm(genotype[id.T,-1], y=y0[id.T]*10000, method="nu-regression",
                                     kernel="radial",cost=SVM_cost,gamma=gamma,max_iter=10)
-            GEBV.slope<-predict(model.slope,Marker[id.V,])/10000
+            GEBV.slope<-stats::predict(model.slope,Marker[id.V,])/10000
           }
           else if(model == "BA" | model == "BC" | model == "BL" | model == "BRR"
                   | model == "BB" ){
@@ -431,7 +430,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             valids <- list(test = dtest)
             model.inter <- lightgbm::lgb.train(params = params,data = dtrain
                                                ,valids = valids,nrounds = GBM_rounds,verbose = -1)
-            GEBV.inter <- predict(model.inter, Marker[id.V,])
+            GEBV.inter <- stats::predict(model.inter, Marker[id.V,])
 
             y0=slope;
             dtrain <- lightgbm::lgb.Dataset(genotype[id.T,-1], label = y0[id.T])
@@ -439,7 +438,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             valids <- list(test = dtest)
             model.slope <- lightgbm::lgb.train(params = params,data = dtrain,
                                                valids = valids,nrounds = GBM_rounds,verbose = -1)
-            GEBV.slope <- predict(model.slope, Marker[id.V,])
+            GEBV.slope <- stats::predict(model.slope, Marker[id.V,])
             #rm(ls(model.slope,model.slope))
             #return(model.inter)
           }
@@ -608,12 +607,12 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               y0=intercept;
               model.inter<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
                                       kernel="radial",cost=10,gamma=0.001)
-              GEBV.inter<-predict(model.inter,Marker[id.V,])
+              GEBV.inter<-stats::predict(model.inter,Marker[id.V,])
 
               y0=slope;
               model.slope<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
                                       kernel="radial",cost=10,gamma=0.001)
-              GEBV.slope<-predict(model.slope,Marker[id.V,])
+              GEBV.slope<-stats::predict(model.slope,Marker[id.V,])
             }
             else if (model == "RF"){
               y0=intercept;
@@ -911,7 +910,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               G.pred=N
               selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
               G.pred_EN <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_LASSO) %*% e
+              y_pred=as.matrix(G.pred_EN) %*% e
               Prd=c(y_pred[,1])+c(coef@x[1])
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(
@@ -1030,7 +1029,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "SVM"){
               model_SVM <- e1071::svm(M,yNa[,ncol(yNa)],method="nu-regression",
                                   kernel="radial",cost=10,gamma=0.001)
-              Prd <- predict(model_SVM,N)
+              Prd <- stats::predict(model_SVM,N)
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
               PrdM_wide<-as.data.frame(PrdM_wide)
@@ -1047,20 +1046,20 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               valids <- list(test = dtest)
               model_GBM <- lightgbm::lgb.train(params = params,data = dtrain,
                                            valids = valids,nrounds = GBM_rounds,verbose = -1)
-              Prd <- predict(model_GBM, N)
+              Prd <- stats::predict(model_GBM, N)
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
               PrdM_wide<-as.data.frame(PrdM_wide)
             }
             yhat.whole.cross<-rbind(yhat.whole.cross,PrdM_wide)
-            #print(dim(yhat.whole.cross))
-            #return(yhat.whole.cross)
           }
           #need improve
-          yhat.whole.cross <- rbind(yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = ys[,1])), ],yNas)
-          yhat.whole.cross <- aggregate(. ~ line_code, data = yhat.whole.cross, FUN = mean)
+          yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = ys[,1])), ]
+          #yhat.whole.cross <- rbind(yhat.whole.cross,yNas)
+          yhat.whole.cross <- stats::aggregate(. ~ line_code, data = yhat.whole.cross, FUN = mean)
           yobs.whole.cross <- ys
           yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = yobs.whole.cross[,1])), ]
+          yhat.whole.cross <- yhat.whole.cross %>% select(colnames(yobs.whole.cross))
           #return(list(yobs.whole.cross,yhat.whole.cross))
 
           yhat.whole.crossl<-tidyr::gather(yhat.whole.cross, key = "Envs", value = "Prd", -line_code)
@@ -1086,10 +1085,6 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
       outforfigure<-data.frame(outforfigure,col=rep(coloo,times=rep(n.line,n.para)))
       return(list(outforfigure,r_within,r_across))
       #return(list(outforfigure,r_within,r_across))
-      outforfigure=data.frame(obs=as.vector(yobs.whole.cross),
-                              pre=as.vector(yhat.whole.cross),
-                              col=rep(coloo,times=rep(n.line,n.para)),
-                              para=rep(colnames(pheno)[-1],times=rep(n.line,n.para)))
     }
     if(methods=="RM.GE"){
       cor.within=matrix(999,reshuffle,n.para);cor.all=numeric();

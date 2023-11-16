@@ -7,8 +7,9 @@
 #'
 #' @return A ltm ploter
 #' @export
-#'
-#' @examples mse_plotter(ltm)
+#' @importFrom ggplot2 aes geom_text geom_point element_blank theme_bw theme
+#' @examples
+#' \dontrun{mse_plotter(ltm)}
 mse_plotter<-function(data,point_size=NULL,text_size=NULL,point_shape=NULL){
   if(is.null(point_size)){ point_size =3}
   if(is.null(text_size)){ text_size =3}
