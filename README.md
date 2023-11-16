@@ -1,5 +1,5 @@
-# ggGSE
-The R package ggGSE is developed by . You can use this packages for Genomic selection across different envs
+# MMGS
+A R package MMGS is developed by Mingjia Zhu. You can use this packages for Genomic selection across different envs whithin different model, such as rrBLUP, bayesian, LightGBM and so on.
 
 ## Description
 
@@ -10,7 +10,7 @@ A  devlopment R packages used for GS within diff envs.
 You can install the package from CRAN using the following command:
 From Github:
 ```R
-devtools::install_github("Ryougi-yukiro/ggGSE")
+devtools::install_github("Ryougi-yukiro/MMGS")
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ You can also provide links to additional resources or documentation.
 ### Step.1 Load packages and data
 ```R
 #Load the required packages
-library("ggGSE")
+library("MMGS")
 library("dplyr")# used for data reshape and melt
 
 #Load the input data
