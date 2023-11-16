@@ -1,5 +1,6 @@
 #' Cross_forecast
 #'
+<<<<<<< HEAD
 #' @param pheno_train  pheno data frame used for training
 #' @param depend use which depend
 #' @param predict.method use which predict model, you can see this in MMGP
@@ -7,15 +8,26 @@
 #' @param env_info env info
 #' @param predict_env env need predict
 #' @param reshuffle times for duplication
+=======
+#' @param geno_train
+#' @param pheno_train
+#' @param envs
+#' @param depend
+#' @param predict.method
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
 #'
 #' @return predict value
 #' @export
 #'
 #' @examples
+<<<<<<< HEAD
 #' \dontrun{
 #' Cross_forecast(geno,pheno_train,env_info,predict_env,reshuffle,depend,predict.method)
 #' }
 Cross_forecast<-function(geno,pheno_train,env_info,predict_env,reshuffle,depend,predict.method){
+=======
+Cross_forecast<-function(geno,pheno_train,env_info,predict_env,reshuffle,depend="Marker",predict.method = "GBLUP"){
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
   if(is.null(nIter)){nIter=5000}
   if(is.null(burnIn)){burnIn=1000}
   if(is.null(thin)){thin=3}
@@ -184,7 +196,11 @@ for (i in reshuffle){
   #统计多次重复取平均结果
   Prd_Env<-PrdM_wide[[predict_env]]
   Out<-rbind(Out,Prd_Env)
+<<<<<<< HEAD
 }
   Out<-rbind(Out,PrdM_wide)
   Out<-stats::aggregate(. ~ line_code, data = Out, FUN = mean)
+=======
+  }
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
 }

@@ -14,8 +14,13 @@
 #' @return LOOCV data frame
 #' @export
 #'
+<<<<<<< HEAD
 #' @examples \dontrun{LOOCV(maxR_dap1=18,maxR_dap2=43,data=trait,input=env_trait,env_paras=PTT_PTR,
 #'                Para_Name="PTT",trait="FTgdd",line="line_code",p=1,filter=4)}
+=======
+#' @examples LOOCV(maxR_dap1=18,maxR_dap2=43,data=trait,input=env_trait,env_paras=PTT_PTR,
+#'                Para_Name="PTT",trait="FTgdd",line="line_code",p=1,filter=4)
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
 LOOCV<-function(data,input,env_paras,Para_Name,line,
                 trait,maxR_dap1=NULL,maxR_dap2=NULL,p=NULL,filter=NULL){
   maxR_win <- c(maxR_dap1:maxR_dap2);
@@ -42,8 +47,13 @@ LOOCV<-function(data,input,env_paras,Para_Name,line,
         if (!is.na(obs_trait)) {
           trn <- ril_data[-e,];
           l_mean <- mean(trn[["t_trait"]], na.rm = T);
+<<<<<<< HEAD
           prd_trait_mean  <- round(predict( lm(t_trait ~ mean, data = trn), ril_data[e,]), digits = 3);
           prd_trait_kpara <- round(predict( lm(t_trait ~ kPara, data = trn), ril_data[e,]), digits = 3);
+=======
+          prd_trait_mean  <- round(predict( lm(t_trait ~ mean, data = trn), ril_data[e,]), digit = 3);
+          prd_trait_kpara <- round(predict( lm(t_trait ~ kPara, data = trn), ril_data[e,]), digit = 3);
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
           n <- n + 1;
           obs_prd_m[n,] <- c(ril_data[,1][e], p, l,
                              prd_trait_mean, prd_trait_kpara, obs_trait, l_mean);

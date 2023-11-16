@@ -12,7 +12,11 @@
 #' @return A plot of population mean nad trait
 #' @export
 #'
+<<<<<<< HEAD
 #' @examples \dontrun{ltm_plotter(data=line_trait_mean,mean=env_trait)}
+=======
+#' @examples ltm_plotter(data=line_trait_mean,mean=env_trait)
+>>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
 ltm_plotter <- function(data,mean,env_cols =NULL,shape=NULL,
                         size=NULL,linewidth=NULL,area_color=NULL,area_alpha=NULL){
   if(is.null(env_cols)){
