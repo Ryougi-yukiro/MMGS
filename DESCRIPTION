@@ -1,15 +1,15 @@
-Package:  MMGS
-Title: Multi methods for Genomic Selection pipeline across Different Envs
-Version: 0.9
+Package: MMGS
+Type: Package
+Title: Multi-methods for Multi-Envs Genomic Selection pipeline
+Version: 1.0.0
 Authors@R: 
-    person(given="First", 
-    family="Last", 
-    email="first.last@example.com", 
+    person(given="Eason", 
+    family="Zhu", 
+    email="z980907mj@gmail.com", 
     role = c("aut", "cre"),
     comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Used for Crossed env traits predict and plot
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: Your package description goes here. It should contain one or more complete sentences explaining what your package does.
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -24,7 +24,14 @@ Imports:
     lemon,
     glmnet,
     lightgbm,
-    tidyr
+    tidyr,
+    stringi,
+    reshape2,
+    grDevices,
+    stats
 Depends: 
     dplyr,
-    ggplot2
+    ggplot2,
+    R (>= 2.10)
+RdCheck: "never"
+LazyData: true
