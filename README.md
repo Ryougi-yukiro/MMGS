@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # MMGS
 A R package MMGS is developed by Mingjia Zhu. You can use this packages for Genomic selection across different envs whithin different model, such as rrBLUP, bayesian, LightGBM and so on.
 
@@ -374,4 +374,4 @@ ggGSE is a collection of tools for cross-environmental genome-wide selection pre
 
 
 
->>>>>>> 23b0efae316a77181b94cb5eff39d6257393dcf5
+
