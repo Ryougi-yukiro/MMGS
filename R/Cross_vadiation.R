@@ -75,8 +75,8 @@
 #'                        ms1=ms1,ms2=ms2)
 #' }
 MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NULL,
-                  model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL,
-                nIter=NULL,burnIn=NULL,thin=NULL,SVM_cost=NULL,gamma=NULL,GBM_rounds=NULL){
+               model,methods=NULL,ms1=NULL,ms2=NULL,ENalpha=NULL,GBM_params=NULL,
+               nIter=NULL,burnIn=NULL,thin=NULL,SVM_cost=NULL,gamma=NULL,GBM_rounds=NULL){
   if(is.null(depend)){
     depend="norm"
   }
@@ -84,7 +84,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
     ENalpha=0.5
   }
   if(is.null(methods)){
-    methods="RM.GE"
+    methods="RM.G"
   }
   if(is.null(fold)){
     fold= 2
@@ -104,6 +104,15 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
   if(is.null(SVM_cost)){SVM_cost=10}
   if(is.null(gamma)){gamma=0.001}
   if(is.null(GBM_rounds)){GBM_rounds=100L}
+  removeSaveAt <- function(saveAt) {
+    Sys.sleep(2)
+    files <- list.files('.', paste0("^", saveAt, '.*(lambda|mu|varE|varB|varU|ScaleBayesA|parBayesB|parBayesC)\\.dat$'))
+    tryCatch({
+      invisible(lapply(files, file.remove))
+    }, error = function(e) {
+
+    })
+  }
 
   enp=which(colnames(para) == Para_Name);
   para.name=colnames(pheno)[-1];
@@ -311,7 +320,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BRR'))}
             model.inter=BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
-                       saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
+                                   saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
             GEBV.inter<-model.inter$yHat[id.V]
             removeSaveAt(saveAt)
 
@@ -337,23 +346,27 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               nIter=nIter;burnIn=burnIn;thin=thin;
               ETA<-list(list(X=GENO,model='BRR'))}
             model.slope=BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter,burnIn=burnIn,thin=thin,
-                       saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
+                                   saveAt=saveAt,df0=5,S0=S0,weights=weights,R2=R2,verbose=F)
             GEBV.slope<-model.slope$yHat[id.V]
             removeSaveAt(saveAt)
           }
           else if(model =="GBLUP"){
+            GENO<-as.data.frame(geno[id.V,-1])
+            #rowname<-paste(y0[,1],y0[,2], sep="-")
+            rownames(GENO)<-rownames(y0[id.V])
             y0=intercept;
-            A<-rrBLUP::A.mat(geno[id.V,-1])
+            A<-rrBLUP::A.mat(GENO)
             #return(geno[id.V,-1])
-            dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
+            dataF=data.frame(genoID=rownames(GENO),intcp=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
             GEBV.inter<-MODEL$pred
 
 
             y0=slope;
-            A<-rrBLUP::A.mat(geno[id.V,-1])
-            dataF=data.frame(genoID=rownames(geno[id.V,-1]),slope=y0[id.V])
+            rownames(GENO)<-rownames(y0[id.V])
+            A<-rrBLUP::A.mat(GENO)
+            dataF=data.frame(genoID=rownames(GENO),slope=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="slope", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
             GEBV.slope<-MODEL$pred
@@ -374,8 +387,8 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             K=exp(-h*D)
             saveAt=stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
             if(model =="RKHS"){
-            ETA= list(list(K=K, model='RKHS'))
-            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)}
+              ETA= list(list(K=K, model='RKHS'))
+              MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)}
             else if(model =="MKRKHS"){
               h <- sqrt(c(0.2,0.5,0.8))
               #3# Kernel Averaging using BGLR
@@ -385,7 +398,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
             }
             GEBV.inter<-MODEL$yHat[id.V]
-
+            removeSaveAt(saveAt)
             y0=slope;
             GENO = genotype[,-1]
             y0[id.V]<-NA
@@ -401,27 +414,27 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             saveAt=stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
 
             if(model =="RKHS"){
-            ETA= list(list(K=K, model='RKHS'))
-            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
-          }
-          else if(model =="MKRKHS"){
-            h <- sqrt(c(0.2,0.5,0.8))
-            #3# Kernel Averaging using BGLR
-            ETA <- list(list(K=exp(-h[1]*D),model='RKHS'),
-                        list(K=exp(-h[2]*D),model='RKHS'),
-                        list(K=exp(-h[3]*D),model='RKHS'))
-            MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
-          }
+              ETA= list(list(K=K, model='RKHS'))
+              MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
+            }
+            else if(model =="MKRKHS"){
+              h <- sqrt(c(0.2,0.5,0.8))
+              #3# Kernel Averaging using BGLR
+              ETA <- list(list(K=exp(-h[1]*D),model='RKHS'),
+                          list(K=exp(-h[2]*D),model='RKHS'),
+                          list(K=exp(-h[3]*D),model='RKHS'))
+              MODEL <- BGLR::BGLR(y=yNa,ETA=ETA,nIter=nIter, burnIn=burnIn, saveAt = saveAt,verbose=F)
+            }
             GEBV.slope<-MODEL$yHat[id.V]
             #return(list(GEBV.inter,GEBV.slope))
             removeSaveAt(saveAt)
           }
           if(model == "GBM"){
             if(is.null(GBM_params)){
-            params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
-                           learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
-                           early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
-                           cat_smooth=5)
+              params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
+                             learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
+                             early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
+                             cat_smooth=5)
             }
             #print(params)
             y0=intercept;
@@ -513,19 +526,19 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             id.T=c(1:n.line)[cross!=f]; id.V=c(1:n.line)[cross==f];
 
             if(model == "rrBLUP"){
-            y0=intercept;
-            ans<-rrBLUP::mixed.solve(y=y0[id.T],Z=genotype[id.T,-1])
-            e=as.matrix(ans$u)
-            G.pred=Marker[id.V,]
-            y_pred=as.matrix(G.pred) %*% e
-            GEBV.inter=c(y_pred[,1])+c(ans$beta);
+              y0=intercept;
+              ans<-rrBLUP::mixed.solve(y=y0[id.T],Z=genotype[id.T,-1])
+              e=as.matrix(ans$u)
+              G.pred=Marker[id.V,]
+              y_pred=as.matrix(G.pred) %*% e
+              GEBV.inter=c(y_pred[,1])+c(ans$beta);
 
-            y0=slope;
-            ans<-rrBLUP::mixed.solve(y=y0[id.T],Z=genotype[id.T,-1])
-            e=as.matrix(ans$u)
-            G.pred=Marker[id.V,]
-            y_pred=as.matrix(G.pred) %*% e
-            GEBV.slope=c(y_pred[,1])+c(ans$beta);
+              y0=slope;
+              ans<-rrBLUP::mixed.solve(y=y0[id.T],Z=genotype[id.T,-1])
+              e=as.matrix(ans$u)
+              G.pred=Marker[id.V,]
+              y_pred=as.matrix(G.pred) %*% e
+              GEBV.slope=c(y_pred[,1])+c(ans$beta);
 
             }
             else if (model == "LASSO"){
@@ -721,69 +734,69 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
       cor.within<-matrix(999,reshuffle,n.para)
       cor.all<-numeric()
       if(model == "rrBLUP" | model == "RR"){
-      for(i in 1:reshuffle)
-      {
-        cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
-        yhat.whole.cross=numeric();
-        yobs.whole.cross=numeric();
-        for(f in 1:fold)
+        for(i in 1:reshuffle)
         {
-          id.T=c(1:n.line)[cross!=f]; id.V=c(1:n.line)[cross==f];
-          ##marker effect###
-          effect=matrix(999,n.marker,n.para);
-          intercept=matrix(999,1,n.para)
-
-          for(k in 1:n.para)
+          cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
+          yhat.whole.cross=numeric();
+          yobs.whole.cross=numeric();
+          for(f in 1:fold)
           {
-            if(model == "rrBLUP"){
-            fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
-            effect[,k]=fit$u
-            intercept[,k]=fit$beta
-            }
-            if(model == "RR"){
-              cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
-                                        alpha=0)
-              lambda_min <- cv.fit$lambda.min
-              coef<-coef(cv.fit)
-              effect[,k]=coef@x[-1]
-              intercept[,k]=coef@x[1]
-            }
-          }
-          ##Slope###
-          effect.hat=numeric();
-          for(j in 1:n.marker)
-          {
-            x1=para[,enp]
-            y1=effect[j,]
-            coe=lm(y~x,data=data.frame(x=x1,y=y1))
-            y.hat=summary(coe)$coefficients[1,1]+summary(coe)$coefficients[2,1]*para[,enp]
-            effect.hat=rbind(effect.hat,y.hat)
-          }
+            id.T=c(1:n.line)[cross!=f]; id.V=c(1:n.line)[cross==f];
+            ##marker effect###
+            effect=matrix(999,n.marker,n.para);
+            intercept=matrix(999,1,n.para)
 
-          ##Environment intercept####
-          reg.intercept=data.frame(x=as.numeric(para[,enp]),y=as.vector(intercept));
-          coe.intercept=lm(y~x,data=reg.intercept)
-          y.intercept=summary(coe.intercept)$coefficients[1,1]+
-            summary(coe.intercept)$coefficients[2,1]*as.numeric(para[,enp]);
+            for(k in 1:n.para)
+            {
+              if(model == "rrBLUP"){
+                fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
+                effect[,k]=fit$u
+                intercept[,k]=fit$beta
+              }
+              if(model == "RR"){
+                cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
+                                          alpha=0)
+                lambda_min <- cv.fit$lambda.min
+                coef<-coef(cv.fit)
+                effect[,k]=coef@x[-1]
+                intercept[,k]=coef@x[1]
+              }
+            }
+            ##Slope###
+            effect.hat=numeric();
+            for(j in 1:n.marker)
+            {
+              x1=para[,enp]
+              y1=effect[j,]
+              coe=lm(y~x,data=data.frame(x=x1,y=y1))
+              y.hat=summary(coe)$coefficients[1,1]+summary(coe)$coefficients[2,1]*para[,enp]
+              effect.hat=rbind(effect.hat,y.hat)
+            }
 
-          ###All the predicted slope and intercept
-          yhat.para=matrix(999,length(id.V),n.para)
-          yobs.para=matrix(999,length(id.V),n.para)
+            ##Environment intercept####
+            reg.intercept=data.frame(x=as.numeric(para[,enp]),y=as.vector(intercept));
+            coe.intercept=lm(y~x,data=reg.intercept)
+            y.intercept=summary(coe.intercept)$coefficients[1,1]+
+              summary(coe.intercept)$coefficients[2,1]*as.numeric(para[,enp]);
+
+            ###All the predicted slope and intercept
+            yhat.para=matrix(999,length(id.V),n.para)
+            yobs.para=matrix(999,length(id.V),n.para)
+            for(j in 1:n.para)
+            {
+              yobs=pheno[id.V,j+1]
+              yhat=y.intercept[j]+(as.matrix(Marker[id.V,])%*%as.matrix(effect.hat))[,j]
+              yhat.para[,j]=yhat;
+              yobs.para[,j]=yobs;
+            }
+            yhat.whole.cross=rbind(yhat.whole.cross,yhat.para);
+            yobs.whole.cross=rbind(yobs.whole.cross,yobs.para);
+          }
           for(j in 1:n.para)
-          {
-            yobs=pheno[id.V,j+1]
-            yhat=y.intercept[j]+(as.matrix(Marker[id.V,])%*%as.matrix(effect.hat))[,j]
-            yhat.para[,j]=yhat;
-            yobs.para[,j]=yobs;
-          }
-          yhat.whole.cross=rbind(yhat.whole.cross,yhat.para);
-          yobs.whole.cross=rbind(yobs.whole.cross,yobs.para);
+          {cor.within[i,j]=cor(yhat.whole.cross[,j],yobs.whole.cross[,j],use = "complete.obs");}
+          cor.all=c(cor.all,cor(as.vector(yhat.whole.cross),
+                                as.vector(yobs.whole.cross),use = "complete.obs"));
         }
-        for(j in 1:n.para)
-        {cor.within[i,j]=cor(yhat.whole.cross[,j],yobs.whole.cross[,j],use = "complete.obs");}
-        cor.all=c(cor.all,cor(as.vector(yhat.whole.cross),
-                              as.vector(yobs.whole.cross),use = "complete.obs"));
-      }
         r_within=apply(cor.within,2,mean);names(r_within)=colnames(pheno)[-1]
         #Correlation across environment 50 times
         r_across=mean(cor.all)
@@ -852,11 +865,11 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
 
             #pheno1
             yNa<-pheno[which(as.character(pheno$line_code)%in%
-                                  c("line_code",as.character(geno[id.T,1]))),]
+                               c("line_code",as.character(geno[id.T,1]))),]
             yNas <- yNa[order(factor(yNa$line_code, levels = geno[id.T,1])), ]
             yNal <- yNas %>%tidyr::pivot_longer(cols = -line_code,
-                                                         names_to = "Envs",
-                                                         values_to = "Obs")
+                                                names_to = "Envs",
+                                                values_to = "Obs")
             yNal<-as.data.frame(yNal)
             yNa<-yNal[order(yNal[,2]), ]
             #pheno2
@@ -864,17 +877,17 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
                                    c("line_code",as.character(geno[id.V,1]))),]
             y_Prds <- y_Prd[order(factor(y_Prd$line_code, levels = geno[id.V,1])), ]
             y_Prdl <- y_Prds %>%tidyr::pivot_longer(cols = -line_code,
-                                                         names_to = "Envs",
-                                                         values_to = "Obs")
+                                                    names_to = "Envs",
+                                                    values_to = "Obs")
             y_Prdl<-as.data.frame(y_Prdl)
             y_Prd<-y_Prdl[order(y_Prdl[,2]), ]
             #pheno3
             y <- pheno[which(as.character(pheno$line_code)%in%
-                                   c("line_code",as.character(geno[,1]))),]
+                               c("line_code",as.character(geno[,1]))),]
             ys <- y[order(factor(y$line_code, levels = geno[,1])), ]
             yl <- ys %>%tidyr::pivot_longer(cols = -line_code,
-                                                    names_to = "Envs",
-                                                    values_to = "Obs")
+                                            names_to = "Envs",
+                                            values_to = "Obs")
             yl<-as.data.frame(yl)
             y<-yl[order(yl[,2]),]
 
@@ -933,7 +946,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               y2<-as.data.frame(y2)
               dataF=data.frame(genoID=rownames(GENO),yield=y2[,ncol(y2)])
               MODEL<-rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="yield", GAUSS=FALSE, K=A,
-                                     PEV=TRUE,n.core=1,theta.seq=NULL)
+                                      PEV=TRUE,n.core=1,theta.seq=NULL)
               Prd<-MODEL$pred
               PrdM<-data.frame(y2, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(
@@ -946,7 +959,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               PrdM_wide<-as.data.frame(PrdM_wide)
             }
             else if (model == "BA" | model == "BC" | model == "BL" | model == "BRR"
-               | model == "BB" ){
+                     | model == "BB" ){
               saveAt = stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
               S0=NULL;weights=NULL;R2=0.5;
               if(model == "BA"){
@@ -1005,7 +1018,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
                 ETA= list(list(K=K, model='RKHS'))
                 model_RKHS<-BGLR::BGLR(y=y2[,ncol(y2)],ETA=ETA,nIter=nIter, burnIn=burnIn,
                                        saveAt = saveAt,verbose=F)
-                }
+              }
               else if(model =="MKRKHS"){
                 h <- sqrt(c(0.2,0.5,0.8))
                 #3# Kernel Averaging using BGLR
@@ -1028,7 +1041,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             }
             else if (model == "SVM"){
               model_SVM <- e1071::svm(M,yNa[,ncol(yNa)],method="nu-regression",
-                                  kernel="radial",cost=10,gamma=0.001)
+                                      kernel="radial",cost=10,gamma=0.001)
               Prd <- stats::predict(model_SVM,N)
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
@@ -1045,7 +1058,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               dtest <- lightgbm::lgb.Dataset.create.valid(dtrain, N, label = y_Prd[,ncol(y_Prd)])
               valids <- list(test = dtest)
               model_GBM <- lightgbm::lgb.train(params = params,data = dtrain,
-                                           valids = valids,nrounds = GBM_rounds,verbose = -1)
+                                               valids = valids,nrounds = GBM_rounds,verbose = -1)
               Prd <- stats::predict(model_GBM, N)
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
@@ -1065,104 +1078,104 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
           yhat.whole.crossl<-tidyr::gather(yhat.whole.cross, key = "Envs", value = "Prd", -line_code)
           yobs.whole.crossl<-tidyr::gather(yobs.whole.cross, key = "Envs", value = "Obs", -line_code)
           cor.all<-c(cor.all,cor(as.vector(yhat.whole.crossl[,3]),
-                                as.vector(yobs.whole.crossl[,3]),
-                                use = "complete.obs"))
+                                 as.vector(yobs.whole.crossl[,3]),
+                                 use = "complete.obs"))
           #print(cor.all)
           for(k in 1:n.para){
             cor.within[r,k]<-cor(yhat.whole.cross[,k+1],yobs.whole.cross[,k+1],use = "complete.obs")
           }
           #return(cor.within)
         }
-      #Correlation within environment 50 times
-      r_within=apply(cor.within,2,mean);names(r_within)=colnames(pheno)[-1]
-      #Correlation across environment 50 times
-      r_across=mean(cor.all)
-      #Observation and prediction last time
-      colnames(cor.within)=colnames(pheno)[-1]
-      r_within=cor.within
-      r_across=cor.all
-      outforfigure<-rbind(yobs.whole.crossl,yobs.whole.crossl)
-      outforfigure<-data.frame(outforfigure,col=rep(coloo,times=rep(n.line,n.para)))
-      return(list(outforfigure,r_within,r_across))
-      #return(list(outforfigure,r_within,r_across))
-    }
-    if(methods=="RM.GE"){
-      cor.within=matrix(999,reshuffle,n.para);cor.all=numeric();
-      for(i in 1:reshuffle)
-      {
-        cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
-        obs_matrix=numeric();pre_matrix=numeric();
-        for(f in 1:fold)
-        {
-          id.T=c(1:n.line)[cross!=f]; id.V=c(1:n.line)[cross==f];
-          effect=matrix(999,n.marker,n.para);
-          intercept=matrix(999,1,n.para)
-
-          for(k in 1:n.para)
-          {
-            if(model == "rrBLUP"){
-              fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
-              effect[,k]=fit$u
-              intercept[,k]=fit$beta}
-            if(model == "RR"){
-              cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
-                                        alpha=0)
-              lambda_min <- cv.fit$lambda.min
-              coef<-coef(cv.fit)
-              effect[,k]=coef@x[-1]
-              intercept[,k]=coef@x[1]
-            }
-          }
-          ##predict marker effect###
-          obs.para=numeric();pre.para=numeric();
-          for(kk in 1:n.para)
-          {
-            effect.hat=numeric();
-            for(j in 1:n.marker)
-            {
-              x1=para[-kk,enp];
-              y1=effect[j,-kk];
-              coe=lm(y~x,data=data.frame(x=x1,y=y1));
-              y.hat=summary(coe)$coefficients[1,1]+summary(coe)$coefficients[2,1]*para[kk,enp];
-              effect.hat=rbind(effect.hat,y.hat);
-            }
-            ##Environment intercept####
-            reg.intercept=data.frame(x=as.numeric(para[-kk,enp]),y=as.vector(intercept[-kk]));
-            coe.intercept=lm(y~x,data=reg.intercept)
-            y.intercept=summary(coe.intercept)$coefficients[1,1]+summary(coe.intercept)$coefficients[2,1]*as.numeric(para[kk,enp]);
-
-            ###All the predicted slope and intercept
-            yhat=y.intercept+(as.matrix(Marker[id.V,])%*%as.matrix(effect.hat))[,j];
-            yobs=pheno[id.V,kk+1];
-            obs.para=cbind(obs.para,yobs);
-            pre.para=cbind(pre.para,yhat);
-          }
-          #########
-
-          obs_matrix=rbind(obs_matrix,obs.para);pre_matrix=rbind(pre_matrix,pre.para);
-
-        }
-        cor.shuffle=cor(as.vector(obs_matrix),as.vector(pre_matrix),use = "complete.obs")
-        cor.all=c(cor.all,cor.shuffle);
-        for(j in 1:n.para)
-        {cor.within[i,j]=cor(obs_matrix[,j],pre_matrix[,j],use = "complete.obs");}
+        #Correlation within environment 50 times
+        r_within=apply(cor.within,2,mean);names(r_within)=colnames(pheno)[-1]
+        #Correlation across environment 50 times
+        r_across=mean(cor.all)
+        #Observation and prediction last time
+        colnames(cor.within)=colnames(pheno)[-1]
+        r_within=cor.within
+        r_across=cor.all
+        outforfigure<-rbind(yobs.whole.crossl,yobs.whole.crossl)
+        outforfigure<-data.frame(outforfigure,col=rep(coloo,times=rep(n.line,n.para)))
+        return(list(outforfigure,r_within,r_across))
+        #return(list(outforfigure,r_within,r_across))
       }
-      yhat.whole.cross=pre_matrix;
-      yobs.whole.cross=obs_matrix;
-      #Correlation within environment 50 times
-      r_within=apply(cor.within,2,mean);names(r_within)=colnames(pheno)[-1];
-      #Correlation across environment 50 times
-      r_across=mean(cor.all);
-      #Observation and prediction last time
-      outforfigure=data.frame(obs=as.vector(yobs.whole.cross),
-                              pre=as.vector(yhat.whole.cross),
-                              col=rep(coloo,times=rep(n.line,n.para)),para=rep(colnames(pheno)[-1],times=rep(n.line,n.para)))
-      colnames(cor.within)=colnames(pheno)[-1];
-      r_within=cor.within;
-      r_across=cor.all;
-      return(list(outforfigure,r_within,r_across));
+      if(methods=="RM.GE"){
+        cor.within=matrix(999,reshuffle,n.para);cor.all=numeric();
+        for(i in 1:reshuffle)
+        {
+          cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
+          obs_matrix=numeric();pre_matrix=numeric();
+          for(f in 1:fold)
+          {
+            id.T=c(1:n.line)[cross!=f]; id.V=c(1:n.line)[cross==f];
+            effect=matrix(999,n.marker,n.para);
+            intercept=matrix(999,1,n.para)
+
+            for(k in 1:n.para)
+            {
+              if(model == "rrBLUP"){
+                fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
+                effect[,k]=fit$u
+                intercept[,k]=fit$beta}
+              if(model == "RR"){
+                cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
+                                          alpha=0)
+                lambda_min <- cv.fit$lambda.min
+                coef<-coef(cv.fit)
+                effect[,k]=coef@x[-1]
+                intercept[,k]=coef@x[1]
+              }
+            }
+            ##predict marker effect###
+            obs.para=numeric();pre.para=numeric();
+            for(kk in 1:n.para)
+            {
+              effect.hat=numeric();
+              for(j in 1:n.marker)
+              {
+                x1=para[-kk,enp];
+                y1=effect[j,-kk];
+                coe=lm(y~x,data=data.frame(x=x1,y=y1));
+                y.hat=summary(coe)$coefficients[1,1]+summary(coe)$coefficients[2,1]*para[kk,enp];
+                effect.hat=rbind(effect.hat,y.hat);
+              }
+              ##Environment intercept####
+              reg.intercept=data.frame(x=as.numeric(para[-kk,enp]),y=as.vector(intercept[-kk]));
+              coe.intercept=lm(y~x,data=reg.intercept)
+              y.intercept=summary(coe.intercept)$coefficients[1,1]+summary(coe.intercept)$coefficients[2,1]*as.numeric(para[kk,enp]);
+
+              ###All the predicted slope and intercept
+              yhat=y.intercept+(as.matrix(Marker[id.V,])%*%as.matrix(effect.hat))[,j];
+              yobs=pheno[id.V,kk+1];
+              obs.para=cbind(obs.para,yobs);
+              pre.para=cbind(pre.para,yhat);
+            }
+            #########
+
+            obs_matrix=rbind(obs_matrix,obs.para);pre_matrix=rbind(pre_matrix,pre.para);
+
+          }
+          cor.shuffle=cor(as.vector(obs_matrix),as.vector(pre_matrix),use = "complete.obs")
+          cor.all=c(cor.all,cor.shuffle);
+          for(j in 1:n.para)
+          {cor.within[i,j]=cor(obs_matrix[,j],pre_matrix[,j],use = "complete.obs");}
+        }
+        yhat.whole.cross=pre_matrix;
+        yobs.whole.cross=obs_matrix;
+        #Correlation within environment 50 times
+        r_within=apply(cor.within,2,mean);names(r_within)=colnames(pheno)[-1];
+        #Correlation across environment 50 times
+        r_across=mean(cor.all);
+        #Observation and prediction last time
+        outforfigure=data.frame(obs=as.vector(yobs.whole.cross),
+                                pre=as.vector(yhat.whole.cross),
+                                col=rep(coloo,times=rep(n.line,n.para)),para=rep(colnames(pheno)[-1],times=rep(n.line,n.para)))
+        colnames(cor.within)=colnames(pheno)[-1];
+        r_within=cor.within;
+        r_across=cor.all;
+        return(list(outforfigure,r_within,r_across));
+      }
     }
-  }
   }
 }
 removeSaveAt <- function(saveAt) {
