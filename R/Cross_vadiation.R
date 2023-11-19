@@ -351,22 +351,22 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             removeSaveAt(saveAt)
           }
           else if(model =="GBLUP"){
-            GENO<-as.data.frame(geno[id.V,-1])
+            #GENO<-as.data.frame(geno[id.V,-1])
             #rowname<-paste(y0[,1],y0[,2], sep="-")
-            rownames(GENO)<-rownames(y0[id.V])
+            #rownames(GENO)<-rownames(y0[id.V])
             y0=intercept;
-            A<-rrBLUP::A.mat(GENO)
+            A<-rrBLUP::A.mat(as.data.frame(geno[id.V,-1]))
             #return(geno[id.V,-1])
-            dataF=data.frame(genoID=rownames(GENO),intcp=y0[id.V])
+            dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
             GEBV.inter<-MODEL$pred
 
 
             y0=slope;
-            rownames(GENO)<-rownames(y0[id.V])
-            A<-rrBLUP::A.mat(GENO)
-            dataF=data.frame(genoID=rownames(GENO),slope=y0[id.V])
+            #rownames(GENO)<-rownames(y0[id.V])
+            A<-rrBLUP::A.mat(geno[id.V,-1])
+            dataF=data.frame(genoID=rownames(geno[id.V,-1]),slope=y0[id.V])
             MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="slope", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
             GEBV.slope<-MODEL$pred
@@ -937,7 +937,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               GENO<-as.data.frame(GENO)
               rowname<-paste(y[,1],y[,2], sep="-")
               rownames(GENO)<-rowname
-              #A<-rrBLUP::A.mat(GENO)
+              A<-rrBLUP::A.mat(GENO)
               y2<-y %>%
                 group_by(Envs) %>%
                 mutate(row_number = row_number()) %>%
