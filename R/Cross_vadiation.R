@@ -748,12 +748,12 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
 
             for(k in 1:n.para)
             {
-              if(model == "rrBLUP"){
+              if(model == "rrBLUPJ"){
                 fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
                 effect[,k]=fit$u
                 intercept[,k]=fit$beta
               }
-              if(model == "RR"){
+              if(model == "RR2J"){
                 cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
                                           alpha=0)
                 lambda_min <- cv.fit$lambda.min
@@ -895,6 +895,38 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
               Prd<-randomForest::randomForest(M, y=yNa[,ncol(yNa)],xtest=N)$test$predicted
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
+              PrdM_wide<-as.data.frame(PrdM_wide)
+            }
+            if (model == "rrBLUP"){
+              ans<-rrBLUP::mixed.solve(y=yNa[,ncol(yNa)],Z=M)
+              e<-as.matrix(ans$u)
+              G.pred<-N
+              y_pred<-as.matrix(G.pred) %*% e
+              Prd<-c(y_pred[,1])+c(ans$beta)
+              PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
+              PrdM_wide<- PrdM %>% tidyr::pivot_wider(
+                id_cols = line_code,
+                names_from = Envs,
+                values_from = Prd
+              )
+              PrdM_wide<-as.data.frame(PrdM_wide)
+            }
+            else if (model == "RR"){
+              cv.fit <- glmnet::cv.glmnet(M,yNa[,ncol(yNa)],family="gaussian",alpha=0)
+              lambda_min <- cv.fit$lambda.min
+              coef<-coef(cv.fit)
+              e=as.matrix(coef@x[-1])
+              G.pred=N
+              selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)
+              G.pred_LASSO <- G.pred[, selected_features]
+              y_pred=as.matrix(G.pred_LASSO) %*% e
+              Prd=c(y_pred[,1])+c(coef@x[1])
+              PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
+              PrdM_wide<- PrdM %>% tidyr::pivot_wider(
+                id_cols = line_code,
+                names_from = Envs,
+                values_from = Prd
+              )
               PrdM_wide<-as.data.frame(PrdM_wide)
             }
             else if (model == "LASSO"){
