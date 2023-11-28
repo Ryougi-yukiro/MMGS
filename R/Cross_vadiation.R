@@ -952,7 +952,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "EN"){
               cv.fit <- glmnet::cv.glmnet(M,yNa[,ncol(yNa)],family="gaussian",alpha=ENalpha)
               lambda_min <- cv.fit$lambda.min
-              #Prd<- stats::predict(cv.fit,newx=N,s=c(lambda_min))
+              Prd<- stats::predict(cv.fit,newx=N,s=c(lambda_min))
               #coef<-coef(cv.fit)
               #e=as.matrix(coef@x[-1])
               #G.pred=N
