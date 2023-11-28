@@ -733,7 +733,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
     if(methods=="RM.G"){
       cor.within<-matrix(999,reshuffle,n.para)
       cor.all<-numeric()
-      if(model == "rrBLUP" | model == "RR"){
+      if(model == "rrBLUP" | model == "RRJ"){
         for(i in 1:reshuffle)
         {
           cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
@@ -748,12 +748,12 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
 
             for(k in 1:n.para)
             {
-              if(model == "rrBLUPJ"){
+              if(model == "rrBLUP"){
                 fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
                 effect[,k]=fit$u
                 intercept[,k]=fit$beta
               }
-              if(model == "RR2J"){
+              if(model == "RRJ"){
                 cv.fit<-glmnet::cv.glmnet(y=pheno[id.T,1+k],x=Marker[id.T,],
                                           alpha=0)
                 lambda_min <- cv.fit$lambda.min
@@ -914,13 +914,14 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "RR"){
               cv.fit <- glmnet::cv.glmnet(M,yNa[,ncol(yNa)],family="gaussian",alpha=0)
               lambda_min <- cv.fit$lambda.min
-              coef<-coef(cv.fit)
-              e=as.matrix(coef@x[-1])
-              G.pred=N
-              selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)
-              G.pred_LASSO <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_LASSO) %*% e
-              Prd=c(y_pred[,1])+c(coef@x[1])
+              Prd<- stats::predict(cv.fit,newx=N,s=c(lambda_min))
+              #coef<-coef(cv.fit)
+              #e=as.matrix(coef@x[-1])
+              #G.pred=N
+              #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)
+              #G.pred_RR <- G.pred[, selected_features]
+              #y_pred=as.matrix(G.pred_RR) %*% e
+              #Prd=c(y_pred[,1])+c(coef@x[1])
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(
                 id_cols = line_code,
@@ -932,13 +933,14 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "LASSO"){
               cv.fit <- glmnet::cv.glmnet(M,yNa[,ncol(yNa)],family="gaussian",alpha=1)
               lambda_min <- cv.fit$lambda.min
-              coef<-coef(cv.fit)
-              e=as.matrix(coef@x[-1])
-              G.pred=N
-              selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)
-              G.pred_LASSO <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_LASSO) %*% e
-              Prd=c(y_pred[,1])+c(coef@x[1])
+              Prd<- stats::predict(cv.fit,newx=N,s=c(lambda_min))
+              #coef<-coef(cv.fit)
+              #e=as.matrix(coef@x[-1])
+              #G.pred=N
+              #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)
+              #G.pred_LASSO <- G.pred[, selected_features]
+              #y_pred=as.matrix(G.pred_LASSO) %*% e
+              #Prd=c(y_pred[,1])+c(coef@x[1])
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(
                 id_cols = line_code,
@@ -950,13 +952,14 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "EN"){
               cv.fit <- glmnet::cv.glmnet(M,yNa[,ncol(yNa)],family="gaussian",alpha=ENalpha)
               lambda_min <- cv.fit$lambda.min
-              coef<-coef(cv.fit)
-              e=as.matrix(coef@x[-1])
-              G.pred=N
-              selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-              G.pred_EN <- G.pred[, selected_features]
-              y_pred=as.matrix(G.pred_EN) %*% e
-              Prd=c(y_pred[,1])+c(coef@x[1])
+              #Prd<- stats::predict(cv.fit,newx=N,s=c(lambda_min))
+              #coef<-coef(cv.fit)
+              #e=as.matrix(coef@x[-1])
+              #G.pred=N
+              #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+              #G.pred_EN <- G.pred[, selected_features]
+              #y_pred=as.matrix(G.pred_EN) %*% e
+              #Prd=c(y_pred[,1])+c(coef@x[1])
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(
                 id_cols = line_code,
@@ -1099,16 +1102,14 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             yhat.whole.cross<-rbind(yhat.whole.cross,PrdM_wide)
           }
           #need improve
-          yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = ys[,1])), ]
-          #yhat.whole.cross <- rbind(yhat.whole.cross,yNas)
-          yhat.whole.cross <- stats::aggregate(. ~ line_code, data = yhat.whole.cross, FUN = mean)
           yobs.whole.cross <- ys
+          yobs.whole.crossl<-tidyr::gather(yobs.whole.cross, key = "Envs", value = "Obs", -line_code)
+          yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = ys[,1])), ]
+          yhat.whole.cross <- rbind(yhat.whole.cross,yNas)
+          yhat.whole.cross <- stats::aggregate(. ~ line_code, data = yhat.whole.cross, FUN = mean)
           yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = yobs.whole.cross[,1])), ]
           yhat.whole.cross <- yhat.whole.cross %>% select(colnames(yobs.whole.cross))
-          #return(list(yobs.whole.cross,yhat.whole.cross))
-
-          yhat.whole.crossl<-tidyr::gather(yhat.whole.cross, key = "Envs", value = "Prd", -line_code)
-          yobs.whole.crossl<-tidyr::gather(yobs.whole.cross, key = "Envs", value = "Obs", -line_code)
+          yhat.whole.crossl<-tidyr::gather(yhat.whole.cross, key = "Envs", value = "Pre", -line_code)
           cor.all<-c(cor.all,cor(as.vector(yhat.whole.crossl[,3]),
                                  as.vector(yobs.whole.crossl[,3]),
                                  use = "complete.obs"))
@@ -1126,8 +1127,10 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
         colnames(cor.within)=colnames(pheno)[-1]
         r_within=cor.within
         r_across=cor.all
-        outforfigure<-rbind(yobs.whole.crossl,yobs.whole.crossl)
-        outforfigure<-data.frame(outforfigure,col=rep(coloo,times=rep(n.line,n.para)))
+        outforfigure<-data.frame(Obs=yobs.whole.crossl[,3],Pre=yhat.whole.crossl[,3])
+        outforfigure<-data.frame(outforfigure,
+                                 col=rep(coloo,times=rep(n.line,n.para)),
+                                 Envs=yobs.whole.crossl[,2])
         return(list(outforfigure,r_within,r_across))
         #return(list(outforfigure,r_within,r_across))
       }
