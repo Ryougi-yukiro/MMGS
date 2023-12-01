@@ -204,78 +204,90 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             y_pred=as.matrix(G.pred) %*% e
             GEBV.slope=c(y_pred[,1])+c(ans$beta);
           }else if(model == "LASSO"){
-            y0=intercept;
+            y0<-intercept
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
-                                      family="gaussian",alpha=1)
+                                      alpha=1)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_LASSO <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_LASSO) %*% e
-            GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.inter<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            # G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            # G.pred_LASSO <- G.pred[, selected_features]
+            # y_pred=as.matrix(G.pred_LASSO) %*% e
+            #GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
-            y0=slope;
+            y0<-slope
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
-                                      family="gaussian",alpha=1)
+                                      alpha=1)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_LASSO <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_LASSO) %*% e
-            GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.slope<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            #G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            #G.pred_LASSO <- G.pred[, selected_features]
+            #y_pred=as.matrix(G.pred_LASSO) %*% e
+            #GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
           }else if(model == "RR"){
-            y0=intercept;
+            y0<-intercept;
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
                                       alpha=0)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_RR <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_RR) %*% e
-            GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.inter<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            # G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            # G.pred_RR <- G.pred[, selected_features]
+            # y_pred=as.matrix(G.pred_RR) %*% e
+            #GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
-            y0=slope;
+            y0<-slope;
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
                                       alpha=0)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_RR <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_RR) %*% e
-            GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.slope<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            #G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            #G.pred_RR <- G.pred[, selected_features]
+            #y_pred=as.matrix(G.pred_RR) %*% e
+            #GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
           }
           else if(model == "EN"){
-            y0=intercept;
+            y0<-intercept
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
-                                      family="gaussian",alpha=ENalpha)
+                                      alpha=ENalpha)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_EN <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_EN) %*% e
-            GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.inter<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            # G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            # G.pred_EN <- G.pred[, selected_features]
+            # y_pred=as.matrix(G.pred_EN) %*% e
+            #GEBV.inter=c(y_pred[,1])+c(coef@x[1]);
 
-            y0=slope;
+            y0<-slope
             cv.fit<-glmnet::cv.glmnet(y=y0[id.T],x=genotype[id.T,-1],
-                                      family="gaussian",alpha=ENalpha)
+                                      alpha=ENalpha)
             lambda_min <- cv.fit$lambda.min
-            coef<-coef(cv.fit)
-            e=as.matrix(coef@x[-1])
-            G.pred=Marker[id.V,]
-            selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
-            G.pred_EN <- G.pred[, selected_features]
-            y_pred=as.matrix(G.pred_EN) %*% e
-            GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
+            G.pred<-Marker[id.V,]
+            GEBV.slope<- stats::predict(cv.fit,newx=G.pred,s=c(lambda_min))
+            #coef<-coef(cv.fit)
+            #e=as.matrix(coef@x[-1])
+            #G.pred=Marker[id.V,]
+            #selected_features <- which(as.vector(coef(cv.fit)[-1, ]) != 0)  # 获取非零系数的特征索引
+            #G.pred_EN <- G.pred[, selected_features]
+            #y_pred=as.matrix(G.pred_EN) %*% e
+            #GEBV.slope=c(y_pred[,1])+c(coef@x[1]);
           } else if(model == "RF"){
             y0=intercept;
             GEBV.inter<-randomForest::randomForest(genotype[id.T,-1], y=y0[id.T],
@@ -288,7 +300,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
           else if(model == "SVM"){
             y0=intercept;
             model.inter<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
-                                    kernel="radial",cost=SVM_cost,gamma=gamma)
+                                    kernel="radial",cost=SVM_cost,gamma=gamma,max_iter=10)
             GEBV.inter<-stats::predict(model.inter,Marker[id.V,])
 
             y0=slope;
@@ -351,25 +363,36 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             removeSaveAt(saveAt)
           }
           else if(model =="GBLUP"){
-            #GENO<-as.data.frame(geno[id.V,-1])
-            #rowname<-paste(y0[,1],y0[,2], sep="-")
-            #rownames(GENO)<-rownames(y0[id.V])
-            y0=intercept;
-            A<-rrBLUP::A.mat(as.data.frame(geno[id.V,-1]))
-            #return(geno[id.V,-1])
-            dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
-            MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
+            y0<-intercept
+            y0[id.V]<-NA
+            yNa<-y0
+            GENO<-as.data.frame(geno[,-1])
+            rownames(GENO)<-geno[,1]
+            A <- rrBLUP::A.mat(as.data.frame(GENO))
+            dataF <- data.frame(genoID = rownames(GENO), intcp = y0)
+            #A<-rrBLUP::A.mat(as.data.frame(geno[id.V,-1]))
+            #dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
+            MODEL<-rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
                                    PEV=TRUE,n.core=1,theta.seq=NULL)
-            GEBV.inter<-MODEL$pred
+            GEBV.inter<-MODEL$pred[id.V]
+            #GEBV.inter<-MODEL$pred
+            #print("OK")
 
 
-            y0=slope;
-            #rownames(GENO)<-rownames(y0[id.V])
-            A<-rrBLUP::A.mat(geno[id.V,-1])
-            dataF=data.frame(genoID=rownames(geno[id.V,-1]),slope=y0[id.V])
-            MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="slope", GAUSS=FALSE, K=A,
-                                   PEV=TRUE,n.core=1,theta.seq=NULL)
-            GEBV.slope<-MODEL$pred
+            y0<-slope
+            y0[id.V]<-NA
+            yNa<-y0
+            GENO<-as.data.frame(geno[,-1])
+            rownames(GENO)<-geno[,1]
+            A <- rrBLUP::A.mat(as.data.frame(GENO))
+            rownames(A)<-geno[,1]
+            dataF <- data.frame(genoID = rownames(GENO), intcp = y0)
+            #A<-rrBLUP::A.mat(as.data.frame(geno[id.V,-1]))
+            #dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
+            MODEL<-rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
+                                    PEV=TRUE,n.core=1,theta.seq=NULL)
+            GEBV.slope<-MODEL$pred[id.V]
+            #GEBV.slope<-MODEL$pred
 
           }
           else if(model =="RKHS" | model =="MKRKHS"){
@@ -619,12 +642,12 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             else if (model == "SVM"){
               y0=intercept;
               model.inter<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
-                                      kernel="radial",cost=10,gamma=0.001)
+                                      kernel="radial",cost=SVM_cost,gamma=gamma)
               GEBV.inter<-stats::predict(model.inter,Marker[id.V,])
 
               y0=slope;
               model.slope<-e1071::svm(genotype[id.T,-1], y=y0[id.T], method="nu-regression",
-                                      kernel="radial",cost=10,gamma=0.001)
+                                      kernel="radial",cost=SVM_cost,gamma=gamma)
               GEBV.slope<-stats::predict(model.slope,Marker[id.V,])
             }
             else if (model == "RF"){
@@ -733,7 +756,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
     if(methods=="RM.G"){
       cor.within<-matrix(999,reshuffle,n.para)
       cor.all<-numeric()
-      if(model == "rrBLUP" | model == "RRJ"){
+      if(model == "rrBLUPJ" | model == "RRJ"){
         for(i in 1:reshuffle)
         {
           cross = sample(rep(1:fold,each=ceiling(n.line/fold)),n.line)
@@ -748,7 +771,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
 
             for(k in 1:n.para)
             {
-              if(model == "rrBLUP"){
+              if(model == "rrBLUPJ"){
                 fit=rrBLUP::mixed.solve(pheno[id.T,1+k],Z=Marker[id.T,])
                 effect[,k]=fit$u
                 intercept[,k]=fit$beta
@@ -1076,7 +1099,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
             }
             else if (model == "SVM"){
               model_SVM <- e1071::svm(M,yNa[,ncol(yNa)],method="nu-regression",
-                                      kernel="radial",cost=10,gamma=0.001)
+                                      kernel="radial",cost=SVM_cost,gamma=gamma)
               Prd <- stats::predict(model_SVM,N)
               PrdM<-data.frame(y_Prd, Prd = as.numeric(Prd))
               PrdM_wide<- PrdM %>% tidyr::pivot_wider(id_cols = line_code,names_from = Envs,values_from = Prd)
@@ -1105,7 +1128,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,depend=NULL,fold=NULL,reshuffle=NUL
           yobs.whole.cross <- ys
           yobs.whole.crossl<-tidyr::gather(yobs.whole.cross, key = "Envs", value = "Obs", -line_code)
           yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = ys[,1])), ]
-          yhat.whole.cross <- rbind(yhat.whole.cross,yNas)
+          #yhat.whole.cross <- rbind(yhat.whole.cross,yNas)
           yhat.whole.cross <- stats::aggregate(. ~ line_code, data = yhat.whole.cross, FUN = mean)
           yhat.whole.cross <- yhat.whole.cross[order(factor(yhat.whole.cross$line_code, levels = yobs.whole.cross[,1])), ]
           yhat.whole.cross <- yhat.whole.cross %>% select(colnames(yobs.whole.cross))
