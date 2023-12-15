@@ -1,0 +1,44 @@
+Package: MMGS
+Type: Package
+Title: Multi-methods for Multi-Envs Genomic Selection pipeline
+Version: 1.0.0
+Authors@R: 
+    person(given="Eason", 
+    family="Zhu", 
+    email="z980907mj@gmail.com", 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-5958-1290"))
+Maintainer: Eason <z980907mj@gmail.com>
+Description: Package for Multi-envs Genomic Selection, contains Inbred Lines, CUBIC Lines and Light-cross Lines. For more details of the Norm Reaction Model, you can see the article: <https://doi.org/10.1016/j.molp.2021.03.010>; and for the Polygenic Environment Interaction Model, please see the articles: <https://doi.org/10.1016/j.molp.2022.02.012> and <https://doi.org/10.1016/j.xplc.2022.100473>. Each of these two GS models explains the mechanisms of environmental interactions from a different perspective, so please read them in detail depending on the type of model you are using. The R package 'MMGS' was developed by Mingjia Zhu <z980907mj@gmail.com> and Yanjun Zan <>. This repository is forked from the original repository <https://github.com/Ryougi-yukiro/MMGS>. If you would like to install the package from GitHub, you can follow this URL.
+License: GPL-3 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    BGLR,
+    e1071,
+    randomForest,
+    corrgram,
+    rrBLUP,
+    lemon,
+    glmnet,
+    lightgbm,
+    tidyr,
+    stringi,
+    reshape2,
+    grDevices,
+    dplyr,
+    stats,
+    colorspace
+Depends: 
+    ggplot2,
+    R (>= 2.10)
+RdCheck: "never"
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+NeedsCompilation: no
+VignetteBuilder: knitr
