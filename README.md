@@ -130,7 +130,7 @@ See full documentation from original repository
 * Slope_Intercept
 
 ## Implementation notes
-ggGSE is a collection of tools for cross-environmental genome-wide selection prediction that integrates most genome-wide prediction models, both parametric and non-parametric. You can input your own collected data against sample data and get the results you want directly through the built-in functions of the toolkit, which requires no additional statistical knowledge or coding skills and is somewhat user-friendly because it saves users from having to search for various tools and apply them to cross-environmental prediction.
+MMGS is a collection of tools for cross-environmental genome-wide selection prediction that integrates most genome-wide prediction models, both parametric and non-parametric. You can input your own collected data against sample data and get the results you want directly through the built-in functions of the toolkit, which requires no additional statistical knowledge or coding skills and is somewhat user-friendly because it saves users from having to search for various tools and apply them to cross-environmental prediction.
 
 ## License
 [GPL-3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
@@ -139,8 +139,6 @@ ggGSE is a collection of tools for cross-environmental genome-wide selection pre
 [Li X, Guo T, Wang J, et al. An integrated framework reinstating the environmental dimension for GWAS and genomic selection in crops[J]. Molecular Plant](https://www.sciencedirect.com/science/article/pii/S167420522100085X)
 
 [Jarquín D, Crossa J, Lacaze X, et al. A reaction norm model for genomic selection using high-dimensional genomic and environmental data[J]. Theoretical and applied genetics, 2014, 127: 595-607.](https://link.springer.com/article/10.1007/s00122-013-2243-1)
-
-
 
 
 =======
