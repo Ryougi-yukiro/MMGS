@@ -90,24 +90,20 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 
 ### Others function Example
 ```R
-result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
-MSE<-result[[1]]
-ltm<-result[[2]]
-mse_plotter(MSE)
-
-Reg<-Reg(LbyE=LbyE,env_trait=env_trait)
-Reg_plotter(Reg=Reg)
-Mean_trait_plot(Reg,MSE)
-
-Slope_Intercept<-Slope_Intercept(data=filtered_trait,input=env_trait, env_paras=PTT_PTR,
-                  Para_Name="PTS",line="line_code",trait="PH",filter=5,
-                  maxR_dap1=22, maxR_dap2=35,rounds=4)
-
-prdM <- LOOCV(maxR_dap1=22,maxR_dap2=35,data=filtered_trait,input=env_trait,env_paras=PTT_PTR,
-              Para_Name="PTS",trait="PH",line="line_code",p=1,filter=4)
-
-prdM_plotter(prdM=prdM,data=envMeanPara,trait="PH",Para_Name="PTS");
-envMeanPara_plotter(envMeanPara)
+pheno<-LbyE
+pheno$PR11 <-NA
+#linear radial polynomial linear
+#library(dplyr)
+for( i in envMeanPara$env_code){
+  pheno<-LbyE
+  pheno[["KS12"]]<-NA
+out<-MMPrdM(pheno=pheno, geno=geno,env=env_info,para=envMeanPara,
+            Para_Name=c("PTS"), depend="PEI",
+            SVM_cost = 1,gamma=10,kernel="linear",fixed=T,
+            model="SVM",reshuffle=1,methods="RM.G")
+(cor<-cor(out[,2],LbyE[["KS12"]]))
+print(paste(i," : ",cor))
+}
 ```
 
 ## Documentation
