@@ -268,6 +268,7 @@ out<-MMGP(pheno=pheno, geno=geno, env=env_info,para=envMeanPara, Para_Name=Para[
 #1 1595.988 1588.782 #FF0000 PR12
 #2 1512.918 1576.437 #FF0000 PR12
 ```
+Correlation result here refers to the correlation between the predicted phenotypes and the actual phenotypes of the environment, not the breeding values, so please do your own calculations first if needed (before the R package is updated).
 
 ### Others function Example
 ```R
