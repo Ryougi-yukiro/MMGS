@@ -68,14 +68,12 @@ envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,
 ```
 
 ### Step.3 CV
-Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP, LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
+Users can customize the model they need, the function uses the  by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. 
 ```R
 #Check pheno
 pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
 #CV 
-out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
-             para=envMeanPara, Para_Name="PTT", depend="norm",
-             model="rrBLUP", fold=2, reshuffle=5, methods="RM.G")
+out<-MMGP(pheno=pheno, geno=geno, env=env_info,para=envMeanPara, Para_Name=Para[1], depend="PEI",model="BB", kernel="linear", fold=2, reshuffle=5, methods="RM.G")
 #result
 #> mean(out[[3]])
 #[1] 0.8728506
@@ -87,6 +85,7 @@ out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
 #1 1595.988 1588.782 #FF0000 PR12
 #2 1512.918 1576.437 #FF0000 PR12
 ```
+Correlation here refers to the correlation between the predicted phenotypes and the actual phenotypes of the environment, not the breeding values, so please do your own calculations first if needed (before the R package is updated).
 
 ### Others function Example
 ```R
