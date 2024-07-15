@@ -105,6 +105,23 @@ print(paste(i," : ",cor))
 }
 ```
 
+### Methods notes
+For some non-parametric algorithms, please refer here for changes.
+```R
+#SVM : There are 4 kernel you can use :linear: u0v
+#polynomial: (γu0v + coef0)degree
+#radial basis: e( − γ|u − v|2)
+#sigmoid: tanh(γu0v + coef0)
+
+#GBM function
+  if(is.null(GBM_params)){
+    params <- list(boosting="gbdt",objective = "regression",metric = "RMSE",min_data = 1L,
+                   learning_rate = 0.01,num_iterations=1000,num_leaves=3,max_depth=-1,
+                   early_stopping_round=50L,cat_l2=10,skip_drop=0.5,drop_rate=0.5,
+                   cat_smooth=5)
+  }
+```
+
 ## Documentation
 See full documentation from original repository
 
@@ -128,6 +145,7 @@ See full documentation from original repository
 * Reg
 * Reg_plotter
 * Slope_Intercept
+* 
 
 ## Implementation notes
 MMGS is a collection of tools for cross-environmental genome-wide selection prediction that integrates most genome-wide prediction models, both parametric and non-parametric. You can input your own collected data against sample data and get the results you want directly through the built-in functions of the toolkit, which requires no additional statistical knowledge or coding skills and is somewhat user-friendly because it saves users from having to search for various tools and apply them to cross-environmental prediction.
