@@ -126,7 +126,6 @@ See full documentation from original repository
 * LbyE_calculate
 * LbyE_corrplot
 * line_trait_mean
-* LOOCV
 * ltm_plotter
 * Mean_trait_plot
 * mse_plotter
@@ -261,9 +260,7 @@ Users can customize the model they need, the function uses the norm reaction by 
 #Check pheno
 pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
 #CV 
-out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
-             para=envMeanPara, Para_Name="PTT", depend="norm",
-             model="rrBLUP", fold=2, reshuffle=5, methods="RM.G")
+out<-MMGP(pheno=pheno, geno=geno, env=env_info,para=envMeanPara, Para_Name=Para[1], depend="Norm",model="rrBLUP", kernel="linear", fold=2, reshuffle=5)
 #result
 #> mean(out[[3]])
 #[1] 0.8728506
