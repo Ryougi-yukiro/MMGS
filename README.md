@@ -4,8 +4,7 @@ A comprehensive R package, multiple-environments multiple methods genomic select
 
 ## Description
 
-A  devlopment R packages used for GS within diff envs.
-
+Total of these statistical models are classified into three major categories: parametric, semi-parametric, and non-parametric (Admas et al, 2024). The parametric statistical models include mixed linear models like genomic best linear unbiased prediction (G-BLUP) (Vanraden, 2008), BayesA (BA) and BayesB (BB) (Meuwissen et al., 2001), BayesC (BC) (George and McCulloch, 1993), Bayesian ridge regression (BRR) (Erbe et al., 2012), and Bayesian LASSO (BL) (Park and Casella, 2008), least absolute shrinkage and selection operator (LASSO) (Usai et al., 2009), ridge regression (RR) (Whittaker et al., 2000), ridge regression best linear unbiased prediction (RR-BLUP) (Meuwissen et al., 2001), and elastic net (EN) (Zou and Hastie, 2005). The semi-parametric method includes the reproducing kernel Hilbert space (RKHS) model and multiple kernel RKHS (MKRKHS) (Gianola et al., 2006). The non-parametric method comprises support vector machine (SVM) (Maenhout et al., 2007), and random forest (RF) (Chen and Ishwaran, 2012), and gradient boosting machine (GBM) (Li et al., 2018). 
 ## Installation
 
 You can install the package from CRAN using the following command:
