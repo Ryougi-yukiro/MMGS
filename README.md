@@ -54,15 +54,17 @@ ltm<-result[[2]]
 This step aims to find the most relevant environmental factors to provide a solid basis for subsequent predictions
 ```R
 Paras <- colnames(PTT_PTR)[-c(1:4)]
+#windows-search
 pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=122,
                            p=1, dap_x=122,dap_y=122,LOO=0,Paras=Paras)
-#全局变量.data
+#plot
 #Exhaustive_plotter(Correlation=pop_cor,dap_x=122, dap_y=122,p=1,Paras=Paras)
+
+#correlation
 envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,
                          maxR_dap2=43, Paras=Paras)
-#全局变量.data
-envMeanPara_plotter(data=envMeanPara,Paras=Paras)
-#全局变量line_code Obs Env
+#plot
+#envMeanPara_plotter(data=envMeanPara,Paras=Paras)
 ```
 
 ### Step.3 CV
