@@ -178,7 +178,6 @@ geno <- read.table(file="Genotype.txt", header = T , sep = "\t")
 ```
 ### Step.2 estimate h2 within different Envs
 ```R
-h2<-h2_rrBLUP(trait=trait,geno=geno,envs="env_code")
 #if you need estiamte H2 plz use asreml or VCA package
 #example code as follow:
 trait$Loc <- as.factor(trait$env_code)
