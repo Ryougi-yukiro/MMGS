@@ -1,6 +1,6 @@
 
 # MMGS
-A R package MMGS is developed by Mingjia Zhu. You can use this packages for Genomic selection across different envs whithin different model, such as rrBLUP, bayesian, LightGBM and so on.
+A comprehensive R package, multiple-environments multiple methods genomic selection (MMGS), developed by Mingjia Zhu, integrates the polygenic environmental interaction (PEI) and Reaction Norm (RE) methods along with 15 prediction models that include difference prediction estimated methods contains parametic, semi-parametric and non-parametric.
 
 ## Description
 
