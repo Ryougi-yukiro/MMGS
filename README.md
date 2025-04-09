@@ -17,6 +17,7 @@ devtools::install_github("Ryougi-yukiro/MMGS")
 ## Usage
 Provide examples of how to use your package. Include code snippets and brief explanations to demonstrate the key features and functionalities.
 You can also provide links to additional resources or documentation.
+https://app.gitbook.com/o/j4RG8ikLFcjAN6EbyMsS/s/2THdi4IsRwuBXO2RDSFx/
 
 ### Step.1 Load packages and data
 We have built-in data from a hybrid population that includes environmental data from multiple locations, filtered genotype data, and flowering-related phenotypic data. This dataset is smaller and easier for beginners to understand how the package is used.
