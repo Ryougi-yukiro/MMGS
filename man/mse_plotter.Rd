@@ -13,7 +13,7 @@ mse_plotter(data, point_size = NULL, text_size = NULL, point_shape = NULL)
 
 \item{text_size}{Size of text labels in the plot.}
 
-\item{point_shape}{Shape of the points in the plot.、}
+\item{point_shape}{Shape of the points in the plot.}
 }
 \value{
 A plot illustrating Mean Squared Errors (MSE) data.
