@@ -33,7 +33,6 @@ Imports:
 Depends: 
     ggplot2,
     R (>= 2.10)
-RdCheck: "never"
 LazyData: true
 Suggests: 
     knitr,
