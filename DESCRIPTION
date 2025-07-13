@@ -1,6 +1,6 @@
 Package: MMGS
 Type: Package
-Title: Multi-methods for Multi-Envs Genomic Selection pipeline
+Title: Multi-Methods for Multi-Envs Genomic Selection Pipeline
 Version: 1.0.0
 Authors@R: 
     person(given = "Eason",
@@ -8,7 +8,7 @@ Authors@R:
            email = "z980907mj@gmail.com",
            role = c("aut", "cre"))
 Maintainer: Eason Zhu <z980907mj@gmail.com>
-Description: Package for Multi-envs Genomic Selection, contains Inbred Lines, CUBIC Lines and Light-cross Lines. For more details of the Norm Reaction Model, you can see the article: <https://doi.org/10.1016/j.molp.2021.03.010>; and for the Polygenic Environment Interaction Model, please see the articles: <https://doi.org/10.1016/j.molp.2022.02.012> and <https://doi.org/10.1016/j.xplc.2022.100473>. Each of these two GS models explains the mechanisms of environmental interactions from a different perspective, so please read them in detail depending on the type of model you are using. The R package 'MMGS' was developed by Mingjia Zhu <z980907mj@gmail.com> and Yanjun Zan <>. This repository is forked from the original repository <https://github.com/Ryougi-yukiro/MMGS>. If you would like to install the package from GitHub, you can follow this URL.
+Description: Package for Multi-envs Genomic Selection, contains Inbred Lines, CUBIC Lines and Light-cross Lines.
 License: GPL-3 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -39,4 +39,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-VignetteBuilder: knitr
+
