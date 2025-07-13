@@ -1,24 +1,29 @@
 #' @title Regression
 #' @description
-#' Calculate regression results between traits and environmental means for each line.
+#' Calculate regression results between traits and
+#' environmental means for each line.
 #'
 #' @param LbyE Data frame containing lines and their corresponding
 #'  trait values within environments.It is from the function of LbyE_calculate.
 #' @param env_trait Data frame containing environmental means for
-#' different traits within environments.It is from the function of enV_mean_calculate.
-#' @param filter_num Minimum number of observations required to perform regression. Default is 4.
+#' different traits within environments.It is from the function
+#' of enV_mean_calculate.
+#' @param filter_num Minimum number of observations required to
+#' perform regression. Default is 4.
 #'
 #' @return A data frame containing regression results for each line.
 #' @export
 #'
 #' @examples
 #' #Get Input
-#' LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
-#' env_trait <- env_trait_calculate(data = trait, trait = "FTgdd", env = "env_code", q25_75 = TRUE)
+#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
+#' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 #' #Calculate
-#' Regression<-Reg(LbyE = LbyE, env_trait = env_trait)
+#' Regression<-Reg(LbyE=LbyE,env_trait=env_trait)
 #' print(head(Regression))
-Reg <- function(LbyE, env_trait, filter_num = NULL) {
+Reg <- function(LbyE,
+                env_trait,
+                filter_num = NULL) {
   if (is.null(filter_num)) {
     filter_num = 4
   }

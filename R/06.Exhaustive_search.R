@@ -1,19 +1,22 @@
 #' @title Exhaustive_search
 #' @description
-#' Perform exhaustive search for population correlation matrix based on environmental parameters.
+#' Perform exhaustive search for population
+#' correlation matrix based on environmental parameters.
 #'
-#' @param data Data frame containing environmental trait data,
-#' typically the output of env_trait_calculate. Input is recieved from the env_trait_mean
+#' @param data Data frame containing environmental trait data.
 #' @param env_paras Data frame containing environmental parameter information.
-#' @param searching_daps The total number of days to search for, typically set based on your data. Default is 122.
-#' @param p The parameter for controlling the shape of the search window. Default is 1.
+#' @param searching_daps The total number of days to search for,
+#' typically set based on your data. Default is 122.
+#' @param p The parameter for controlling the shape of the search window.
+#' Default is 1.
 #' @param dap_x The number of days for the x-axis of the search window.
 #'  Default is the same as searching_daps.
 #' @param dap_y The number of days for the y-axis of the search window.
 #' Default is the same as searching_daps.
 #' @param LOO Leave-One-Out cross-validation flag. If LOO is 1,
 #  it performs Leave-One-Out cross-validation. Default is 0.
-#' @param Paras Vector containing the names of environmental parameters to be considered.
+#' @param Paras Vector containing the names of environmental parameters
+#' to be considered.
 #'
 #' @return A population correlation matrix based on the exhaustive search.
 #' @export
@@ -22,8 +25,9 @@
 #' #Input from function : env_trait_calculate
 #' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 #' #Run
-#' \dontrun{pop_cor <- Exhaustive_search(data = env_trait, env_paras = PTT_PTR,searching_daps = 122,
-#'  p=1, dap_x=122,dap_y=122,LOO=0,Paras=colnames(PTT_PTR)[-c(1:4)])}
+#' \dontrun{Exhaustive_search(denv_trait,PTT_PTR)}
+#'
+#' @usage Exhaustive_search(data, env_paras, searching_daps, ...)
 Exhaustive_search<-function(data, env_paras, searching_daps,
                             p=NULL, dap_x=NULL,dap_y=NULL,LOO=NULL,
                             Paras=NULL){
@@ -46,7 +50,8 @@ Exhaustive_search<-function(data, env_paras, searching_daps,
   dap_win <- searching_daps * searching_daps / 2;
   pop_cors_matrix <- matrix(ncol = 4 + (2 * nParas), nrow = dap_win * 1);
   colnames(pop_cors_matrix) <- c("pop_code", 'Day_x', 'Day_y', 'window',
-                                 paste('R_', Paras, sep = ''), paste('nR_', Paras, sep = ''));
+                                 paste('R_', Paras, sep = ''),
+                                 paste('nR_', Paras, sep = ''));
   n <- 0;
 
   # Loop through each window of days
@@ -70,7 +75,8 @@ Exhaustive_search<-function(data, env_paras, searching_daps,
       # Calculate correlations
       if (LOO == 0) {
         for (k in 1:nParas) {
-          rs[k] <- round(cor(Ymean_envPara[, nParas + 1], Ymean_envPara[, k]), digits = 4)
+          rs[k] <- round(cor(Ymean_envPara[, nParas + 1],
+                             Ymean_envPara[, k]), digits = 4)
         }
       } else {
         loo_rs_matrix <- matrix(nrow = nrow(Ymean_envPara) + 0, ncol = nParas);
@@ -78,7 +84,8 @@ Exhaustive_search<-function(data, env_paras, searching_daps,
           ## 8 environment parameters
           for (e_x in c(1:nrow(Ymean_envPara))) {
             t_matrix <- Ymean_envPara[-e_x,];
-            loo_rs_matrix[e_x, k] <- round(cor(t_matrix[, nParas + 1], t_matrix[, k]), digits = 4)
+            loo_rs_matrix[e_x, k] <- round(cor(t_matrix[, nParas + 1],
+                                               t_matrix[, k]), digits = 4)
           }
         }
         rs <- apply(loo_rs_matrix, 2, median);

@@ -1,22 +1,25 @@
 #' @title MMPrdM
 #'
 #' @description
-#' MMPrdM (Multi-environment Multi-marker Prediction Model) is a function for genomic prediction
-#' that includes cross-environment prediction. It leverages genetic and
-#' environmental information to predict phenotypic values. The function supports various genomic
-#' prediction methods and models, providing flexibility in choosing the most suitable approach
+#' MMPrdM (Multi-environment Multi-marker Prediction Model) is a function
+#' for genomic prediction that includes cross-environment prediction.
+#' It leverages genetic and environmental information to predict phenotype.
+#' The function supports various genomic prediction methods and models,
+#' providing flexibility in choosing the most suitable approach
 #' based on the data characteristics and user preferences.
 #'
-#' @param geno Matrix (n x m) of genotypes for the training population: n lines with m markers.
-#'             Genotypes should be coded -1, 0, 1. Missing data are not allowed.
+#' @param geno Matrix (n x m) of genotypes for the training population:
+#'             n lines with m markers.
+#'             Genotypes should be coded -1, 0, 1.
+#'             Missing data are not allowed.
 #' @param pheno Vector (n x j) of "phenotypes", i.e. observations or pre-processed, corrected values.
 #' @param env Data.frame (j x l) of "environmental information", i.e.
 #' @param para Data.frame returned from envMeanPara function.
 #' @param Para_Name The most relevant environmental silvers to the subject's phenotype,
 #'                  obtained after stepwise correlation calculations, are referred to for more details:
 #' @param depend The options for genomic breeding within different environment.The available options are:
-#'               1.Norm:<br>
-#'               2.Marker:
+#'               1.Reaction Norm:
+#'               2.PEI:
 #' @param reshuffle Number of independent replicates for the Predict.
 #'                  Smallest value recommended is reshuffle = 3.
 #' @param methods RM.G RM.GE RM.E
@@ -58,21 +61,19 @@
 #'              4.LightGBM: Light Gradient Boosting Machine, run by LightGBM library developed by Microsoft.<br>
 #'              For details, see Jun Yan, Yuetong Xu, at al: LightGBM: <br>
 #'              accelerated genomically designed crop breeding through ensemble learning<br>
-#'              and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html<br>
 #' @param ENalpha used for EN predict model,the value range from 0 to 1.
 #' @param nIter Number of iterations for the Bayesian model.
 #' @param burnIn Number of burn-in for the Bayesian model.
 #' @param thin Number of thins for the Bayesian model.
-#' @param kernel the kernel used in training and predicting. You might consider changing some
-#'   of the following parameters, depending on the kernel type.
-#'  linear: u0v
-#'  polynomial: (γu0v + coef0)degree
-#'  radial basis: e( − γ|u − v|2)
-#'  sigmoid: tanh(γu0v + coef0)
-#' @param SVM_cost cost of constraints violation (default: 10)—it is the 'C'-constant of the regularization term in the Lagrange formulation
-#' @param gamma parameter needed for all kernels except linear (default: 0.001)
-#' @param GBM_params  a list of parameters. See The "Dataset Parameters"{https://lightgbm.readthedocs.io/en/latest/Parameters.html#dataset-parameters} section of the documentation
-#' @param GBM_rounds  number of training rounds Based on LightGBM model
+#' @param SVM_cost Cost of constraints violation for SVM (default: 10).
+#' @param kernel the kernel used in training and predicting.
+#'               You might consider changing some of the following parameters,
+#'               depending on the kernel type.
+#'               linear, polynomial, radial basis, sigmoid.
+#' @param gamma Parameter needed for all kernels except linear (default: 0.001).
+#' @param GBM_params A list of parameters for LightGBM.
+#'                   See LightGBM documentation for details.
+#' @param GBM_rounds Number of training rounds for LightGBM.
 #' @param Envs Assign variable column names of Envs. Default is Envs.
 #' @param line_code Assign variable column names of line_code Default is line_Code.
 #'
@@ -86,8 +87,7 @@
 
 #' @examples
 #' \dontrun{
-#' out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
-#'                        depend="maker",reshuffle=5,methods="RM.G")
+#' out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara)
 #' }
 MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
                  methods=NULL,ENalpha=NULL,SVM_cost=NULL,gamma=NULL,kernel=NULL,
@@ -369,16 +369,20 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
             yNa<- c()
             yNa[id.T]<-y0
             yNa[id.V]<-NA
-            model.inter<-e1071::svm(genotype[id.T,-1], y=yNa[id.T], method="nu-regression",
-                                    kernel="linear",cost=SVM_cost,gamma=gamma,max_iter=100)
+            model.inter<-e1071::svm(genotype[id.T,-1], y=yNa[id.T],
+                                    method="nu-regression",
+                                    kernel="linear",cost=SVM_cost,
+                                    gamma=gamma,max_iter=100)
             GEBV.inter<-stats::predict(model.inter,Marker[id.V,])
 
             y0<- slope
             yNa<- c()
             yNa[id.T]<-y0
             yNa[id.V]<-NA
-            model.slope<-e1071::svm(genotype[id.T,-1], y=yNa[id.T]*10^9, method="nu-regression",
-                                    kernel="linear",cost=SVM_cost,gamma=gamma,max_iter=100)
+            model.slope<-e1071::svm(genotype[id.T,-1], y=yNa[id.T]*10^9,
+                                    method="nu-regression",
+                                    kernel="linear",cost=SVM_cost,
+                                    gamma=gamma,max_iter=100)
             GEBV.slope<-stats::predict(model.slope,Marker[id.V,])/10^9
           }
           else if(model == "BA" | model == "BC" | model == "BL" | model == "BRR"
@@ -736,7 +740,8 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
               y0=intercept;
               A<-rrBLUP::A.mat(geno[id.V,-1])
               dataF=data.frame(genoID=rownames(geno[id.V,-1]),intcp=y0[id.V])
-              MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp", GAUSS=FALSE, K=A,
+              MODEL=rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="intcp",
+                                     GAUSS=FALSE, K=A,
                                      PEV=TRUE,n.core=1,theta.seq=NULL)
               GEBV.inter<-MODEL$pred
 

@@ -1,6 +1,7 @@
 #' Mean_trait_plot
 #'
-#' Generate a plot displaying the relationship between the mean trait values and the environmental parameter mean.
+#' Generate a plot displaying the relationship between the mean trait values
+#' and the environmental parameter mean.
 #'
 #' @param Reg Regression result data frame.
 #' @param MSE Mean Squared Error (MSE) result data frame.
@@ -10,14 +11,18 @@
 #' @param linetype Line type for the smoothing line.
 #' @param color color for the points and the dash area.
 #'
-#' @return A plot showing the relationship between mean trait values and the environmental parameter mean, with MSE information. Uses ggplot2 for plotting.
+#' @return A plot showing the relationship between mean trait values and
+#' the environmental parameter mean, with MSE information.
+#'
 #' @export
 #'
 #' @importFrom dplyr %>% left_join
 #' @importFrom ggplot2 geom_line geom_ribbon geom_point geom_smooth theme_bw
 #' @examples \dontrun{Mean_trait_plot(Reg, MSE)}
+#'
 Mean_trait_plot <- function(Reg, MSE, point_size = NULL,color=NULL,
-                            point_shape = NULL, linewidth = NULL, linetype = NULL) {
+                            point_shape = NULL, linewidth = NULL,
+                            linetype = NULL) {
   # Set default values if not provided
   if (is.null(point_size)) {
     point_size = 0.5

@@ -1,6 +1,7 @@
-#' @title env_info Dataset
+#' @title env\_info Dataset
 #' @description
-#' This dataset contains information about environmental factors for various environments.
+#' This dataset contains information about environmental factors for
+#' various environments.
 #'
 #' @format A data frame with the following columns:
 #' \describe{
@@ -13,7 +14,8 @@
 #'   \item{TrialYear}{Planting Year of lines.}
 #' }
 #'
-#' @source This dataset originates from the article and provides essential information for environmental analysis.
+#' @source This dataset originates from the article and provides essential
+#' information for environmental analysis.
 #' @keywords dataset
 #'
 #' @usage data(env_info)

@@ -1,26 +1,35 @@
 #' @title envMeanPara
 #' @description
-#' Calculate environmental mean parameters for a specific trait within a specified time range.
+#' Calculate environmental mean parameters for a specific trait
+#' within a specified time range.
 #' This time range is calculated by the Exhaustive_search.
 #'
-#' @param data Data frame containing trait mean values within different environments.
+#' @param data Data frame containing trait mean values
+#' within different environments.
 #' @param env_paras Data frame containing environmental parameter information.
-#' @param maxR_dap1 The starting day for calculating environmental mean parameters.
+#' @param maxR_dap1 The starting day for calculating
+#' environmental mean parameters.
 #' Default is 18, which is used for the test data.
-#' @param maxR_dap2 The ending day for calculating environmental mean parameters.
+#' @param maxR_dap2 The ending day for calculating
+#' environmental mean parameters.
 #' Default is 43, which is used for the test data.
-#' @param Paras Vector containing the names of environmental parameters to be calculated.
+#' @param Paras Vector containing the names of environmental
+#' parameters to be calculated.
 #'
-#' @return A data frame containing trait mean values and calculated environmental mean parameters.
+#' @return A data frame containing trait mean values and calculated
+#' environmental mean parameters.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' envMeanPara <- envMeanPara(data = env_trait, env_paras = PTT_PTR,
-#'                            maxR_dap1 = 18, maxR_dap2 = 43)
+#' envMeanPara<-envMeanPara(data=env_trait,env_paras=PTT_PTR)
 #' }
-envMeanPara <- function( data, env_paras, maxR_dap1=NULL, maxR_dap2=NULL,Paras=NULL){
-
+#' @usage envMeanPara<-function(data,env_paras,...)
+envMeanPara<-function(data,
+                      env_paras,
+                      maxR_dap1=NULL,
+                      maxR_dap2=NULL,
+                      Paras=NULL){
   # Set default values if not provided
   if (is.null(maxR_dap1)) {
     maxR_dap1 = 18
@@ -48,8 +57,7 @@ envMeanPara <- function( data, env_paras, maxR_dap1=NULL, maxR_dap2=NULL,Paras=N
     # Subset environmental parameter data for the current environment
     env_para <- subset(env_paras, env_paras$env_code == e)
 
-    # Calculate mean values for selected environmental parameters within the specified days
-    env_mean <- colMeans(env_para[days, (1:nParas) + 4])  # Columns 5 and onwards contain parameter values
+    env_mean <- colMeans(env_para[days, (1:nParas) + 4])
 
     # Assign calculated values to the matrix
     env_facts_matrix[e_i,] <- c(data$mean[e_i], round(env_mean, 4))

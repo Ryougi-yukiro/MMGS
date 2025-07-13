@@ -2,20 +2,22 @@
 #' @description
 #' Calculate the lines in all environments.
 #'
-#' @param env Column name representing different environments in the input data frame.
+#' @param env Column name representing different environments
+#' in the input data frame.
 #' @param line Column name representing different lines in the input data frame.
-#' @param data Input data frame containing trait values, line information, and environmental information.
-#' @param trait The trait for which the lines within different environments will be calculated.
-#'
-#' @return A data frame containing line values within different environments for the specified trait.
+#' @param data Input data frame containing trait values, line information,
+#' and environmental information.
+#' @param trait The trait for which the lines within different environments
+#' will be calculated.
+#' @return A data frame containing line values within different environments
+#' for the specified trait.
 #' @export
 #'
 #' @examples
 #' # Calculate lines within different environments for the trait "FTgdd"
-#' LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
-#' print(head(LbyE))
-LbyE_calculate<-function(data,trait,env,line){
+#' LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
 
+LbyE_calculate<-function(data,trait,env,line){
   # Get unique environment and line codes
   envs <- unique(as.vector(data[[env]]))
   lines <- unique(as.vector(data[[line]]))

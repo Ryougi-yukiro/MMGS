@@ -11,11 +11,18 @@
 #' @return A combined pop_cor plot.
 #' @export
 #'
-#' @importFrom ggplot2 theme geom_label element_blank theme_bw scale_y_continuous scale_x_continuous labs
+#' @importFrom ggplot2 theme geom_label element_blank theme_bw
+#' scale_y_continuous scale_x_continuous labs
 #' @importFrom lemon grid_arrange_shared_legend
-#' @examples \dontrun{Exhaustive_plotter(input=pop_cor,dap_x=122, dap_y=122,p=1,
-#' Paras=c('DL', 'GDD', 'PTT', 'PTR', 'PTS'))}
-Exhaustive_plotter <- function(Correlation, dap_x, dap_y, p=NULL,Paras,Cor=NULL) {
+#' @examples \dontrun{Exhaustive_plotter(Correlation,dap_x,dap_y,Paras)}
+#'
+#' @usage Exhaustive_plotter <- function(Correlation,Paras,...)
+Exhaustive_plotter <- function(Correlation,
+                               dap_x,
+                               dap_y,
+                               p = NULL,
+                               Paras,
+                               Cor = NULL) {
   if(is.null(Cor)){Cor=Cor}
   if(is.null(p)){p=1}
   pop_cors <- as.data.frame(Correlation)

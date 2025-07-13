@@ -1,7 +1,7 @@
-#' @title PTT_PTR Dataset
+#' @title PTT\_PTR Dataset
 #'
 #' @description
-#' This dataset contains information about environmental parameters related to
+#' Dataset contains information about environmental parameters related to
 #' PTT (Photothermal Time) and PTR (Photothermal Ratio) and others.
 #'
 #' @format A data frame representing environmental parameters.

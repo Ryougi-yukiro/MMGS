@@ -11,10 +11,13 @@
 #' @param alpha Alpha value for points in the scatter plot.
 #' @param linetype Line type for the smoothing line.
 #' @param linecolor Line color for the smoothing line.
-#' @param Paras Vector containing the names of environmental parameters to be considered.
-#' @param env_code Point color for the scatter plot by env_code.Defualt is env_code.
+#' @param Paras Vector containing the names of environmental parameters
+#' to be considered.
+#' @param env_code Point color for the scatter plot by env_code.Defualt
+#' is env_code.
 #'
-#' @return A plotter displaying the relationship between environmental parameter means and the overall mean.
+#' @return A plotter displaying the relationship between environmental
+#' parameter means and the overall mean.
 #' @export
 #' @importFrom ggplot2 geom_smooth annotate
 #' @importFrom grDevices heat.colors
@@ -67,7 +70,8 @@ envMeanPara_plotter <- function(data,size = NULL, shape = NULL,
       geom_smooth(data=df1,
                   aes(x = x, y = y),
                   se = FALSE, linewidth = linewidth,
-                  method = method, linetype = linetype, color = linecolor, formula = y ~ x) +
+                  method = method, linetype = linetype,
+                  color = linecolor, formula = y ~ x) +
       xlab(colnames(data)[cols])+ylab("Mean")+xlab(i)+
       theme_bw() +
       annotate('text', x = x, y = y,
@@ -83,6 +87,7 @@ envMeanPara_plotter <- function(data,size = NULL, shape = NULL,
   }
 
   a <- paste(d, collapse = ", ")
-  code <- paste("lemon::grid_arrange_shared_legend(", paste(a, collapse = ", "), ", nrow = 2, ncol = 3, position = 'right')")
+  code <- paste("lemon::grid_arrange_shared_legend(", paste(a, collapse = ", "),
+                ", nrow = 2, ncol = 3, position = 'right')")
   eval(parse(text = code))
 }

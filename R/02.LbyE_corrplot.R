@@ -2,23 +2,28 @@
 #' @description
 #' Plot the correlation between lines and environments.
 #'
-#' @param LbyE A data frame calculated by LbyE_calculate. Column names represent Lines, and row names represent Environments.
-#' @param cor_type Graphic format of the correlation map. The default format is "heatmap". Other option is "pie".
-#' @param color Set the color gradient for the correlation map. It is a vector of three colors representing low, mid, and high values.
+#' @param LbyE A data frame calculated by LbyE_calculate. Column names
+#' represent Lines, and row names represent Environments.
+#' @param cor_type Graphic format of the correlation map. The default format
+#' is "heatmap". Other option is "pie".
+#' @param color Set the color gradient for the correlation map. It is a
+#' vector of three colors representing low, mid, and high values.
 #'
-#' @return A correlation plot between lines and environments in the specified format.
+#' @return A correlation plot between lines and environments in
+#' the specified format.
 #' @export
-#' @importFrom corrgram panel.shade panel.pie
-#' @importFrom ggplot2 aes geom_tile geom_text scale_fill_gradient2 theme_minimal xlab ylab ggplot
+#' @importFrom
+#' corrgram panel.shade panel.pie
+#' @importFrom
+#' ggplot2 aes geom_tile geom_text scale_fill_gradient2
+#' theme_minimal xlab ylab ggplot
 #' @examples
-#' #Get Input
-#' LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
+#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
 #' # Generate a heatmap correlation plot for Lines and Environments
-#' LbyE_corrplot(LbyE = LbyE, cor_type = "heatmap", color = c("blue", "white", "red"))
-#'
+#' LbyE_corrplot(LbyE,cor_type="heatmap",color=c("blue","white","red"))
 #' # Generate a pie chart correlation plot for Lines and Environments
-#' LbyE_corrplot(LbyE = LbyE, cor_type = "pie", color = c("blue", "white", "red"))
-#'
+#' LbyE_corrplot(LbyE,cor_type="pie",color=c("blue","white","red"))
+
 LbyE_corrplot <- function(LbyE, cor_type = NULL, color = NULL) {
   # Set default values if not provided
   if (is.null(cor_type)) {

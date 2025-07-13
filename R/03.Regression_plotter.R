@@ -1,7 +1,8 @@
 #' @title Reg_plotter
 #' @description
 #'
-#' Generate a regression plot between the mean and trait, showing the relationship between these two variables.
+#' Generate a regression plot between the mean and trait,
+#' showing the relationship between these two variables.
 #'
 #' @param Reg Input data frame containing regression results.
 #' param x Variable to be plotted on the x-axis.
@@ -9,21 +10,27 @@
 #' param group Variable used for grouping the data.
 #' @param size Size of points in the plot.
 #' @param method Smoothing method for the regression line.
-#' @param color Vector containing colors for the regression line and points.
-#' @param alpha Vector containing alpha values for the regression line and points.
+#' @param color Vector containing colors for regression line and points.
+#' @param alpha Vector containing alpha values for regression line and points.
 #'
-#' @return A plot illustrating the regression relationship between mean and trait.
+#' @return A plot for the regression relationship between mean and trait.
 #' @export
 #'
-#' @importFrom ggplot2 aes geom_smooth geom_point scale_fill_gradient2 labs theme_bw geom_text
+#' @importFrom ggplot2 aes geom_smooth geom_point scale_fill_gradient2
+#' labs theme_bw geom_text
 #' @importFrom dplyr slice group_by  %>%
 #' @examples
 #' #' #Get Input
-#' LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
-#' env_trait <- env_trait_calculate(data = trait, trait = "FTgdd", env = "env_code", q25_75 = TRUE)
+#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line ="line_code")
+#' env_trait<-env_trait_calculate(data=trait,trait ="FTgdd",env ="env_code")
 #' Regression<-Reg(LbyE = LbyE, env_trait = env_trait)
 #' Reg_plotter(Reg = Regression)
-Reg_plotter<-function(Reg=Reg,size=NULL,method=NULL,color=NULL,alpha=NULL){
+#'
+Reg_plotter<-function(Reg=Reg,
+                      size=NULL,
+                      method=NULL,
+                      color=NULL,
+                      alpha=NULL){
   if(is.null(size)){
     size= 1
   }
