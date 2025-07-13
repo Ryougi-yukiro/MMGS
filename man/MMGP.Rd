@@ -103,10 +103,7 @@ Options include: "RM.G", "RM.GE", and "RM.E".Defualt is "RM.G"}
 
 \item{kernel}{the kernel used in training and predicting. You might consider changing some
 of the following parameters, depending on the kernel type.
-linear: u0v
-polynomial: (γu0v + coef0)degree
-radial basis: e( − γ|u − v|2)
-sigmoid: tanh(γu0v + coef0)}
+linear, polynomial, radial basis, sigmoid.
 
 \item{nIter}{Number of iterations for the Bayesian model.}
 
