@@ -4,7 +4,7 @@
 \alias{mse_plotter}
 \title{mse_plotter}
 \usage{
-mse_plotter(data, point_size = NULL, text_size = NULL, point_shape = NULL)
+mse_plotter<-function(data,...)
 }
 \arguments{
 \item{data}{Dataframe containing MSE data analyzed by line_trait_mean.}

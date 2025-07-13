@@ -4,31 +4,36 @@
 \alias{envMeanPara}
 \title{envMeanPara}
 \usage{
-envMeanPara(data, env_paras, maxR_dap1 = NULL, maxR_dap2 = NULL, Paras = NULL)
+envMeanPara<-function(data,env_paras,...)
 }
 \arguments{
-\item{data}{Data frame containing trait mean values within different environments.}
+\item{data}{Data frame containing trait mean values
+within different environments.}
 
 \item{env_paras}{Data frame containing environmental parameter information.}
 
-\item{maxR_dap1}{The starting day for calculating environmental mean parameters.
+\item{maxR_dap1}{The starting day for calculating
+environmental mean parameters.
 Default is 18, which is used for the test data.}
 
-\item{maxR_dap2}{The ending day for calculating environmental mean parameters.
+\item{maxR_dap2}{The ending day for calculating
+environmental mean parameters.
 Default is 43, which is used for the test data.}
 
-\item{Paras}{Vector containing the names of environmental parameters to be calculated.}
+\item{Paras}{Vector containing the names of environmental
+parameters to be calculated.}
 }
 \value{
-A data frame containing trait mean values and calculated environmental mean parameters.
+A data frame containing trait mean values and calculated
+environmental mean parameters.
 }
 \description{
-Calculate environmental mean parameters for a specific trait within a specified time range.
+Calculate environmental mean parameters for a specific trait
+within a specified time range.
 This time range is calculated by the Exhaustive_search.
 }
 \examples{
 \dontrun{
-envMeanPara <- envMeanPara(data = env_trait, env_paras = PTT_PTR,
-                           maxR_dap1 = 18, maxR_dap2 = 43)
+envMeanPara<-envMeanPara(data=env_trait,env_paras=PTT_PTR)
 }
 }

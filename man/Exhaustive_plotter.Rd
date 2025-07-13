@@ -4,7 +4,7 @@
 \alias{Exhaustive_plotter}
 \title{Exhaustive_plotter}
 \usage{
-Exhaustive_plotter(Correlation, dap_x, dap_y, p = NULL, Paras, Cor = NULL)
+Exhaustive_plotter <- function(Correlation,Paras,...)
 }
 \arguments{
 \item{Correlation}{A pop_cor data frame containing correlation values for different pairs.}
@@ -26,6 +26,6 @@ A combined pop_cor plot.
 Generate a combined plot for pairwise correlations using pop_cor data.
 }
 \examples{
-\dontrun{Exhaustive_plotter(input=pop_cor,dap_x=122, dap_y=122,p=1,
-Paras=c('DL', 'GDD', 'PTT', 'PTR', 'PTS'))}
+\dontrun{Exhaustive_plotter(Correlation,dap_x,dap_y,Paras)}
+
 }

@@ -26,9 +26,11 @@ envMeanPara_plotter(
 
 \item{method}{Regression method for the smoothing line.}
 
-\item{Paras}{Vector containing the names of environmental parameters to be considered.}
+\item{Paras}{Vector containing the names of environmental parameters
+to be considered.}
 
-\item{env_code}{Point color for the scatter plot by env_code.Defualt is env_code.}
+\item{env_code}{Point color for the scatter plot by env_code.Defualt
+is env_code.}
 
 \item{linewidth}{Line width for the smoothing line.}
 
@@ -39,7 +41,8 @@ envMeanPara_plotter(
 \item{linecolor}{Line color for the smoothing line.}
 }
 \value{
-A plotter displaying the relationship between environmental parameter means and the overall mean.
+A plotter displaying the relationship between environmental
+parameter means and the overall mean.
 }
 \description{
 Generate a plot of environmental parameter means against the overall mean.

@@ -7,24 +7,26 @@
 LbyE_Reshape(data, LbyE, env)
 }
 \arguments{
-\item{data}{Data frame containing environmental information from env_trait_calculate.}
+\item{data}{Data frame containing environmental information
+from env_trait_calculate.}
 
-\item{LbyE}{A data frame calculated by LbyE_calculate. Column names represent Lines,
-and row names represent Environments.}
+\item{LbyE}{A data frame calculated by LbyE_calculate.
+Column names represent Lines,and row names represent Environments.}
 
 \item{env}{Column name representing different environments in the data frame.}
 }
 \value{
-Data frame containing trait values within specified environments and lines.
+Data frame containing trait values within
+specified environments and lines.
 }
 \description{
 Reshape trait values within specified environments and lines.
 }
 \examples{
-#Get inputs:
-env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
-LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
 #Run:
 etl<-LbyE_Reshape(data=env_trait,LbyE=LbyE,env="env_code")
+
 
 }

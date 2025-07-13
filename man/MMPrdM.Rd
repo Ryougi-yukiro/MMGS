@@ -30,8 +30,10 @@ MMPrdM(
 \arguments{
 \item{pheno}{Vector (n x j) of "phenotypes", i.e. observations or pre-processed, corrected values.}
 
-\item{geno}{Matrix (n x m) of genotypes for the training population: n lines with m markers.
-Genotypes should be coded -1, 0, 1. Missing data are not allowed.}
+\item{geno}{Matrix (n x m) of genotypes for the training population:
+n lines with m markers.
+Genotypes should be coded -1, 0, 1.
+Missing data are not allowed.}
 
 \item{env}{Data.frame (j x l) of "environmental information", i.e.}
 
@@ -77,12 +79,11 @@ see Chang, Chih-Chung and Lin, Chih-Jen: \if{html}{\out{<br>}}
 LIBSVM: a library for Support Vector Machines http://www.csie.ntu.edu.tw/~cjlin/libsvm\if{html}{\out{<br>}}
 4.LightGBM: Light Gradient Boosting Machine, run by LightGBM library developed by Microsoft.\if{html}{\out{<br>}}
 For details, see Jun Yan, Yuetong Xu, at al: LightGBM: \if{html}{\out{<br>}}
-accelerated genomically designed crop breeding through ensemble learning\if{html}{\out{<br>}}
-and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html\if{html}{\out{<br>}}}
+accelerated genomically designed crop breeding through ensemble learning\if{html}{\out{<br>}}}
 
 \item{depend}{The options for genomic breeding within different environment.The available options are:
-1.Norm:\if{html}{\out{<br>}}
-2.Marker:}
+1.Reaction Norm:
+2.PEI:}
 
 \item{reshuffle}{Number of independent replicates for the Predict.
 Smallest value recommended is reshuffle = 3.}
@@ -91,16 +92,14 @@ Smallest value recommended is reshuffle = 3.}
 
 \item{ENalpha}{used for EN predict model,the value range from 0 to 1.}
 
-\item{SVM_cost}{cost of constraints violation (default: 10)—it is the 'C'-constant of the regularization term in the Lagrange formulation}
+\item{SVM_cost}{Cost of constraints violation for SVM (default: 10).}
 
-\item{gamma}{parameter needed for all kernels except linear (default: 0.001)}
+\item{gamma}{Parameter needed for all kernels except linear (default: 0.001).}
 
-\item{kernel}{the kernel used in training and predicting. You might consider changing some
-of the following parameters, depending on the kernel type.
-linear: u0v
-polynomial: (γu0v + coef0)degree
-radial basis: e( − γ|u − v|2)
-sigmoid: tanh(γu0v + coef0)}
+\item{kernel}{the kernel used in training and predicting.
+You might consider changing some of the following parameters,
+depending on the kernel type.
+linear, polynomial, radial basis, sigmoid.}
 
 \item{Envs}{Assign variable column names of Envs. Default is Envs.}
 
@@ -112,24 +111,25 @@ sigmoid: tanh(γu0v + coef0)}
 
 \item{thin}{Number of thins for the Bayesian model.}
 
-\item{GBM_params}{a list of parameters. See The "Dataset Parameters"{https://lightgbm.readthedocs.io/en/latest/Parameters.html#dataset-parameters} section of the documentation}
+\item{GBM_params}{A list of parameters for LightGBM.
+See LightGBM documentation for details.}
 
-\item{GBM_rounds}{number of training rounds Based on LightGBM model}
+\item{GBM_rounds}{Number of training rounds for LightGBM.}
 }
 \value{
 The class MMPrdM returns a list containing:
 The Predicted Values of each line in Multiple Environments.
 }
 \description{
-MMPrdM (Multi-environment Multi-marker Prediction Model) is a function for genomic prediction
-that includes cross-environment prediction. It leverages genetic and
-environmental information to predict phenotypic values. The function supports various genomic
-prediction methods and models, providing flexibility in choosing the most suitable approach
+MMPrdM (Multi-environment Multi-marker Prediction Model) is a function
+for genomic prediction that includes cross-environment prediction.
+It leverages genetic and environmental information to predict phenotype.
+The function supports various genomic prediction methods and models,
+providing flexibility in choosing the most suitable approach
 based on the data characteristics and user preferences.
 }
 \examples{
 \dontrun{
-out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
-                       depend="maker",reshuffle=5,methods="RM.G")
+out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara)
 }
 }

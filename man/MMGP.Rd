@@ -32,77 +32,47 @@ MMGP(
 )
 }
 \arguments{
-\item{pheno}{Vector (n x j) of "phenotypes," i.e., observations or pre-processed, corrected values.}
+\item{pheno}{Vector (n x j) of "phenotypes," i.e.,
+observations or pre-processed, corrected values.}
 
-\item{geno}{Matrix (n x m) of genotypes for the training population: n lines with m markers.
-Genotypes should be coded -1, 0, 1. Missing data are not allowed.}
+\item{geno}{Matrix (n x m) of genotypes for the training population:
+n lines with m markers.Genotypes should be coded -1, 0, 1.
+Missing data are not allowed.}
 
-\item{env}{Data.frame (j x l) of "environmental information," i.e., environmental conditions corresponding to phenotypes.}
+\item{env}{Data.frame (j x l) of "environmental information,"
+i.e., environmental conditions corresponding to phenotypes.}
 
-\item{para}{Data.frame returned from envMeanPara function, providing information about environmental means and parameters.}
+\item{para}{Data.frame returned from envMeanPara function,
+providing information about environmental means and parameters.}
 
 \item{Para_Name}{The most relevant environmental covariates to the subject's phenotype,
 obtained after stepwise correlation calculations.}
 
-\item{model}{The options for genomic breeding cross vadiation methods. The available options are:\if{html}{\out{<br>}}
-1.GBLUP: performs G-BLUP using a marker-based relationship matrix, implemented through BGLR R-library.\if{html}{\out{<br>}}
-Equivalent to ridge regression (RR-BLUP) of marker effects.\if{html}{\out{<br>}}
-2.RR: ridge regression, using package glmnet.
-In theory, strictly equivalent to gblup.\if{html}{\out{<br>}}
-3.LASSO: Least Absolute Shrinkage and Selection Operator is another penalized regression methods\if{html}{\out{<br>}}
-which yield more shrinked estimates than RR.Run by glmnet library.\if{html}{\out{<br>}}
-4.EN: Elastic Net (Zou and Hastie, 2005),
-which is a weighted combination of RR and LASSO, using glmnet library\if{html}{\out{<br>}}
-5.rrBLUP:the RR-BLUP mixed model(Endelman ,2011). \if{html}{\out{<br>}}
-One application is to estimate marker effects by ridge regression;\if{html}{\out{<br>}}
-alternatively, BLUPs can be calculated based on an \if{html}{\out{<br>}}
-additive relationship matrix or a Gaussian kernel.\if{html}{\out{<br>}}
-Several Bayesian methods, using the BGLR library:\if{html}{\out{<br>}}
-1.BRR: Bayesian ridge regression: same as rr-blup, but bayesian resolution.\if{html}{\out{<br>}}
-Induces homogeneous shrinkage of all markers effects towards zero with\if{html}{\out{<br>}}
-Gaussian distribution (de los Campos et al, 2013)\if{html}{\out{<br>}}
-2.BL: Bayesian LASSO: uses an exponential prior on marker variances priors,\if{html}{\out{<br>}}
-leading to double exponential distribution of marker effects (Park & Casella 2008)\if{html}{\out{<br>}}
-3.BA: uses a scaled-t prior distribution of marker effects. (Meuwissen et al 2001).\if{html}{\out{<br>}}
-4.BB: Bayes B, uses a mixture of distribution with a point mass at zero\if{html}{\out{<br>}}
-and with a slab of non-zero marker effects with a scaled-t distribution (Habier et al 2011).\if{html}{\out{<br>}}
-5.BC: Bayes C same as Bayes B with a slab with Gaussian distribution.\if{html}{\out{<br>}}
-A more detailed description of these methods can be found in \if{html}{\out{<br>}}
-Perez & de los Campos 2014 (http://genomics.cimmyt.org/BGLR-extdoc.pdf).\if{html}{\out{<br>}}
-Four semi-parametric methods:\if{html}{\out{<br>}}
-1.RKHS: reproductive kernel Hilbert space and multiple kernel MRKHS, using BGLR (Gianola and van Kaam 2008).\if{html}{\out{<br>}}
-Based on genetic distance and a kernel function to regulate the distribution of marker effects.\if{html}{\out{<br>}}
-This methods is claimed to be effective for detecting non additive effects.\if{html}{\out{<br>}}
-2.RF: Random forest regression, using randomForest library (Breiman, 2001, Breiman and Cutler 2013).\if{html}{\out{<br>}}
-This methods uses regression models on tree nodes which are rooted in bootstrapping data.\if{html}{\out{<br>}}
-Supposed to be able to capture interactions between markers\if{html}{\out{<br>}}
-3.SVM: support vector machine, run by e1071 library. For details,\if{html}{\out{<br>}}
-see Chang, Chih-Chung and Lin, Chih-Jen: \if{html}{\out{<br>}}
-LIBSVM: a library for Support Vector Machines http://www.csie.ntu.edu.tw/~cjlin/libsvm\if{html}{\out{<br>}}
-4.LightGBM: Light Gradient Boosting Machine, run by LightGBM library developed by Microsoft.\if{html}{\out{<br>}}
-For details, see Jun Yan, Yuetong Xu, at al: LightGBM: \if{html}{\out{<br>}}
-accelerated genomically designed crop breeding through ensemble learning\if{html}{\out{<br>}}
-and Mircosoft Mannual https://lightgbm.readthedocs.io/en/latest/R/index.html\if{html}{\out{<br>}}}
+\item{model}{The options for genomic breeding cross vadiation methods.}
 
-\item{depend}{The options for genomic breeding within different environment.The available options are:
-1.Norm(Reaction Norm Model):\if{html}{\out{<br>}}
-2.PEI(Polygenic Environment Interaction Model):\if{html}{\out{<br>}}}
+\item{depend}{The options for genomic breeding within different environment.
+The available options are:
+1.Norm(Reaction Norm Model)
+2.PEI(Polygenic Environment Interaction Model)}
 
-\item{fold}{Number of folds for cross-validation. Smallest recommended value is fold = 2.}
+\item{fold}{Number of folds for cross-validation.
+Smallest recommended value is fold = 2.}
 
-\item{reshuffle}{Number of independent replicates for cross-validation. Smallest recommended value is reshuffle = 5.}
+\item{reshuffle}{Number of independent replicates for cross-validation.
+Smallest recommended value is reshuffle = 5.\if{html}{\out{<br>}}}
 
-\item{methods}{A character vector specifying the genomic prediction methods to be used.
-Options include: "RM.G", "RM.GE", and "RM.E".Defualt is "RM.G"}
+\item{methods}{A vector specifying the prediction methods to be used.}
 
-\item{ENalpha}{Used for Elastic Net prediction model, with a value range from 0 to 1.}
+\item{ENalpha}{Used for Elastic Net prediction model,
+with a value range from 0 to 1.}
 
 \item{SVM_cost}{Cost of constraints violation for SVM (default: 10).}
 
 \item{gamma}{Parameter needed for all kernels except linear (default: 0.001).}
 
-\item{kernel}{the kernel used in training and predicting. You might consider changing some
-of the following parameters, depending on the kernel type.
+\item{kernel}{the kernel used in training and predicting.
+You might consider changing some of the following parameters,
+depending on the kernel type.
 linear, polynomial, radial basis, sigmoid.}
 
 \item{nIter}{Number of iterations for the Bayesian model.}
@@ -111,7 +81,8 @@ linear, polynomial, radial basis, sigmoid.}
 
 \item{thin}{Thinning parameter for the Bayesian model.}
 
-\item{GBM_params}{A list of parameters for LightGBM. See LightGBM documentation for details.}
+\item{GBM_params}{A list of parameters for LightGBM.
+See LightGBM documentation for details.}
 
 \item{GBM_rounds}{Number of training rounds for LightGBM.}
 
@@ -119,7 +90,7 @@ linear, polynomial, radial basis, sigmoid.}
 
 \item{Obs}{Assign variable  names of Observed values. Default is Obs.}
 
-\item{line_code}{Assign variable column names of line_code Default is line_Code.}
+\item{line_code}{Assign variable column names of line_code.Default is line_code.}
 
 \item{ms1}{Remove the line for which the number of missing environments > ms1.}
 
@@ -132,16 +103,19 @@ The Predictive accuracy in Multiple Environments.Calculated by Pearson Cor.
 The Predictive accuracy for All Environments.(Cross R2)
 }
 \description{
-MMGP (Multi-environment Multi-Genomic Prediction) is a function for genomic prediction
-that incorporates cross-validation and cross-environment prediction. It utilizes both
-genetic and environmental information to predict phenotypic values. The function supports
-various genomic prediction methods and models, allowing users to choose the most suitable
-approach based on data characteristics and preferences.
+MMGP (Multi-environment Multi-Genomic Prediction) is a function
+for genomic prediction that incorporates cross-validation and
+cross-environment prediction. It utilizes both
+genetic and environmental information to predict phenotypic values.
+The function supports various genomic prediction methods and models,
+allowing users to choose the most suitable approach
+based on data characteristics and preferences.
 }
 \examples{
 \dontrun{
-out<-MMGP(pheno=pheno,geno=geno,env=env_info,para=envMeanPara,Para_Name="PTT",
-                       depend="Norm",fold=2,reshuffle=5,methods="RM.G",
-                       ms1=ms1,ms2=ms2)
+out<-MMGP(pheno=pheno,geno=geno,env=env_info,
+          para=envMeanPara,Para_Name="PTT",
+          depend="Norm",fold=2,reshuffle=5,methods="RM.G",
+          ms1=ms1,ms2=ms2)
 }
 }

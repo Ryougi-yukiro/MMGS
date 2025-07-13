@@ -4,26 +4,18 @@
 \alias{Exhaustive_search}
 \title{Exhaustive_search}
 \usage{
-Exhaustive_search(
-  data,
-  env_paras,
-  searching_daps,
-  p = NULL,
-  dap_x = NULL,
-  dap_y = NULL,
-  LOO = NULL,
-  Paras = NULL
-)
+Exhaustive_search(data, env_paras, searching_daps, ...)
 }
 \arguments{
-\item{data}{Data frame containing environmental trait data,
-typically the output of env_trait_calculate. Input is recieved from the env_trait_mean}
+\item{data}{Data frame containing environmental trait data.}
 
 \item{env_paras}{Data frame containing environmental parameter information.}
 
-\item{searching_daps}{The total number of days to search for, typically set based on your data. Default is 122.}
+\item{searching_daps}{The total number of days to search for,
+typically set based on your data. Default is 122.}
 
-\item{p}{The parameter for controlling the shape of the search window. Default is 1.}
+\item{p}{The parameter for controlling the shape of the search window.
+Default is 1.}
 
 \item{dap_x}{The number of days for the x-axis of the search window.
 Default is the same as searching_daps.}
@@ -33,18 +25,20 @@ Default is the same as searching_daps.}
 
 \item{LOO}{Leave-One-Out cross-validation flag. If LOO is 1,}
 
-\item{Paras}{Vector containing the names of environmental parameters to be considered.}
+\item{Paras}{Vector containing the names of environmental parameters
+to be considered.}
 }
 \value{
 A population correlation matrix based on the exhaustive search.
 }
 \description{
-Perform exhaustive search for population correlation matrix based on environmental parameters.
+Perform exhaustive search for population
+correlation matrix based on environmental parameters.
 }
 \examples{
 #Input from function : env_trait_calculate
 env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 #Run
-\dontrun{pop_cor <- Exhaustive_search(data = env_trait, env_paras = PTT_PTR,searching_daps = 122,
- p=1, dap_x=122,dap_y=122,LOO=0,Paras=colnames(PTT_PTR)[-c(1:4)])}
+\dontrun{Exhaustive_search(denv_trait,PTT_PTR)}
+
 }

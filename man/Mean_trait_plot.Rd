@@ -30,11 +30,14 @@ Mean_trait_plot(
 \item{linetype}{Line type for the smoothing line.}
 }
 \value{
-A plot showing the relationship between mean trait values and the environmental parameter mean, with MSE information. Uses ggplot2 for plotting.
+A plot showing the relationship between mean trait values and
+the environmental parameter mean, with MSE information.
 }
 \description{
-Generate a plot displaying the relationship between the mean trait values and the environmental parameter mean.
+Generate a plot displaying the relationship between the mean trait values
+and the environmental parameter mean.
 }
 \examples{
 \dontrun{Mean_trait_plot(Reg, MSE)}
+
 }

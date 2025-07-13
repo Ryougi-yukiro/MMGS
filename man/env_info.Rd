@@ -3,7 +3,7 @@
 \docType{data}
 \name{env_info}
 \alias{env_info}
-\title{env_info Dataset}
+\title{env\_info Dataset}
 \format{
 A data frame with the following columns:
 \describe{
@@ -17,13 +17,15 @@ A data frame with the following columns:
 }
 }
 \source{
-This dataset originates from the article and provides essential information for environmental analysis.
+This dataset originates from the article and provides essential
+information for environmental analysis.
 }
 \usage{
 data(env_info)
 }
 \description{
-This dataset contains information about environmental factors for various environments.
+This dataset contains information about environmental factors for
+various environments.
 }
 \examples{
 data(env_info)

@@ -12,17 +12,19 @@ A data frame representing trait parameters.
 \item{env_note}{Environmental note assigned to each environment.}
 \item{FTdap}{Name of the phenotypic trait measured, related to FT.}
 \item{FTgdd}{Name of the phenotypic trait measured, related to FT.}
-\item{pop_code}{Other columns may represent additional trait-related information.}
+\item{pop_code}{Other columns present additional trait-related information}
 }
 }
 \source{
-This dataset originates from the article and provides phenotypic trait data for analysis.
+This dataset originates from the article and provides
+trait data for analysis.
 }
 \usage{
 data(trait)
 }
 \description{
-This dataset contains information about phenotypic traits for various lines and environments.
+This dataset contains information about phenotypic traits for various
+lines and environments.
 }
 \examples{
 data(trait)

@@ -3,7 +3,7 @@
 \docType{data}
 \name{PTT_PTR}
 \alias{PTT_PTR}
-\title{PTT_PTR Dataset}
+\title{PTT\_PTR Dataset}
 \format{
 A data frame representing environmental parameters.
 \describe{
@@ -26,7 +26,7 @@ environmental parameters for analysis.
 data(PTT_PTR)
 }
 \description{
-This dataset contains information about environmental parameters related to
+Dataset contains information about environmental parameters related to
 PTT (Photothermal Time) and PTR (Photothermal Ratio) and others.
 }
 \examples{

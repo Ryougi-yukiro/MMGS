@@ -7,22 +7,25 @@
 LbyE_calculate(data, trait, env, line)
 }
 \arguments{
-\item{data}{Input data frame containing trait values, line information, and environmental information.}
+\item{data}{Input data frame containing trait values, line information,
+and environmental information.}
 
-\item{trait}{The trait for which the lines within different environments will be calculated.}
+\item{trait}{The trait for which the lines within different environments
+will be calculated.}
 
-\item{env}{Column name representing different environments in the input data frame.}
+\item{env}{Column name representing different environments
+in the input data frame.}
 
 \item{line}{Column name representing different lines in the input data frame.}
 }
 \value{
-A data frame containing line values within different environments for the specified trait.
+A data frame containing line values within different environments
+for the specified trait.
 }
 \description{
 Calculate the lines in all environments.
 }
 \examples{
 # Calculate lines within different environments for the trait "FTgdd"
-LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
-print(head(LbyE))
+LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
 }

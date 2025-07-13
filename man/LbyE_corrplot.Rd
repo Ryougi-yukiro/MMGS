@@ -7,25 +7,26 @@
 LbyE_corrplot(LbyE, cor_type = NULL, color = NULL)
 }
 \arguments{
-\item{LbyE}{A data frame calculated by LbyE_calculate. Column names represent Lines, and row names represent Environments.}
+\item{LbyE}{A data frame calculated by LbyE_calculate. Column names
+represent Lines, and row names represent Environments.}
 
-\item{cor_type}{Graphic format of the correlation map. The default format is "heatmap". Other option is "pie".}
+\item{cor_type}{Graphic format of the correlation map. The default format
+is "heatmap". Other option is "pie".}
 
-\item{color}{Set the color gradient for the correlation map. It is a vector of three colors representing low, mid, and high values.}
+\item{color}{Set the color gradient for the correlation map. It is a
+vector of three colors representing low, mid, and high values.}
 }
 \value{
-A correlation plot between lines and environments in the specified format.
+A correlation plot between lines and environments in
+the specified format.
 }
 \description{
 Plot the correlation between lines and environments.
 }
 \examples{
-#Get Input
-LbyE <- LbyE_calculate(data = trait, trait = "FTgdd", env = "env_code", line = "line_code")
+LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
 # Generate a heatmap correlation plot for Lines and Environments
-LbyE_corrplot(LbyE = LbyE, cor_type = "heatmap", color = c("blue", "white", "red"))
-
+LbyE_corrplot(LbyE,cor_type="heatmap",color=c("blue","white","red"))
 # Generate a pie chart correlation plot for Lines and Environments
-LbyE_corrplot(LbyE = LbyE, cor_type = "pie", color = c("blue", "white", "red"))
-
+LbyE_corrplot(LbyE,cor_type="pie",color=c("blue","white","red"))
 }

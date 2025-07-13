@@ -7,23 +7,29 @@
 env_trait_calculate(data, trait, env, q25_75 = TRUE)
 }
 \arguments{
-\item{data}{Input data frame containing trait values and environmental information.}
+\item{data}{Input data frame containing trait values and
+environmental information.}
 
-\item{trait}{The name of the trait for which mean and optional quantiles will be calculated.}
+\item{trait}{The name of the trait for which mean and optional
+quantiles will be calculated.}
 
-\item{env}{The column name in the data frame representing different environments.}
+\item{env}{The column name in the data frame representing
+different environments.}
 
-\item{q25_75}{Logical, indicating whether to calculate the 25th and 75th quantiles. Default is TRUE.}
+\item{q25_75}{Logical, indicating whether to calculate the 25th and
+75th quantiles. Default is TRUE}
 }
 \value{
-A data frame containing the mean trait values for each environment. If q25_75 is TRUE, it also includes columns for the 25th (q25) and 75th (q75) quantiles, as well as the number of observations (n_obs).
+Data frame containing the mean trait values for each environment.
+If q25_75 is TRUE, it also includes columns for the 25th(q25), 75th(q75)
+quantiles, as well as the number of observations (n_obs).
 }
 \description{
-Calculate the mean and optional quantiles for a trait across different environments.
+Calculate the mean and optional quantiles for a trait across
+different environments.
 }
 \examples{
-# Calculate mean trait values and quantiles for "FTgdd" across different environments
-env_trait <- env_trait_calculate(data = trait, trait = "FTgdd", env = "env_code", q25_75 = TRUE)
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
 
 # Access the result, e.g., mean trait values
 env_trait$mean
@@ -36,4 +42,5 @@ env_trait$q75
 
 # Access the result, e.g., number of observations
 env_trait$n_obs
+
 }

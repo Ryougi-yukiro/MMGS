@@ -8,7 +8,8 @@
 An object of class \code{data.frame} with 237 rows and 1463 columns.
 }
 \source{
-This dataset originates from the article and provides genetic data for analysis.
+This dataset originates from the article and provides
+genetic data for analysis.
 }
 \usage{
 data(geno)

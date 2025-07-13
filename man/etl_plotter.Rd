@@ -20,7 +20,8 @@ etl_plotter(
 
 \item{trait}{An env_trait data frame containing mean, q25, and q75 values.}
 
-\item{env_cols}{Environmental colors gradient; if NULL, it generates colors using rainbow_hcl.}
+\item{env_cols}{Environmental colors gradient; if NULL,
+it generates colors using rainbow_hcl.}
 
 \item{shape}{Point shape, similar to ggplot2.}
 
@@ -33,16 +34,18 @@ etl_plotter(
 \item{area_alpha}{Fill color alpha for the area between q25 and q75.}
 }
 \value{
-A plot of etl, filling the area between env-trait q25 to q75, with a red line representing the env-trait mean.
+A plot of etl, filling the area between env-trait q25 to q75,
+with a red line representing the env-trait mean.
 }
 \description{
 Generate a plot of environmental trait lines with mean, q25, and q75 areas.
 }
 \examples{
-#Get input:
 env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
-LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
+LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
 etl<-LbyE_Reshape(data=env_trait,LbyE=LbyE,env="env_code")
 #Plot
 etl_plotter(data=etl,trait=env_trait)
+
+
 }
