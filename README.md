@@ -83,36 +83,43 @@ rg
 ```
 ### Step.2 data analysis 
 ```R
+data(trait)
+data(geno)
+data(PTT_PTR)
+data(env_info)
 env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
 #envs similarity, plot by ggplot2 like heatmap
 LbyE_corrplot(LbyE=LbyE,cor_type="phetamp",color=c("blue","white","red"))
 
 #Get lines mean and Q25, Q75 within each envs
-etl<-etl_calculate(data=env_info,trait="FTgdd",env="env_code",bycol="lat")
-etl_plotter(data=etl,mean=env_trait) # you could design your plotter use more paras
+etl<-LbyE_Reshape(data=env_trait,LbyE=LbyE,env="env_code")
+etl_plotter(data=etl,trait=env_trait)
 
 #Get Best Days window and Env Paras
 Paras <- c('DL', 'GDD', 'PTT', 'PTR', 'PTS');
 #p dap_x dap_y searching_daps according to your data
-pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR, searching_daps=80,
-                           p=1, dap_x=80,dap_y=80,LOO=0,Paras=Paras)
-#Result Visualization
-Exhaustive_plotter(data=pop_cor,dap_x=80, dap_y=80,p=1)
+pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR,
+                           searching_daps=80,
+                           p=1, dap_x=80,dap_y=80,L
+                           OO=0,Paras=Paras)
 
-#Get Envs mean within env paras
-envMeanPara<-envMeanPara(data=env_trait, env_paras=PTT_PTR, maxR_dap1=18,maxR_dap2=43, Paras=Paras)
+envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR,
+                 max_d1=18,max_d2=43)
 ```
 
 ### Step.3 CV
 Users can customize the model they need, the function uses the norm reaction by default, the given environment parameters can be obtained from the previous results , fold number represents the number of folds, reshuffle represents the number of repetitions. In RM.G mode, the available models are rrBLUP, LASSO,EN,RR,BA,BB,BC,BL,BRR,RKHS,MKRKHS,SVM,RF and LightGBM.
 ```R
 #Check pheno
-pheno<-LbyE[which(as.character(LbyE$line_code)%in%c("line_code",as.character(geno$line_code))),];
-#CV 
-out<-GE_CV(pheno=pheno, geno=geno, env=env_info,
-             para=envMeanPara, Para_Name="PTT", depend="norm",
-             model="rrBLUP", fold=2, reshuffle=5, methods="RM.G")
+pheno<-LbyE[which(as.character(LbyE$line_code)%in%
+                    c("line_code",as.character(geno$line_code))),]
+
+out<-MMGP(pheno=pheno,geno=geno,env=env_info,
+          para=envMeanPara,Para_Name="PTT",model="rrBLUP",
+          depend="Norm",fold=2,reshuffle=5,methods="RM.G",
+          ms1=2,ms2=2)
+
 #result
 #> mean(out[[3]])
 #[1] 0.8728506
@@ -365,6 +372,7 @@ ggGSE is a collection of tools for cross-environmental genome-wide selection pre
 
 ## License
 [GPL-3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
+
 
 
 
