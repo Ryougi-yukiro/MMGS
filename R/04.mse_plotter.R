@@ -1,4 +1,4 @@
-#' @title mse_plotter
+#' @title mse_plot
 #' @description
 #'
 #' Generate a plot for Mean Squared Errors (MSE) data analyzed by line_trait_mean.
@@ -14,12 +14,12 @@
 #' @importFrom ggplot2 aes geom_text geom_point element_blank
 #' theme_bw theme unit
 #'
-#' @examples \dontrun{mse_plotter(MSE)}
-#' @usage mse_plotter<-function(data,...)
-mse_plotter<-function(data,
-                      point_size = NULL,
-                      text_size = NULL,
-                      point_shape = NULL){
+#' @examples \dontrun{mse_plot(MSE)}
+#' @usage mse_plot(data,point_size=NULL,text_size=NULL,point_shape=NULL)
+mse_plot<-function(data,
+                   point_size = NULL,
+                   text_size = NULL,
+                   point_shape = NULL){
   # Set default values if not provided
   if(is.null(point_size)){ point_size =3}
   if(is.null(text_size)){ text_size =3}

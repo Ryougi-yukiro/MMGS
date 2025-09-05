@@ -21,9 +21,9 @@
 #' geom_ribbon scale_color_manual
 #'
 #' @examples
-#' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
-#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
-#' etl<-LbyE_Reshape(data=env_trait,LbyE=LbyE,env="env_code")
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#' LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+#' etl<-LbyE_Reshape(env_trait,LbyE,"env_code")
 #' #Plot
 #' etl_plotter(data=etl,trait=env_trait)
 #'

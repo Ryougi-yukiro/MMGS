@@ -1,4 +1,4 @@
-#' Exhaustive_plotter
+#' Eh_plot
 #'
 #' Generate a combined plot for pairwise correlations using pop_cor data.
 #'
@@ -14,17 +14,24 @@
 #' @importFrom ggplot2 theme geom_label element_blank theme_bw
 #' scale_y_continuous scale_x_continuous labs
 #' @importFrom lemon grid_arrange_shared_legend
-#' @examples \dontrun{Exhaustive_plotter(Correlation,dap_x,dap_y,Paras)}
-#'
-#' @usage Exhaustive_plotter <- function(Correlation,Paras,...)
-Exhaustive_plotter <- function(Correlation,
-                               dap_x,
-                               dap_y,
-                               p = NULL,
-                               Paras,
-                               Cor = NULL) {
+#' @examples
+#' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+#' #Run
+#' \donttest{pop_cor<-Exhaustive_search(env_trait,PTT_PTR,80)
+#' dap1<-pop_cor[,2][which(abs(pop_cor[, -c(1:4)]) ==
+#' max(abs(pop_cor[, -c(1:4)])), arr.ind = TRUE)][1]
+#' dap2<-pop_cor[,3][which(abs(pop_cor[, -c(1:4)]) ==
+#' max(abs(pop_cor[, -c(1:4)])), arr.ind = TRUE)][1]
+#' Eh_plot(pop_cor,dap1,dap2)}
+Eh_plot <- function(Correlation,
+                    dap_x,dap_y,
+                    p = NULL,
+                    Paras=NULL,Cor = NULL) {
   if(is.null(Cor)){Cor=Cor}
   if(is.null(p)){p=1}
+  if(is.null(Paras)){
+    Paras= c("DL", "GDD", "PTT", "PTR", "PTS")
+  }
   pop_cors <- as.data.frame(Correlation)
   ps <- list()
   # Loop through the columns of the pop_cor data

@@ -1,4 +1,4 @@
-#' @title env\_info Dataset
+#' @title env_info Dataset
 #' @description
 #' This dataset contains information about environmental factors for
 #' various environments.

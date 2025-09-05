@@ -1,4 +1,4 @@
-#' @title PTT\_PTR Dataset
+#' @title PTT_PTR Dataset
 #'
 #' @description
 #' Dataset contains information about environmental parameters related to

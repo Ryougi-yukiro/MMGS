@@ -25,9 +25,8 @@
 #' #Input from function : env_trait_calculate
 #' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 #' #Run
-#' \dontrun{Exhaustive_search(denv_trait,PTT_PTR)}
+#' \donttest{Exhaustive_search(env_trait,PTT_PTR,80)}
 #'
-#' @usage Exhaustive_search(data, env_paras, searching_daps, ...)
 Exhaustive_search<-function(data, env_paras, searching_daps,
                             p=NULL, dap_x=NULL,dap_y=NULL,LOO=NULL,
                             Paras=NULL){

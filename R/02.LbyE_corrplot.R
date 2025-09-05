@@ -18,7 +18,7 @@
 #' ggplot2 aes geom_tile geom_text scale_fill_gradient2
 #' theme_minimal xlab ylab ggplot
 #' @examples
-#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
+#' LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
 #' # Generate a heatmap correlation plot for Lines and Environments
 #' LbyE_corrplot(LbyE,cor_type="heatmap",color=c("blue","white","red"))
 #' # Generate a pie chart correlation plot for Lines and Environments

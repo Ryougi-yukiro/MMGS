@@ -62,10 +62,13 @@
 
 #' @examples
 #' \dontrun{
-#' out<-MMGP(pheno=pheno,geno=geno,env=env_info,
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#' envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR)
+#'
+#' out<-MMGP(pheno=trait,geno=geno[,-1],env=env_info,
 #'           para=envMeanPara,Para_Name="PTT",
 #'           depend="Norm",fold=2,reshuffle=5,methods="RM.G",
-#'           ms1=ms1,ms2=ms2)
+#'           ms1=3,ms2=3)
 #' }
 MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
                fold=NULL,reshuffle=NULL,
@@ -438,7 +441,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
             if(is.null(GBM_params)){
               params <- list(boosting="gbdt",objective = "regression",
                              metric = "RMSE",min_data = 1L,
-                             learning_rate = 0.01,num_iterations=1000,
+                             learning_rate = 0.001,num_iterations=1000,
                              num_leaves=3,max_depth=-1,
                              early_stopping_round=50L,cat_l2=10,
                              skip_drop=0.5,drop_rate=0.5,
@@ -871,6 +874,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
             ##marker effect###
             #Test SNP matrix
             Test<-as.matrix(geno[id.T,-1])
+
             n <- nrow(Test)
             m <- ncol(Test)
             new_n <- n * n.para
@@ -883,6 +887,11 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
               col_end <- i * m
               M[row_start:row_end, col_start:col_end] <- Test
             }
+            v <- para[,Para_Name]
+            extra_block <- matrix(rep(v, each = n*m), nrow = n*n.para, ncol = m, byrow = TRUE)
+
+            M<-cbind(M, extra_block)
+
             #Pred SNP matrix
             Pred<-as.matrix(geno[id.V,-1])
             n <- nrow(Pred)
@@ -897,6 +906,10 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
               col_end <- i * m
               N[row_start:row_end, col_start:col_end] <- Pred
             }
+            extra_block <- matrix(rep(v, each = n*m), nrow = n*n.para, ncol = m, byrow = TRUE)
+
+            N<-cbind(N, extra_block)
+
 
             n <- nrow(as.matrix(geno[,-1]))
             m <- ncol(as.matrix(geno[,-1]))
@@ -908,6 +921,10 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
               col_end <- i * m
               GENO[row_start:row_end, col_start:col_end] <- as.matrix(geno[,-1])
             }
+            extra_block <- matrix(rep(v, each = n*m), nrow = n*n.para, ncol = m, byrow = TRUE)
+
+            GENO<-cbind(GENO, extra_block)
+
 
             #pheno1
             yNa<-pheno[which(as.character(pheno$line_code)%in%
@@ -937,6 +954,7 @@ MMGP<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,
                                             values_to = "Obs")
             yl<-as.data.frame(yl)
             y<-yl[order(yl[,2]),]
+            print("OK")
 
             if (model == "RF"){
               missing_rows_index <- which(!complete.cases(yNa[, ncol(yNa)]))

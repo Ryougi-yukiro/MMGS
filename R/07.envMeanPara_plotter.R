@@ -1,4 +1,4 @@
-#' @title envMeanPara_plotter
+#' @title eMP_plot
 #' @description
 #'
 #' Generate a plot of environmental parameter means against the overall mean.
@@ -22,12 +22,15 @@
 #' @importFrom ggplot2 geom_smooth annotate
 #' @importFrom grDevices heat.colors
 #'
-#' @examples \dontrun{envMeanPara_plotter(envMeanPara,
+#' @examples \donttest{
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#' envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR)
+#' eMP_plot(envMeanPara,
 #' Paras=c('DL', 'GDD', 'PTT', 'PTR', 'PTS'))}
-envMeanPara_plotter <- function(data,size = NULL, shape = NULL,
-                                method = NULL,Paras=NULL,env_code=NULL,
-                                linewidth = NULL, alpha = NULL,
-                                linetype = NULL, linecolor = NULL) {
+eMP_plot <- function(data,size = NULL, shape = NULL,
+                     method = NULL,Paras=NULL,env_code=NULL,
+                     linewidth = NULL, alpha = NULL,
+                     linetype = NULL, linecolor = NULL) {
   # Set default values if not provided
   if (is.null(size)) {
     size = 4

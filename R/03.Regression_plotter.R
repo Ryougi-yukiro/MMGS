@@ -1,4 +1,4 @@
-#' @title Reg_plotter
+#' @title Reg_plot
 #' @description
 #'
 #' Generate a regression plot between the mean and trait,
@@ -8,10 +8,10 @@
 #' param x Variable to be plotted on the x-axis.
 #' param y Variable to be plotted on the y-axis.
 #' param group Variable used for grouping the data.
-#' @param size Size of points in the plot.
+#' @param pointsize Size of points in the plot.
 #' @param method Smoothing method for the regression line.
-#' @param color Vector containing colors for regression line and points.
-#' @param alpha Vector containing alpha values for regression line and points.
+#' @param pointcolor Vector containing colors for regression line and points.
+#' @param pointalpha Vector containing alpha values for regression line and points.
 #'
 #' @return A plot for the regression relationship between mean and trait.
 #' @export
@@ -21,26 +21,26 @@
 #' @importFrom dplyr slice group_by  %>%
 #' @examples
 #' #' #Get Input
-#' LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line ="line_code")
-#' env_trait<-env_trait_calculate(data=trait,trait ="FTgdd",env ="env_code")
+#' LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
 #' Regression<-Reg(LbyE = LbyE, env_trait = env_trait)
-#' Reg_plotter(Reg = Regression)
+#' Reg_plot(Reg = Regression)
 #'
-Reg_plotter<-function(Reg=Reg,
-                      size=NULL,
-                      method=NULL,
-                      color=NULL,
-                      alpha=NULL){
-  if(is.null(size)){
+Reg_plot<-function(Reg=Reg,
+                   pointsize=NULL,
+                   method=NULL,
+                   pointcolor=NULL,
+                   pointalpha=NULL){
+  if(is.null(pointsize)){
     size= 1
   }
   if(is.null(method)){
     method= "lm"
   }
-  if(is.null(color)){
+  if(is.null(pointcolor)){
     color= c("gray90","gray50")
   }
-  if(is.null(alpha)){
+  if(is.null(pointalpha)){
     alpha= c(0.1,0.5)
   }
 
