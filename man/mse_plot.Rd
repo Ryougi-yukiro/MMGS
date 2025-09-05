@@ -22,5 +22,11 @@ A plot illustrating Mean Squared Errors (MSE) data.
 Generate a plot for Mean Squared Errors (MSE) data analyzed by line_trait_mean.
 }
 \examples{
-\dontrun{mse_plot(MSE)}
+\donttest{
+LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#Run
+result<-line_trait_mean(trait,LbyE,env_trait,"FTgdd",row=2)
+
+mse_plot(result[[1]])}
 }
