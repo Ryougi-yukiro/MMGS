@@ -8,7 +8,7 @@ Authors@R:
            email = "z980907mj@gmail.com",
            role = c("aut", "cre"))
 Maintainer: Eason Zhu <z980907mj@gmail.com>
-Description: Package for Multi-envs Genomic Selection, contains Inbred Lines, CUBIC Lines and Light-cross Lines.
+Description: Package for Multi-Envs Genomic Selection, contains Inbred Lines, CUBIC Lines and Light-cross Lines.
 License: GPL-3 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
