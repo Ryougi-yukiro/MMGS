@@ -129,7 +129,17 @@ providing flexibility in choosing the most suitable approach
 based on the data characteristics and user preferences.
 }
 \examples{
-\dontrun{
-out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara)
+\donttest{
+env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
+pheno<-LbyE[which(as.character(LbyE$line_code)\%in\%
+c("line_code",as.character(geno$line_code))),]
+
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR)
+out<-MMPrdM(pheno=pheno,geno=geno,
+env=env_info,para=envMeanPara,
+model="rrBLUPJ",depend="PEI",
+Para_Name="PTT",reshuffle=2)
 }
 }
