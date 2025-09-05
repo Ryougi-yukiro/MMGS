@@ -14,7 +14,13 @@
 #' @importFrom ggplot2 aes geom_text geom_point element_blank
 #' theme_bw theme unit
 #'
-#' @examples \dontrun{mse_plot(MSE)}
+#' @examples \donttest{
+#' LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#' #Run
+#' result<-line_trait_mean(trait,LbyE,env_trait,"FTgdd",row=2)
+#'
+#' mse_plot(result[[1]])}
 #' @usage mse_plot(data,point_size=NULL,text_size=NULL,point_shape=NULL)
 mse_plot<-function(data,
                    point_size = NULL,

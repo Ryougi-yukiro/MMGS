@@ -86,8 +86,18 @@
 #' @importFrom grDevices heat.colors
 
 #' @examples
-#' \dontrun{
-#' out<-MMPrdM(pheno=pheno,geno=geno,env=env_info,para=envMeanPara)
+#' \donttest{
+#' env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+#' LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
+#' pheno<-LbyE[which(as.character(LbyE$line_code)%in%
+#' c("line_code",as.character(geno$line_code))),]
+#'
+#' env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+#' envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR)
+#' out<-MMPrdM(pheno=pheno,geno=geno,
+#'env=env_info,para=envMeanPara,
+#'model="rrBLUPJ",depend="PEI",
+#'Para_Name="PTT",reshuffle=2)
 #' }
 MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
                  methods=NULL,ENalpha=NULL,SVM_cost=NULL,gamma=NULL,kernel=NULL,
@@ -572,6 +582,7 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
           }
           yhat.para=matrix(999,length(id.V),n.para)
           yobs.para=matrix(999,length(id.V),n.para)
+
           for(j in 1:n.para)
           {
             yhat<-GEBV.inter+GEBV.slope*para[j,enp];
@@ -584,8 +595,10 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
           yobs.whole.cross<-rbind(yobs.whole.cross,yobs.para)
           s<-length(id.V)*(i-1)+1
           t<-length(id.V)*i
+          print(yhat.whole.cross)
           Prd[c(s:t),]<-yhat.whole.cross
       }
+
       Prd$line_code<-rep(pheno[id.V,1],reshuffle)
       Prd_mean <- Prd %>% group_by(line_code) %>% summarize_all(mean)
       Prd_mean <- as.data.frame(Prd_mean)
@@ -898,7 +911,7 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
               id.T <- c(id.T, i)
             }
           }
-          print(length(id.V))
+          #print(length(id.V))
           if(length(id.V) != dim(pheno)[1]){
             ##marker effect###
             #Test SNP matrix
