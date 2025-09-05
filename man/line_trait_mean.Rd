@@ -35,12 +35,10 @@ each line and environment.
 Calculate the mean of residuals for each line after fitting a linear model.
 }
 \examples{
-LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
-env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
 #Run
-result<-line_trait_mean(data=trait,LbyE=LbyE,
-                       mean = env_trait,trait="FTgdd",row=2)
+result<-line_trait_mean(trait,LbyE,env_trait,"FTgdd",row=2)
 print(result[[1]])
-
 
 }

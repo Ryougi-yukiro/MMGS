@@ -27,5 +27,5 @@ Calculate the lines in all environments.
 }
 \examples{
 # Calculate lines within different environments for the trait "FTgdd"
-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
+LbyE_calculate(trait,"FTgdd","env_code","line_code")
 }

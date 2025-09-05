@@ -3,7 +3,7 @@
 \docType{data}
 \name{PTT_PTR}
 \alias{PTT_PTR}
-\title{PTT\_PTR Dataset}
+\title{PTT_PTR Dataset}
 \format{
 A data frame representing environmental parameters.
 \describe{

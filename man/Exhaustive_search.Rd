@@ -4,7 +4,16 @@
 \alias{Exhaustive_search}
 \title{Exhaustive_search}
 \usage{
-Exhaustive_search(data, env_paras, searching_daps, ...)
+Exhaustive_search(
+  data,
+  env_paras,
+  searching_daps,
+  p = NULL,
+  dap_x = NULL,
+  dap_y = NULL,
+  LOO = NULL,
+  Paras = NULL
+)
 }
 \arguments{
 \item{data}{Data frame containing environmental trait data.}
@@ -39,6 +48,6 @@ correlation matrix based on environmental parameters.
 #Input from function : env_trait_calculate
 env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 #Run
-\dontrun{Exhaustive_search(denv_trait,PTT_PTR)}
+\donttest{Exhaustive_search(env_trait,PTT_PTR,80)}
 
 }

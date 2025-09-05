@@ -24,7 +24,7 @@ the specified format.
 Plot the correlation between lines and environments.
 }
 \examples{
-LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
+LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
 # Generate a heatmap correlation plot for Lines and Environments
 LbyE_corrplot(LbyE,cor_type="heatmap",color=c("blue","white","red"))
 # Generate a pie chart correlation plot for Lines and Environments

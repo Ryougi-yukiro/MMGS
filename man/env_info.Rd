@@ -3,7 +3,7 @@
 \docType{data}
 \name{env_info}
 \alias{env_info}
-\title{env\_info Dataset}
+\title{env_info Dataset}
 \format{
 A data frame with the following columns:
 \describe{

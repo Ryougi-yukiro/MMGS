@@ -113,9 +113,12 @@ based on data characteristics and preferences.
 }
 \examples{
 \dontrun{
-out<-MMGP(pheno=pheno,geno=geno,env=env_info,
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
+envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR)
+
+out<-MMGP(pheno=trait,geno=geno[,-1],env=env_info,
           para=envMeanPara,Para_Name="PTT",
           depend="Norm",fold=2,reshuffle=5,methods="RM.G",
-          ms1=ms1,ms2=ms2)
+          ms1=3,ms2=3)
 }
 }

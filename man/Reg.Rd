@@ -26,8 +26,8 @@ environmental means for each line.
 }
 \examples{
 #Get Input
-LbyE<-LbyE_calculate(trait,trait="FTgdd",env="env_code",line="line_code")
-env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
+LbyE<-LbyE_calculate(trait,"FTgdd","env_code","line_code")
+env_trait<-env_trait_calculate(trait,"FTgdd","env_code")
 #Calculate
 Regression<-Reg(LbyE=LbyE,env_trait=env_trait)
 print(head(Regression))
