@@ -24,15 +24,14 @@ You can also provide links to additional resources or documentation.
 library("MMGS")
 library("dplyr")# used for data reshape and melt
 
-#Load the input data
-trait<-read.table(file="Trait_records.txt",header=T)
-env_info<-read.table(file="Env_meta_table.txt",header=T)
-PTT_PTR <- read.table(file="7Envs_envParas_DAP122.txt", header = T , sep = "\t")
-geno <- read.table(file="Genotype.txt", header = T , sep = "\t")
+#Load the input test data
+data(trait)
+data(geno)
+data(PTT_PTR)
+data(env_info)
 ```
 ### Step.2 estimate h2 within different Envs
 ```R
-h2<-h2_rrBLUP(trait=trait,geno=geno,envs="env_code")
 #if you need estiamte H2 plz use asreml or VCA package
 #example code as follow:
 trait$Loc <- as.factor(trait$env_code)
@@ -83,10 +82,6 @@ rg
 ```
 ### Step.2 data analysis 
 ```R
-data(trait)
-data(geno)
-data(PTT_PTR)
-data(env_info)
 env_trait<-env_trait_calculate(data=trait,trait="FTgdd",env="env_code")
 LbyE<-LbyE_calculate(data=trait,trait="FTgdd",env="env_code",line="line_code")
 #envs similarity, plot by ggplot2 like heatmap
@@ -101,8 +96,7 @@ Paras <- c('DL', 'GDD', 'PTT', 'PTR', 'PTS');
 #p dap_x dap_y searching_daps according to your data
 pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR,
                            searching_daps=80,
-                           p=1, dap_x=80,dap_y=80,L
-                           OO=0,Paras=Paras)
+                           p=1, dap_x=80,dap_y=80,LOO=0,Paras=Paras)
 
 envMeanPara<-EPM(data=env_trait,env_paras=PTT_PTR,
                  max_d1=18,max_d2=43)
@@ -120,16 +114,26 @@ out<-MMGP(pheno=pheno,geno=geno,env=env_info,
           depend="Norm",fold=2,reshuffle=5,methods="RM.G",
           ms1=2,ms2=2)
 
+out2<-MMPrdM(pheno=pheno,geno=geno,
+            env=env_info,para=envMeanPara,
+            model="rrBLUPJ",depend="PEI",
+            Para_Name="PTT",reshuffle=2)
 #result
 #> mean(out[[3]])
-#[1] 0.8728506
+#[1] 0.8690751
 #> apply(out[[2]],2,mean)
 #     PR12      IA14      PR11      IA13     PR14S      KS11      KS12 
-#0.5418663 0.3868576 0.5381628 0.4759335 0.4871427 0.6219213 0.6380658
+#0.5638706 0.3675908 0.5340269 0.4592765 0.4741423 0.5990176 0.6236456 
 #head(out[[1]])
 #       obs      pre     col para
-#1 1595.988 1588.782 #FF0000 PR12
-#2 1512.918 1576.437 #FF0000 PR12
+#1 1409.773 1471.149 #FF0000 PR12
+#2 1502.535 1515.962 #FF0000 PR12
+
+#> mean(out2[[3]])
+#[1] 0.9494913
+#> apply(out2[[2]],2,mean)
+#     PR12      IA14      PR11      IA13     PR14S      KS11      KS12 
+#0.6996221 0.6543900 0.7063727 0.8053814 0.7997450 0.8963921 0.9200798
 ```
 
 ### Others function Example
@@ -137,47 +141,30 @@ out<-MMGP(pheno=pheno,geno=geno,env=env_info,
 result<-line_trait_mean(data=trait,trait="FTgdd",mean=env_trait,LbyE=LbyE,row=2)
 MSE<-result[[1]]
 ltm<-result[[2]]
-mse_plotter(MSE)
 
 Reg<-Reg(LbyE=LbyE,env_trait=env_trait)
-Reg_plotter(Reg=Reg)
-Mean_trait_plot(Reg,MSE)
-
-Slope_Intercept<-Slope_Intercept(data=filtered_trait,input=env_trait, env_paras=PTT_PTR,
-                  Para_Name="PTS",line="line_code",trait="PH",filter=5,
-                  maxR_dap1=22, maxR_dap2=35,rounds=4)
-
-prdM <- LOOCV(maxR_dap1=22,maxR_dap2=35,data=filtered_trait,input=env_trait,env_paras=PTT_PTR,
-              Para_Name="PTS",trait="PH",line="line_code",p=1,filter=4)
-
-prdM_plotter(prdM=prdM,data=envMeanPara,trait="PH",Para_Name="PTS");
-envMeanPara_plotter(envMeanPara)
 ```
 
 ## Documentation
 See full documentation from original repository
 
 ## Command line interface
-* env_trait_calculate
-* envMeanPara
-* envMeanPara_plotter
-* etl_calculate
-* etl_plotter
-* Exhaustive_plotter
-* Exhaustive_search
-* GE_CV
-* h2_rrBLUP
-* LbyE_calculate
-* LbyE_corrplot
-* line_trait_mean
-* LOOCV
-* ltm_plotter
-* Mean_trait_plot
-* mse_plotter
-* prdM_plotter
-* Reg
-* Reg_plotter
-* Slope_Intercept
+export(EPM)
+export(Eh_plot)
+export(Exhaustive_search)
+export(LbyE_Reshape)
+export(LbyE_calculate)
+export(LbyE_corrplot)
+export(MMGP)
+export(MMPrdM)
+export(Mean_trait_plot)
+export(Reg)
+export(Reg_plot)
+export(eMP_plot)
+export(env_trait_calculate)
+export(etl_plotter)
+export(line_trait_mean)
+export(mse_plot)
 
 ## Implementation notes
 ggGSE is a collection of tools for cross-environmental genome-wide selection prediction that integrates most genome-wide prediction models, both parametric and non-parametric. You can input your own collected data against sample data and get the results you want directly through the built-in functions of the toolkit, which requires no additional statistical knowledge or coding skills and is somewhat user-friendly because it saves users from having to search for various tools and apply them to cross-environmental prediction.
@@ -372,6 +359,7 @@ ggGSE is a collection of tools for cross-environmental genome-wide selection pre
 
 ## License
 [GPL-3](https://www.gnu.org/licenses/quick-guide-gplv3.html)
+
 
 
 
