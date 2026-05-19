@@ -114,6 +114,17 @@ out<-MMGP(pheno=pheno,geno=geno,env=env_info,
           depend="Norm",fold=2,reshuffle=5,methods="RM.G",
           ms1=2,ms2=2)
 
+
+##########
+#1.模式1
+#假设PR12为空
+pheno$PR12<-NA
+out2<-MMPrdM(pheno=pheno,geno=geno,
+            env=env_info,para=envMeanPara,
+            model="rrBLUP",depend="PEI",
+            Para_Name="PTT",reshuffle=2)
+cor(sort(out2[[2]]),sort(LbyE$PR12))
+#1.模式2(更加自动化，未完工)
 out2<-MMPrdM(pheno=pheno,geno=geno,
             env=env_info,para=envMeanPara,
             model="rrBLUPJ",depend="PEI",
