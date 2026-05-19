@@ -1120,6 +1120,12 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
             }
             else if (model == "BA" | model == "BC" | model == "BL" | model == "BRR"
                      | model == "BB" ){
+              GENO <- apply(GENO, 2, as.numeric)
+              keep_marker <- apply(GENO, 2, function(x){
+                stats::var(x, na.rm = TRUE) > 0 &&
+                all(is.finite(x))
+              })
+              GENO <- GENO[, keep_marker, drop = FALSE]
               saveAt = stringi::stri_rand_strings(1, 32, '[a-zA-Z]');
               S0=NULL;weights=NULL;R2=0.5;
               if(model == "BA"){
