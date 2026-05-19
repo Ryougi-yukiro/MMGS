@@ -124,7 +124,7 @@ out2<-MMPrdM(pheno=pheno,geno=geno,
             model="rrBLUP",depend="PEI",
             Para_Name="PTT",reshuffle=2)
 cor(sort(out2[[2]]),sort(LbyE$PR12))
-#1.模式2(更加自动化，未完工)
+#1.模式2(更加自动化，未完工,目前仅支持RRBLUP)
 out2<-MMPrdM(pheno=pheno,geno=geno,
             env=env_info,para=envMeanPara,
             model="rrBLUPJ",depend="PEI",
