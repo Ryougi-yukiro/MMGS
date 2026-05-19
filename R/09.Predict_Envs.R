@@ -1097,33 +1097,26 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
               PrdM_wide<-as.data.frame(PrdM_wide)
             }
             else if (model == "GBLUP"){
-              GENO<-as.data.frame(GENO)
-              rowname<-paste(y[,1],y[,2], sep="-")
-              rownames(GENO)<-rowname
-              A<-rrBLUP::A.mat(GENO)
-              y2<-y %>%
-                group_by(Envs) %>%
-                mutate(row_number = row_number()) %>%
-                mutate(Obs = ifelse(row_number %in% id.V, NA, Obs)) %>%
-                select(-row_number)
-              y2<-as.data.frame(y2)
-              dataF=data.frame(genoID=rownames(GENO),yield=y2[,ncol(y2)])
-              MODEL<-rrBLUP::kin.blup(data=dataF,geno="genoID",pheno="yield", GAUSS=FALSE, K=A,
-                                      PEV=TRUE,n.core=1,theta.seq=NULL)
-              Prd<-MODEL$pred
-              PrdM<-data.frame(y2, Prd = as.numeric(Prd))
-              PrdM_wide<- PrdM %>% tidyr::pivot_wider(
-                id_cols = "line_code",
-                names_from ="Envs",
-                values_from = "Prd")
-              PrdM_wide<-as.data.frame(PrdM_wide)
-              if((length(id.V) != dim(pheno)[1])){
-                PrdM_wide<-PrdM_wide[PrdM_wide$line_code %in% pheno[id.V,1],]
-              }
-              else{(length(id.V) != dim(pheno)[1])
-                PrdM_wide<- data.frame(line_code=PrdM_wide$line_code,Prd=PrdM_wide[[id]])
-              }
-              PrdM_wide<-as.data.frame(PrdM_wide)
+              ans <- rrBLUP::mixed.solve(y = yNa[, ncol(yNa)], 
+              Z = M)
+            e <- as.matrix(ans$u)
+            G.pred <- GENO
+            y_pred <- as.matrix(G.pred) %*% e
+            Prd <- c(y_pred[, 1]) + c(ans$beta)
+            PrdM <- data.frame(y, Prd = as.numeric(Prd))
+            PrdM_wide <- PrdM %>% tidyr::pivot_wider(id_cols = "line_code", 
+              names_from = "Envs", values_from = "Prd")
+            PrdM_wide <- as.data.frame(PrdM_wide)
+            if ((length(id.V) != dim(pheno)[1])) {
+              PrdM_wide <- PrdM_wide[PrdM_wide$line_code %in% 
+                pheno[id.V, 1], ]
+            }
+            else if (length(id.V) == dim(pheno)[1]) {
+              PrdM_wide <- data.frame(line_code = PrdM_wide$line_code, 
+                Prd = PrdM_wide[[id]])
+            }
+            PrdM_wide <- as.data.frame(PrdM_wide)
+            return(PrdM_wide)
             }
             else if (model == "BA" | model == "BC" | model == "BL" | model == "BRR"
                      | model == "BB" ){
@@ -1256,7 +1249,7 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
             PrdF<-rbind(PrdF,PrdM_wide)
             }
         Prd_mean<-PrdF %>% group_by(line_code) %>% summarize_all(mean)
-        Prd_mean<-as.data.frame(Prd_mean)
+        Prd_mean<-as.data.frame(Prd_mean)*
         return(Prd_mean)
         #Correlation within environment 50 times
       }
