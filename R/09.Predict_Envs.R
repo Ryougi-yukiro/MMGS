@@ -1255,7 +1255,7 @@ MMPrdM<-function(pheno,geno,env,para,Para_Name,model,depend=NULL,reshuffle=NULL,
             PrdF<-rbind(PrdF,PrdM_wide)
             }
         Prd_mean<-PrdF %>% group_by(line_code) %>% summarize_all(mean)
-        Prd_mean<-as.data.frame(Prd_mean)*
+        Prd_mean<-as.data.frame(sort(Prd_mean))
         return(Prd_mean)
         #Correlation within environment 50 times
       }
