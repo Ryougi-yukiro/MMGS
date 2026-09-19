@@ -94,7 +94,7 @@ etl_plotter(data=etl,trait=env_trait)
 #Get Best Days window and Env Paras
 Paras <- c('DL', 'GDD', 'PTT', 'PTR', 'PTS');
 #p dap_x dap_y searching_daps according to your data
-pop_cor<-Exhaustive_search(data=env_trait, env_paras=PTT_PTR,
+pop_cor<-Eh_plot (data=env_trait, env_paras=PTT_PTR,
                            searching_daps=80,
                            p=1, dap_x=80,dap_y=80,LOO=0,Paras=Paras)
 
